@@ -722,7 +722,33 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">:32s}</span><span class="ss"> min lambda = </span><span class="sc">{</span>lam_min<span class="sc">:+9.4f}</span><span class="ss">  -&gt;  &quot;</span></span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&quot;</span><span class="sc">{</span><span class="st">&#39;ядро&#39;</span> <span class="cf">if</span> lam_min <span class="op">&gt;</span> <span class="op">-</span><span class="fl">1e-8</span> <span class="cf">else</span> <span class="st">&#39;НЕ ядро&#39;</span><span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell026" class="cell code">
+<div id="cell026" class="cell markdown">
+<blockquote>
+<p><strong>Напоминание — NumPy: как рисуют карту решений.</strong> Приём
+встречается в каждом занятии дальше, поэтому разберём его один раз.
+Чтобы закрасить плоскость по ответу модели, нужно спросить её в каждой
+точке регулярной сетки:</p>
+<ol>
+<li><code>np.meshgrid(xs, ys)</code> даёт две матрицы <code>g1</code>,
+<code>g2</code> формы <code>(200, 200)</code> — координаты
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+и
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+каждого узла сетки;</li>
+<li>модель принимает матрицу «объекты--признаки», а не две матрицы,
+поэтому сетку <strong>разворачивают в список точек</strong>:
+<code>g1.ravel()</code> вытягивает матрицу в вектор длины 40000, а
+<code>np.c_[a, b]</code> склеивает два вектора в две колонки;</li>
+<li>полученные 40000 ответов <strong>сворачивают обратно</strong> в
+форму сетки: <code>.reshape(g1.shape)</code> — и такую матрицу уже
+понимает <code>contourf</code>.</li>
+</ol>
+<p>Коротко: <code>ravel</code> — «разложить в строчку»,
+<code>reshape</code> — «сложить обратно в нужную форму»; число элементов
+при этом не меняется.</p>
+</blockquote>
+</div>
+<div id="cell027" class="cell code">
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ядровой переход: одна и та же двойственная задача, разные K</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Xc, yc <span class="op">=</span> make_circles(n_samples<span class="op">=</span><span class="dv">200</span>, noise<span class="op">=</span><span class="fl">0.12</span>, factor<span class="op">=</span><span class="fl">0.45</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> StandardScaler().fit_transform(Xc)</span>
@@ -737,7 +763,7 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    ax.scatter(<span class="op">*</span>X[y <span class="op">==</span> <span class="dv">0</span>].T, s<span class="op">=</span><span class="dv">14</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)<span class="op">;</span> ax.scatter(<span class="op">*</span>X[y <span class="op">==</span> <span class="dv">1</span>].T, s<span class="op">=</span><span class="dv">14</span>, marker<span class="op">=</span><span class="st">&quot;s&quot;</span>)</span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title, fontsize<span class="op">=</span><span class="dv">9</span>)<span class="op">;</span> ax.set_xticks([])<span class="op">;</span> ax.set_yticks([])</span></code></pre></div>
 </div>
-<div id="cell027" class="cell code">
+<div id="cell028" class="cell code">
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">4</span>))</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (name, kw) <span class="kw">in</span> <span class="bu">zip</span>(axes, [(<span class="st">&quot;линейное&quot;</span>, <span class="bu">dict</span>(kernel<span class="op">=</span><span class="st">&quot;linear&quot;</span>)),</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                 (<span class="st">&quot;полиномиальное d=2&quot;</span>, <span class="bu">dict</span>(kernel<span class="op">=</span><span class="st">&quot;poly&quot;</span>, degree<span class="op">=</span><span class="dv">2</span>)),</span>
@@ -748,7 +774,7 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                  <span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">}</span><span class="ch">\n</span><span class="ss">точность </span><span class="sc">{</span>m<span class="sc">.</span>score(Xc, yc)<span class="sc">:.2f}</span><span class="ss">, опорных </span><span class="sc">{</span><span class="bu">len</span>(m.support_)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell028" class="cell markdown">
+<div id="cell029" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Какие функции не прошли критерий Мерсера? Что
 происходит с границей при
@@ -757,7 +783,7 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell029" class="cell markdown">
+<div id="cell030" class="cell markdown">
 <hr />
 <h1 id="часть-6-три-модели-на-настоящих-данных">Часть 6. Три модели на
 настоящих данных</h1>
@@ -765,7 +791,7 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 реальную задачу: <code>breast_cancer</code> — 569 объектов, 30
 признаков, диагноз по параметрам клеточных ядер.</p>
 </div>
-<div id="cell030" class="cell code">
+<div id="cell031" class="cell code">
 <div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
@@ -792,14 +818,14 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 <span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;accuracy&quot;</span>: <span class="bu">max</span>(yte.mean(), <span class="dv">1</span> <span class="op">-</span> yte.mean()), <span class="st">&quot;опорных векторов&quot;</span>: <span class="st">&quot;-&quot;</span>})</span>
 <span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;модель&quot;</span>).<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell031" class="cell code">
+<div id="cell032" class="cell code">
 <div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Что будет, если забыть стандартизацию: SVM к масштабу очень чувствителен</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> SVC(kernel<span class="op">=</span><span class="st">&quot;rbf&quot;</span>, C<span class="op">=</span><span class="fl">1.0</span>).fit(Xtr_raw, ytr)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;RBF-SVM без стандартизации: ROC-AUC = &quot;</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span>roc_auc_score(yte, raw.decision_function(Xte_raw))<span class="sc">:.4f}</span><span class="ss">, &quot;</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;опорных </span><span class="sc">{</span><span class="bu">len</span>(raw.support_)<span class="sc">}</span><span class="ss"> из </span><span class="sc">{</span><span class="bu">len</span>(ytr)<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell032" class="cell markdown">
+<div id="cell033" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Какая модель победила? Сколько объектов
 оказалось опорными и о чём это говорит? Насколько корректно такое
@@ -807,7 +833,7 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell033" class="cell markdown">
+<div id="cell034" class="cell markdown">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>

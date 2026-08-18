@@ -440,7 +440,22 @@ Q(a, X^\ell) = \frac1\ell\sum_{i=1}^{\ell}\mathcal L(a, x_i, y_i).
 раздувать функционал квадратично.</p>
 </blockquote>
 </div>
-<div id="cell009" class="cell code">
+<div id="cell009" class="cell markdown">
+<blockquote>
+<p><strong>Напоминание — NumPy: <code>np.where</code> вместо
+if.</strong> <code>np.where(условие, a, b)</code> — поэлементный выбор:
+там, где условие истинно, берётся значение из <code>a</code>, иначе из
+<code>b</code>. Это векторизованный аналог <code>if</code>, и он нужен
+потому, что обычный <code>if</code> работает с одним числом, а не с
+массивом: <code>if r &gt;= 0</code> на массиве вызовет ошибку «truth
+value of an array is ambiguous».</p>
+<p>Все три аргумента подчиняются broadcasting, поэтому <code>a</code> и
+<code>b</code> могут быть и скалярами:
+<code>np.where(x &gt; 0, 1.0, -1.0)</code> даёт массив из единиц и минус
+единиц той же формы, что <code>x</code>.</p>
+</blockquote>
+</div>
+<div id="cell010" class="cell code">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loss_squared(r):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r <span class="op">**</span> <span class="dv">2</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -459,7 +474,7 @@ Q(a, X^\ell) = \frac1\ell\sum_{i=1}^{\ell}\mathcal L(a, x_i, y_i).
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> np.<span class="bu">abs</span>(r)</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.where(a <span class="op">&lt;=</span> delta, <span class="fl">0.5</span> <span class="op">*</span> r <span class="op">**</span> <span class="dv">2</span>, delta <span class="op">*</span> (a <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> delta))</span></code></pre></div>
 </div>
-<div id="cell010" class="cell code">
+<div id="cell011" class="cell code">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">400</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> loss, name <span class="kw">in</span> [(loss_squared, <span class="st">&quot;квадратичная&quot;</span>), (loss_absolute, <span class="st">&quot;абсолютная&quot;</span>),</span>
@@ -470,7 +485,7 @@ Q(a, X^\ell) = \frac1\ell\sum_{i=1}^{\ell}\mathcal L(a, x_i, y_i).
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Четыре функции потерь&quot;</span>)<span class="op">;</span> ax.legend()</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell011" class="cell markdown">
+<div id="cell012" class="cell markdown">
 <h3 id="задание-21-эмпирический-риск">Задание 2.1. Эмпирический
 риск</h3>
 <p>Простейшая модель алгоритмов — константы
@@ -480,7 +495,7 @@ Q(a, X^\ell) = \frac1\ell\sum_{i=1}^{\ell}\mathcal L(a, x_i, y_i).
 Начнём с самой функции
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>.</p>
 </div>
-<div id="cell012" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell013" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> empirical_risk(loss, pred, y):</span>
@@ -493,7 +508,7 @@ Q(a, X^\ell) = \frac1\ell\sum_{i=1}^{\ell}\mathcal L(a, x_i, y_i).
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Q константы 5.0 при квадратичной потере: &quot;</span></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span>empirical_risk(loss_squared, <span class="fl">5.0</span>, y_sample)<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell013" class="cell code">
+<div id="cell014" class="cell code">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Минимизируем Q(c) по константе c для каждой потери</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.linspace(y_sample.<span class="bu">min</span>(), y_sample.<span class="bu">max</span>(), <span class="dv">600</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>optimum <span class="op">=</span> {}</span>
@@ -508,7 +523,7 @@ Q(a, X^\ell) = \frac1\ell\sum_{i=1}^{\ell}\mathcal L(a, x_i, y_i).
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;медиана          = </span><span class="sc">{</span>np<span class="sc">.</span>median(y_sample)<span class="sc">:6.3f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;квантиль 0.75    = </span><span class="sc">{</span>np<span class="sc">.</span>quantile(y_sample, <span class="fl">0.75</span>)<span class="sc">:6.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell015" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Какой выборочной характеристике равен
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>c</mi><mo>*</mo></msup><annotation encoding="application/x-tex">c^*</annotation></semantics></math>
@@ -520,7 +535,7 @@ Q(a, X^\ell) = \frac1\ell\sum_{i=1}^{\ell}\mathcal L(a, x_i, y_i).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell015" class="cell markdown">
+<div id="cell016" class="cell markdown">
 <hr />
 <h1 id="часть-3-проверяем-утверждение-112">Часть 3. Проверяем
 утверждение 1.12</h1>
@@ -552,7 +567,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mo>*</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>𝔼</mi><msup><mi>ε</mi><mn>2</mn></msup><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">R(a^*) = \mathbb{E}\varepsilon^2 = \sigma^2 = 0.25</annotation></semantics></math>.
 Это снова численный эталон — теперь для статистического утверждения.</p>
 </div>
-<div id="cell016" class="cell code">
+<div id="cell017" class="cell code">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>THETA_TRUE <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">2.0</span>])          <span class="co"># свободный член и наклон</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>SIGMA2, ELL, N_REPEAT <span class="op">=</span> <span class="fl">0.25</span>, <span class="dv">20</span>, <span class="dv">10_000</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -571,7 +586,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;R(a*) по выборке 10^6 объектов     = &quot;</span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span>np<span class="sc">.</span>mean((X_big <span class="op">@</span> THETA_TRUE <span class="op">-</span> y_big) <span class="op">**</span> <span class="dv">2</span>)<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell018" class="cell markdown">
 <h3 id="задание-31-фиксированный-алгоритм">Задание 3.1. Фиксированный
 алгоритм</h3>
 <p>Повторим эксперимент
@@ -583,7 +598,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 для <strong>истинного</strong> алгоритма — того самого, что был известен
 до всех выборок.</p>
 </div>
-<div id="cell018" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell019" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>Q_fixed <span class="op">=</span> np.empty(N_REPEAT)</span>
@@ -596,7 +611,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;среднее Q  = </span><span class="sc">{</span>Q_fixed<span class="sc">.</span>mean()<span class="sc">:.5f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;смещение   = </span><span class="sc">{</span>Q_fixed<span class="sc">.</span>mean() <span class="op">-</span> SIGMA2<span class="sc">:+.5f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell019" class="cell code">
+<div id="cell020" class="cell code">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Несмещённость -- это про среднее. А как ведёт себя разброс самого Q?</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> (<span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">80</span>, <span class="dv">320</span>):</span>
@@ -606,7 +621,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;sigma^2 * sqrt(2/l)&quot;</span>: SIGMA2 <span class="op">*</span> np.sqrt(<span class="dv">2</span> <span class="op">/</span> l)})</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;l&quot;</span>).<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell020" class="cell markdown">
+<div id="cell021" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Смещения нет ни при каком
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ℓ</mi><annotation encoding="application/x-tex">\ell</annotation></semantics></math>
@@ -618,7 +633,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell022" class="cell markdown">
 <h3 id="а-теперь-алгоритм-подбирается-по-той-же-выборке">А теперь
 алгоритм подбирается по той же выборке</h3>
 <p>Ровно то, что предписывает принцип ERM: берём выборку, обучаем на ней
@@ -627,7 +642,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 Формально утверждение 1.12 больше не применимо — посмотрим, что
 будет.</p>
 </div>
-<div id="cell022" class="cell code">
+<div id="cell023" class="cell code">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="dv">2</span>                                        <span class="co"># число параметров модели</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Q_train, R_hat <span class="op">=</span> np.empty(N_REPEAT), np.empty(N_REPEAT)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(N_REPEAT):</span>
@@ -644,7 +659,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;зазор R - Q                = </span><span class="sc">{</span>(R_hat <span class="op">-</span> Q_train)<span class="sc">.</span>mean()<span class="sc">:.5f}</span><span class="ss">&quot;</span></span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;   теория 2 sigma^2 p/l    = </span><span class="sc">{</span><span class="dv">2</span> <span class="op">*</span> SIGMA2 <span class="op">*</span> p <span class="op">/</span> ELL<span class="sc">:.5f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell023" class="cell code">
+<div id="cell024" class="cell code">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> np.linspace(<span class="dv">0</span>, np.percentile(R_hat, <span class="fl">99.5</span>), <span class="dv">60</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ax.hist(Q_train, bins<span class="op">=</span>bins, alpha<span class="op">=</span><span class="fl">0.65</span>, density<span class="op">=</span><span class="va">True</span>, label<span class="op">=</span><span class="vs">r&quot;</span><span class="dv">$</span><span class="vs">Q</span><span class="dv">$</span><span class="vs"> на обучающей&quot;</span>)</span>
@@ -654,7 +669,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Алгоритм выбран по выборке: обучающая ошибка смещена вниз&quot;</span>)</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell024" class="cell markdown">
+<div id="cell025" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Для фиксированного алгоритма смещения нет,
 для обученного — есть. В каком месте доказательства утверждения 1.12
@@ -665,7 +680,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell025" class="cell markdown">
+<div id="cell026" class="cell markdown">
 <hr />
 <h1 id="часть-4-полиномы-первое-переобучение">Часть 4. Полиномы: первое
 переобучение</h1>
@@ -677,7 +692,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <p>Возьмём всего 15 точек — чтобы эффект был виден сразу — и посмотрим,
 что происходит с ростом степени.</p>
 </div>
-<div id="cell026" class="cell code">
+<div id="cell027" class="cell code">
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -690,14 +705,14 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>fit_poly <span class="op">=</span> <span class="kw">lambda</span> d: make_pipeline(PolynomialFeatures(d), LinearRegression()).fit(</span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    x_tr[:, <span class="va">None</span>], y_tr)</span></code></pre></div>
 </div>
-<div id="cell027" class="cell markdown">
+<div id="cell028" class="cell markdown">
 <h3 id="задание-41-ошибка-на-обучении-и-на-контроле">Задание 4.1. Ошибка
 на обучении и на контроле</h3>
 <p>Для каждой степени посчитайте эмпирический риск на обучающей выборке
 и на контрольной. Обратите внимание: контрольная выборка в обучении не
 участвовала.</p>
 </div>
-<div id="cell028" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell029" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>degrees <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span>]</span>
@@ -709,7 +724,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;степень&quot;</span>)</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>display(table.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell029" class="cell code">
+<div id="cell030" class="cell code">
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">400</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ax1.scatter(x_tr, y_tr, s<span class="op">=</span><span class="dv">30</span>, color<span class="op">=</span><span class="st">&quot;black&quot;</span>, zorder<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">&quot;обучающая выборка&quot;</span>)</span>
@@ -725,7 +740,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">&quot;Риск против сложности модели&quot;</span>)<span class="op">;</span> ax2.legend()</span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell030" class="cell markdown">
+<div id="cell031" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Как ведут себя обе ошибки с ростом степени?
 Какая степень оптимальна и можно ли было выбрать её по обучающей
@@ -733,7 +748,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell031" class="cell markdown">
+<div id="cell032" class="cell markdown">
 <hr />
 <h1 id="часть-5-чем-измерять-качество-регрессии">Часть 5. Чем измерять
 качество регрессии</h1>
@@ -764,13 +779,13 @@ R^2 = 1 - \frac{\sum_i (a(x_i) - y_i)^2}{\sum_i (\overline y - y_i)^2}
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">R^2 &lt; 0</annotation></semantics></math>
 — модель хуже константы.</p>
 </div>
-<div id="cell032" class="cell markdown">
+<div id="cell033" class="cell markdown">
 <h3 id="задание-51-четыре-метрики-своими-руками">Задание 5.1. Четыре
 метрики своими руками</h3>
 <p>Библиотечные метрики появятся в следующей ячейке — для сверки.
 Сначала свои.</p>
 </div>
-<div id="cell033" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell034" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mse(y_true, y_pred): ...</span>
@@ -783,7 +798,7 @@ R^2 = 1 - \frac{\sum_i (a(x_i) - y_i)^2}{\sum_i (\overline y - y_i)^2}
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (4 короткие функции). R^2 выразите через уже написанный mse.</span></span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell034" class="cell code">
+<div id="cell035" class="cell code">
 <div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_error, mean_squared_error, r2_score</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -809,7 +824,7 @@ R^2 = 1 - \frac{\sum_i (a(x_i) - y_i)^2}{\sum_i (\overline y - y_i)^2}
 <span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;целевая переменная: от </span><span class="sc">{</span>y<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.0f}</span><span class="ss"> до </span><span class="sc">{</span>y<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.0f}</span><span class="ss">, &quot;</span></span>
 <span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;среднее </span><span class="sc">{</span>y<span class="sc">.</span>mean()<span class="sc">:.1f}</span><span class="ss">, ст. откл. </span><span class="sc">{</span>y<span class="sc">.</span>std()<span class="sc">:.1f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell035" class="cell markdown">
+<div id="cell036" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> MSE вышла около 2850. Это много или мало?
 Почему по
@@ -820,7 +835,7 @@ R^2 = 1 - \frac{\sum_i (a(x_i) - y_i)^2}{\sum_i (\overline y - y_i)^2}
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell036" class="cell code">
+<div id="cell037" class="cell code">
 <div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>lims <span class="op">=</span> [y_test.<span class="bu">min</span>() <span class="op">-</span> <span class="dv">20</span>, y_test.<span class="bu">max</span>() <span class="op">+</span> <span class="dv">20</span>]</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ax1.scatter(y_test, pred, s<span class="op">=</span><span class="dv">22</span>, alpha<span class="op">=</span><span class="fl">0.65</span>)</span>
@@ -836,14 +851,14 @@ R^2 = 1 - \frac{\sum_i (a(x_i) - y_i)^2}{\sum_i (\overline y - y_i)^2}
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="ss">f&quot;Остатки: среднее </span><span class="sc">{</span>resid<span class="sc">.</span>mean()<span class="sc">:.1f}</span><span class="ss">, ст. откл. </span><span class="sc">{</span>resid<span class="sc">.</span>std()<span class="sc">:.1f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell037" class="cell markdown">
+<div id="cell038" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Что видно на диаграмме «предсказание против
 истины» и о чём говорит форма распределения остатков?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell038" class="cell markdown">
+<div id="cell039" class="cell markdown">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>

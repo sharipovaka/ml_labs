@@ -7,6 +7,7 @@
  * открывается первый материал раздела.
  */
 
+import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import ColabIcon from './ColabIcon';
@@ -18,8 +19,17 @@ import styles from './MaterialSection.module.css';
 
 /** Одна ссылка в списке материалов. */
 function MaterialLink({ item, sectionPath, isActive }) {
+  const ref = useRef(null);
+
+  // Список длинный (18 материалов), и выбранный пункт легко оказывается за
+  // пределами видимой части — тогда кажется, что открылось что-то другое.
+  useEffect(() => {
+    if (isActive) ref.current?.scrollIntoView({ block: 'nearest' });
+  }, [isActive]);
+
   return (
     <Link
+      ref={ref}
       to={`${sectionPath}/${item.slug}`}
       className={`${styles.listItem} ${isActive ? styles.listItemActive : ''}`}
       aria-current={isActive ? 'page' : undefined}
@@ -64,14 +74,18 @@ export default function MaterialSection({ section }) {
 
   return (
     <div className="container">
-      {/* --- Заголовок раздела --- */}
+      {/* --- Заголовок: что именно открыто --- */}
       <header className={styles.header}>
         <div>
           <p className={styles.eyebrow}>
-            <i className={`fa-solid ${section.icon} me-2`} aria-hidden="true" />
-            {section.label}
+            <i
+              className={`fa-solid ${material.kind === 'homework' ? 'fa-house-laptop' : 'fa-flask'} me-2`}
+              aria-hidden="true"
+            />
+            {material.kind === 'homework' ? 'Домашняя работа' : 'Лабораторная работа'}
+            {material.group && ` · ${material.group}`}
           </p>
-          <h1 className={styles.title}>{section.title}</h1>
+          <h1 className={styles.title}>{material.title}</h1>
           <p className={styles.subtitle}>{section.subtitle}</p>
         </div>
 

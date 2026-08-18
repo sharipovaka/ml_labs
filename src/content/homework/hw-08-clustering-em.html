@@ -266,11 +266,23 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 же, числа другие — поэтому отвечать придётся за свои числа, а не за
 преподавательские.</p>
 </blockquote>
+<h2 id="как-устроена-работа">Как устроена работа</h2>
+<p>Работа делится на две части, и делятся они по назначению, а не по
+сложности.</p>
+<p><strong>Обязательная часть — допуск.</strong> Без неё работа не
+принимается: это тот минимум, без которого занятие считается
+неусвоенным. Здесь всегда есть хотя бы одна реализация «с нуля»,
+сверенная с <code>scikit-learn</code> численно.</p>
+<p><strong>Часть на оценку</strong> (помечена значком ★). Она не нужна
+для допуска — но балл за работу выставляется именно по ней, и каждый
+выполненный пункт идёт в зачёт отдельно. Браться стоит даже за один
+пункт: это лучше, чем не браться вовсе.</p>
 <h2 id="что-нужно-сдать">Что нужно сдать</h2>
 <p>Заполненный ноутбук, в котором:</p>
 <ol>
-<li>выполнены все ячейки с <code># TODO</code>, код исполняется сверху
-вниз без ошибок в свежем ядре (Kernel → Restart &amp; Run All);</li>
+<li>выполнены все ячейки с <code># TODO</code> в обязательной части, код
+исполняется сверху вниз без ошибок в свежем ядре (Kernel → Restart &amp;
+Run All);</li>
 <li>под каждым заданием заполнена ячейка <strong>Вывод</strong> — своими
 словами, со ссылкой на полученные числа;</li>
 <li>графики подписаны: заголовок, оси, легенда;</li>
@@ -423,7 +435,39 @@ k-means++</h1>
 </div>
 <div id="cell010" class="cell markdown">
 <hr />
-<h1 id="задача-2-em-для-смеси-гауссиан">Задача 2. EM для смеси
+<h1 id="задача-2-кластеризация-вашей-выборки">Задача 2. Кластеризация
+вашей выборки</h1>
+<p>Обе реализации отлажены на двумерных сгустках, где ответ известен.
+Теперь примените свой алгоритм Ллойда к <strong>своей</strong> матрице:
+там нет ни истинных кластеров, ни возможности посмотреть глазами, и
+работать приходится только с внутренними критериями.</p>
+</div>
+<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) загрузите свою выборку (обучающую и контрольную части вместе --</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          кластеризация обучается без разбиения, меток она не использует);</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) для K от 2 до 8 запустите свой kmeans(...) и sklearn KMeans;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) сведите в таблицу Q обеих реализаций, ARI между их разбиениями,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          силуэт и AMI с (бинаризованной) целевой переменной;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) назовите K, максимизирующее силуэт.</span></span></code></pre></div>
+</div>
+<div id="cell012" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Совпали ли ваша реализация и
+<code>sklearn</code>? Что показывает силуэт на реальных данных и говорит
+ли AMI о качестве кластеризации?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell013" class="cell markdown">
+<hr />
+<blockquote>
+<h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
+<p>Обязательная часть закончилась: если вы дошли досюда и всё работает,
+работа будет принята. Дальше идут задания, по которым выставляется балл.
+Каждый пункт засчитывается отдельно, поэтому имеет смысл сделать хотя бы
+один.</p>
+</blockquote>
+<h1 id="задача-3-em-для-смеси-гауссиан">Задача 3★. EM для смеси
 гауссиан</h1>
 <p><strong>E-шаг</strong>:
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>γ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><msub><mi>w</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><mi>𝒩</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>∣</mo><msub><mi>μ</mi><mi>k</mi></msub><mo>,</mo><msub><mi mathvariant="normal">Σ</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><msub><mo>∑</mo><mi>s</mi></msub><msub><mi>w</mi><mi>s</mi></msub><mspace width="0.167em"></mspace><mi>𝒩</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>∣</mo><msub><mi>μ</mi><mi>s</mi></msub><mo>,</mo><msub><mi mathvariant="normal">Σ</mi><mi>s</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\gamma_{ik} = \dfrac{w_k\,\mathcal N(x_i \mid \mu_k, \Sigma_k)}
@@ -439,66 +483,41 @@ k-means++</h1>
 <code>nan</code>. Приём тот же, что с сигмоидой в занятии 4: вычесть
 максимум перед экспонированием.</p>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gmm_em(X, K, cov_type<span class="op">=</span><span class="st">&quot;full&quot;</span>, n_iter<span class="op">=</span><span class="dv">200</span>, tol<span class="op">=</span><span class="fl">1e-8</span>, seed<span class="op">=</span><span class="dv">0</span>, reg<span class="op">=</span><span class="fl">1e-6</span>):</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;EM для смеси гауссиан. Возвращает (w, mu, Sigma, gamma, история logL).</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Инициализация: центры -- kmeans_pp_init, w = 1/K, Sigma = ковариация всей</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">    выборки (плюс reg * I для устойчивости).</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">    E-шаг: logp[:, k] = log w_k + multivariate_normal(mu_k, Sigma_k).logpdf(X);</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">        нормировка в логарифмах (вычесть максимум по строке, затем logsumexp);</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">        gamma = exp(logp - log_norm), а сумма log_norm -- это ln L.</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">    M-шаг: N_k = sum_i gamma_ik; w, mu, Sigma -- взвешенные оценки по формулам.</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">        Для &#39;diag&#39; оставить только диагональ Sigma, для &#39;spherical&#39; --</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">        единичную матрицу, умноженную на среднюю дисперсию (trace / d).</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gmm_em(X, K, cov_type<span class="op">=</span><span class="st">&quot;full&quot;</span>, n_iter<span class="op">=</span><span class="dv">200</span>, tol<span class="op">=</span><span class="fl">1e-8</span>, seed<span class="op">=</span><span class="dv">0</span>, reg<span class="op">=</span><span class="fl">1e-6</span>):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;EM для смеси гауссиан. Возвращает (w, mu, Sigma, gamma, история logL).</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Инициализация: центры -- kmeans_pp_init, w = 1/K, Sigma = ковариация всей</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">    выборки (плюс reg * I для устойчивости).</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">    E-шаг: logp[:, k] = log w_k + multivariate_normal(mu_k, Sigma_k).logpdf(X);</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">        нормировка в логарифмах (вычесть максимум по строке, затем logsumexp);</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">        gamma = exp(logp - log_norm), а сумма log_norm -- это ln L.</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">    M-шаг: N_k = sum_i gamma_ik; w, mu, Sigma -- взвешенные оценки по формулам.</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">        Для &#39;diag&#39; оставить только диагональ Sigma, для &#39;spherical&#39; --</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">        единичную матрицу, умноженную на среднюю дисперсию (trace / d).</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell012" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X_g, _ <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">600</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">1.0</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X_g <span class="op">=</span> X_g <span class="op">@</span> np.array([[<span class="fl">0.6</span>, <span class="op">-</span><span class="fl">0.6</span>], [<span class="op">-</span><span class="fl">0.4</span>, <span class="fl">0.8</span>]])</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X_g <span class="op">=</span> StandardScaler().fit_transform(X_g)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: обучите свой EM с типом ковариации из variant[&quot;gmm_cov&quot;];</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   проверьте монотонность logL (теорема 7.7) и сверьтесь</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   с GaussianMixture по logL на объект и по ARI разбиений.</span></span></code></pre></div>
+<div id="cell015" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X_g, _ <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">600</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">1.0</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>X_g <span class="op">=</span> X_g <span class="op">@</span> np.array([[<span class="fl">0.6</span>, <span class="op">-</span><span class="fl">0.6</span>], [<span class="op">-</span><span class="fl">0.4</span>, <span class="fl">0.8</span>]])</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>X_g <span class="op">=</span> StandardScaler().fit_transform(X_g)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: обучите свой EM с типом ковариации из variant[&quot;gmm_cov&quot;];</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   проверьте монотонность logL (теорема 7.7) и сверьтесь</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   с GaussianMixture по logL на объект и по ARI разбиений.</span></span></code></pre></div>
 </div>
-<div id="cell013" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте два графика: (а) logL по итерациям; (б) кластеры с эллипсами</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       уровня ковариаций, прозрачность точки = max_k gamma_ik.</span></span></code></pre></div>
+<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте два графика: (а) logL по итерациям; (б) кластеры с эллипсами</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       уровня ковариаций, прозрачность точки = max_k gamma_ik.</span></span></code></pre></div>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell017" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Совпало ли с <code>sklearn</code>? Что даёт
 мягкое отнесение по сравнению с
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>-средних
 и где в коде проходит граница между ними?</p>
-<p><em>(ваш ответ здесь)</em></p>
-</blockquote>
-</div>
-<div id="cell015" class="cell markdown">
-<hr />
-<h1 id="задача-3-кластеризация-вашей-выборки">Задача 3. Кластеризация
-вашей выборки</h1>
-<p>Обе реализации отлажены на двумерных сгустках, где ответ известен.
-Теперь примените свой алгоритм Ллойда к <strong>своей</strong> матрице:
-там нет ни истинных кластеров, ни возможности посмотреть глазами, и
-работать приходится только с внутренними критериями.</p>
-</div>
-<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) загрузите свою выборку (обучающую и контрольную части вместе --</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          кластеризация обучается без разбиения, меток она не использует);</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) для K от 2 до 8 запустите свой kmeans(...) и sklearn KMeans;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) сведите в таблицу Q обеих реализаций, ARI между их разбиениями,</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          силуэт и AMI с (бинаризованной) целевой переменной;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) назовите K, максимизирующее силуэт.</span></span></code></pre></div>
-</div>
-<div id="cell017" class="cell markdown">
-<blockquote>
-<p><strong>Вывод.</strong> Совпали ли ваша реализация и
-<code>sklearn</code>? Что показывает силуэт на реальных данных и говорит
-ли AMI о качестве кластеризации?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>

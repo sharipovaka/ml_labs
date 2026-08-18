@@ -247,7 +247,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </tr>
 <tr>
 <td>Опора на лекции</td>
-<td>нет — работа опирается только на линейную алгебру и матанализ</td>
+<td>теории курса не требуется; нужны линейная алгебра, матанализ и
+базовый Python. Приёмы NumPy (ось, срез, broadcasting, матричное
+умножение) напоминаются по ходу — см. врезку перед первым заданием</td>
 </tr>
 <tr>
 <td>Трудоёмкость</td>
@@ -360,7 +362,45 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 \|a - b\|^2 = \|a\|^2 - 2\langle a, b\rangle + \|b\|^2 .
 </annotation></semantics></math></p>
 </div>
-<div id="cell004" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell004" class="cell markdown">
+<blockquote>
+<p><strong>Напоминание — NumPy: ось, срез, broadcasting и
+<code>@</code>.</strong> Четыре приёма, без которых дальше не обойтись.
+Пусть <code>X</code> имеет форму <code>(l, n)</code>:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ℓ</mi><annotation encoding="application/x-tex">\ell</annotation></semantics></math>
+объектов,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+признаков.</p>
+<p><strong>Ось.</strong> <code>X.sum(axis=0)</code> складывает вдоль
+строк и даёт
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+чисел — по одному на признак; <code>X.sum(axis=1)</code> даёт
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ℓ</mi><annotation encoding="application/x-tex">\ell</annotation></semantics></math>
+чисел — по одному на объект. Правило: <code>axis</code> указывает, какая
+ось <strong>исчезает</strong>.</p>
+<p><strong>Срез.</strong> <code>X[i]</code> —
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-й
+объект (строка), <code>X[:, j]</code> —
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>-й
+признак (столбец). Двоеточие читается как «все».</p>
+<p><strong>Broadcasting.</strong> Массивы разной формы складываются,
+если формы совместимы справа налево, причём ось длины 1 растягивается:
+<code>(l, 1) + (1, k)</code> даёт <code>(l, k)</code>. Отсюда приём
+<code>[:, None]</code> — он превращает вектор длины
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ℓ</mi><annotation encoding="application/x-tex">\ell</annotation></semantics></math>
+в столбец <code>(l, 1)</code>, а <code>[None, :]</code> — в строку
+<code>(1, k)</code>. Столбец плюс строка есть таблица всех попарных
+сумм, и всё это без единого цикла.</p>
+<p><strong>Матричное умножение.</strong> <code>A @ B</code> —
+произведение матриц: <code>(l, n) @ (n, k)</code> даёт
+<code>(l, k)</code>. А <code>A * B</code> — поэлементное, формы должны
+совпадать. Путать их — самая частая ошибка первых недель; при
+несовпадении NumPy сообщает <code>shapes not aligned</code>.</p>
+<p>Если что-то пошло не так, первым делом печатайте <code>.shape</code>
+— почти все ошибки векторизации видны по формам.</p>
+</blockquote>
+</div>
+<div id="cell005" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dists_vectorized(A, B):</span>
@@ -372,7 +412,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (3-4 строки). В конце верните np.maximum(D, 0.0) -- см. вывод ниже.</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell005" class="cell code">
+<div id="cell006" class="cell code">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -394,14 +434,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;цикл </span><span class="sc">{</span>t_loop <span class="op">*</span> <span class="dv">1000</span><span class="sc">:.0f}</span><span class="ss"> мс, векторизация </span><span class="sc">{</span>t_vec <span class="op">*</span> <span class="dv">1000</span><span class="sc">:.0f}</span><span class="ss"> мс &quot;</span></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;-&gt; ускорение в </span><span class="sc">{</span>t_loop <span class="op">/</span> t_vec<span class="sc">:.0f}</span><span class="ss"> раз&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell006" class="cell markdown">
+<div id="cell007" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Во сколько раз быстрее? Почему расхождение не
 строго нулевое и зачем <code>np.maximum(D, 0)</code>?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell007" class="cell markdown">
+<div id="cell008" class="cell markdown">
 <hr />
 <h1 id="часть-2-численный-эталон-три-способа-решить-систему">Часть 2.
 Численный эталон: три способа решить систему</h1>
@@ -419,7 +459,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 сколько знаков теряет каждый способ решения
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mi>w</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">Hw = b</annotation></semantics></math>.</p>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell009" class="cell markdown">
 <blockquote>
 <p><strong>Напоминание — число обусловленности.</strong>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>σ</mi><mi>max</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><msub><mi>σ</mi><mi>min</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{cond}(A) = \sigma_{\max}(A)/\sigma_{\min}(A)</annotation></semantics></math>
@@ -438,7 +478,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 раз — в занятиях 2, 3 и 9.</p>
 </blockquote>
 </div>
-<div id="cell009" class="cell code">
+<div id="cell010" class="cell code">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> hilbert</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
@@ -460,7 +500,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;n&quot;</span>)</span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>display(table.<span class="bu">map</span>(<span class="kw">lambda</span> v: <span class="ss">f&quot;</span><span class="sc">{</span>v<span class="sc">:.1e}</span><span class="ss">&quot;</span>))</span></code></pre></div>
 </div>
-<div id="cell010" class="cell markdown">
+<div id="cell011" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Какой способ точнее и почему разрыв растёт с
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>?
@@ -469,7 +509,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell011" class="cell markdown">
+<div id="cell012" class="cell markdown">
 <hr />
 <h1 id="часть-3-что-лежит-в-таблице">Часть 3. Что лежит в таблице</h1>
 <p>Учебная таблица занятия — список пассажиров «Титаника» (891 строка).
@@ -479,7 +519,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 признаки-дубликаты и один столбец, который вообще нельзя подавать в
 модель. Ровно это встречается в любой реальной выгрузке.</p>
 </div>
-<div id="cell012" class="cell code">
+<div id="cell013" class="cell code">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_raw <span class="op">=</span> load_titanic()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>TARGET <span class="op">=</span> <span class="st">&quot;survived&quot;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>df_raw<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> объектов, </span><span class="sc">{</span>df_raw<span class="sc">.</span>shape[<span class="dv">1</span>] <span class="op">-</span> <span class="dv">1</span><span class="sc">}</span><span class="ss"> признаков; &quot;</span></span>
@@ -495,7 +535,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>display(info)</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>df_raw.head(<span class="dv">5</span>)</span></code></pre></div>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell014" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Почему <code>deck</code> в таком виде почти
 бесполезна? И что делать со 107 повторяющимися строками — это ошибка
@@ -503,7 +543,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell015" class="cell markdown">
 <hr />
 <h1 id="часть-4-разведочная-визуализация">Часть 4. Разведочная
 визуализация</h1>
@@ -534,7 +574,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p>Третий вопрос сегодня главный: именно карта корреляций найдёт нам то,
 что мы пока не заметили.</p>
 </div>
-<div id="cell015" class="cell code">
+<div id="cell016" class="cell code">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">3.6</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, col <span class="kw">in</span> <span class="bu">zip</span>(axes[:<span class="dv">2</span>], (<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>)):</span>
@@ -553,7 +593,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;медианы: возраст </span><span class="sc">{</span>med[<span class="st">&#39;age&#39;</span>]<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">, тариф </span><span class="sc">{</span>med[<span class="st">&#39;fare&#39;</span>]<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss"> &quot;</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;(погиб / выжил)&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell016" class="cell markdown">
+<div id="cell017" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Что показывают ящики с усами: какой из двух
 признаков различает выживших, а какой почти нет? Зачем на тарифе
@@ -561,7 +601,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell018" class="cell markdown">
 <h3 id="задание-41-найти-признаки-дублирующие-друг-друга">Задание 4.1.
 Найти признаки, дублирующие друг друга</h3>
 <p>Корреляция Пирсона считается только для чисел, поэтому сначала
@@ -571,7 +611,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 близким к единице — это признаки, несущие <strong>одну и ту же</strong>
 информацию.</p>
 </div>
-<div id="cell018" class="cell code">
+<div id="cell019" class="cell code">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df_raw.copy()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&quot;alive&quot;</span>] <span class="op">=</span> d[<span class="st">&quot;alive&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;yes&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;no&quot;</span>: <span class="dv">0</span>})</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&quot;class&quot;</span>] <span class="op">=</span> d[<span class="st">&quot;class&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;First&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;Second&quot;</span>: <span class="dv">2</span>, <span class="st">&quot;Third&quot;</span>: <span class="dv">3</span>})</span>
@@ -587,14 +627,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Связи между признаками&quot;</span>)</span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell019" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell020" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (3-4 строки): выведите шесть пар признаков с наибольшим |r|.</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Подсказка: C.where(np.triu(np.ones(C.shape), k=1).astype(bool)).stack()</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># оставляет только верхний треугольник -- каждую пару по одному разу.</span></span></code></pre></div>
 </div>
-<div id="cell020" class="cell markdown">
+<div id="cell021" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Две пары дали
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>r</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>1.000</mn></mrow><annotation encoding="application/x-tex">|r| = 1.000</annotation></semantics></math>.
@@ -604,7 +644,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell022" class="cell markdown">
 <hr />
 <h1 id="часть-5-признак-которого-не-должно-быть">Часть 5. Признак,
 которого не должно быть</h1>
@@ -613,7 +653,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <code>yes</code>/<code>no</code>. Посмотрим, что будет, если подать в
 модель только его.</p>
 </div>
-<div id="cell022" class="cell code">
+<div id="cell023" class="cell code">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -636,7 +676,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span>(df[<span class="st">&#39;alone&#39;</span>] <span class="op">==</span> ((df[<span class="st">&#39;sibsp&#39;</span>] <span class="op">+</span> df[<span class="st">&#39;parch&#39;</span>]) <span class="op">==</span> <span class="dv">0</span>))<span class="sc">.</span><span class="bu">all</span>()<span class="sc">}</span><span class="ss">, &quot;</span></span>
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;при этом r(alone, sibsp) = </span><span class="sc">{</span>C<span class="sc">.</span>loc[<span class="st">&#39;alone&#39;</span>, <span class="st">&#39;sibsp&#39;</span>]<span class="sc">:+.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell023" class="cell markdown">
+<div id="cell024" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Откуда идеальное качество и почему
 <code>alive</code> необходимо удалить, хотя он «лучший признак в
@@ -645,7 +685,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell024" class="cell markdown">
+<div id="cell025" class="cell markdown">
 <hr />
 <h1 id="часть-6-типы-признаков-и-кодирование">Часть 6. Типы признаков и
 кодирование</h1>
@@ -705,7 +745,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><code>pclass</code> — порядковый (1 лучше 2 лучше 3),
 <code>embarked</code> — номинальный.</p>
 </div>
-<div id="cell025" class="cell code">
+<div id="cell026" class="cell code">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Номинальный -&gt; индикаторы; порядковый оставляем числом, порядок задаём мы</span></span>
@@ -714,7 +754,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;сумма по строке всегда </span><span class="sc">{</span>np<span class="sc">.</span>unique(E.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>))<span class="sc">.</span><span class="bu">round</span>(<span class="dv">6</span>)<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;pclass:&quot;</span>, <span class="bu">sorted</span>(df[<span class="st">&quot;pclass&quot;</span>].unique().tolist()), <span class="st">&quot;-- порядок уже закодирован&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell026" class="cell markdown">
+<div id="cell027" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Почему для <code>embarked</code> нельзя
 обойтись одним столбцом с числами 1, 2, 3? И почему сумма индикаторов,
@@ -722,14 +762,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell027" class="cell markdown">
+<div id="cell028" class="cell markdown">
 <hr />
 <h1 id="часть-7-пропуски-выбросы-и-масштаб">Часть 7. Пропуски, выбросы и
 масштаб</h1>
 <p>Три вещи, которые надо сделать с числовыми признаками, — и в каждой
 есть ловушка.</p>
 </div>
-<div id="cell028" class="cell markdown">
+<div id="cell029" class="cell markdown">
 <blockquote>
 <p><strong>Напоминание — квантиль, квартиль, IQR.</strong> Квантиль
 уровня
@@ -763,7 +803,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <code>np.quantile(x, [0.25, 0.75])</code>.</p>
 </blockquote>
 </div>
-<div id="cell029" class="cell code">
+<div id="cell030" class="cell code">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (а) Пропуски: сколько стоит &quot;просто удалить строки&quot;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>variants_na <span class="op">=</span> {</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;как есть&quot;</span>: df,</span>
@@ -776,7 +816,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>           <span class="st">&quot;средний возраст&quot;</span>: <span class="bu">round</span>(d[<span class="st">&quot;age&quot;</span>].mean(), <span class="dv">1</span>)}</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, d <span class="kw">in</span> variants_na.items()}).T)</span></code></pre></div>
 </div>
-<div id="cell030" class="cell markdown">
+<div id="cell031" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Что произошло с долей выживших при
 <code>dropna()</code> по всем столбцам и почему? Как это связано с 77 %
@@ -784,7 +824,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell031" class="cell code">
+<div id="cell032" class="cell code">
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (б) Выбросы: два правила дают очень разный ответ</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> (<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>):</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> df[col].dropna()</span>
@@ -795,14 +835,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&quot;правило 3 sigma -&gt; </span><span class="sc">{</span>n_sig<span class="sc">:3d}</span><span class="ss">;  max = </span><span class="sc">{</span>s<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.1f}</span><span class="ss">, &quot;</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&quot;скошенность = </span><span class="sc">{</span>s<span class="sc">.</span>skew()<span class="sc">:+.2f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell032" class="cell markdown">
+<div id="cell033" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Почему на <code>fare</code> правила
 расходятся в шесть раз? Надо ли удалять эти 116 объектов?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell033" class="cell markdown">
+<div id="cell034" class="cell markdown">
 <h3 id="задание-своя-стандартизация">Задание. Своя стандартизация</h3>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>σ</mi></mrow><annotation encoding="application/x-tex">z = (x - \mu)/\sigma</annotation></semantics></math>
 — приведение признака к нулевому среднему и единичной дисперсии. Нужно
@@ -812,7 +852,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 первая из девяти таких сверок в курсе</strong>: своя реализация обязана
 совпадать с библиотечной численно, а не «примерно».</p>
 </div>
-<div id="cell034" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell035" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> standardize(X, mu<span class="op">=</span><span class="va">None</span>, sigma<span class="op">=</span><span class="va">None</span>):</span>
@@ -834,7 +874,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;max|своя - sklearn| = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">abs</span>(Z_my <span class="op">-</span> Z_sk)<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2e}</span><span class="ss">, &quot;</span></span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;np.allclose: </span><span class="sc">{</span>np<span class="sc">.</span>allclose(Z_my, Z_sk)<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell035" class="cell markdown">
+<div id="cell036" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Зачем <code>standardize</code> принимает
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
@@ -844,7 +884,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell036" class="cell markdown">
+<div id="cell037" class="cell markdown">
 <hr />
 <h1 id="часть-8-честное-разбиение-и-первый-ориентир">Часть 8. Честное
 разбиение и первый ориентир</h1>
@@ -863,7 +903,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 действий тоже важен: <strong>сначала делим, потом обрабатываем</strong>,
 а не наоборот.</p>
 </div>
-<div id="cell037" class="cell markdown">
+<div id="cell038" class="cell markdown">
 <blockquote>
 <p><strong>Напоминание — стратификация.</strong> При случайном делении
 выборки доли классов в частях могут заметно разойтись — особенно если
@@ -875,7 +915,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 делением.</p>
 </blockquote>
 </div>
-<div id="cell038" class="cell code">
+<div id="cell039" class="cell code">
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> df.drop(columns<span class="op">=</span>[TARGET]), df[TARGET]</span>
@@ -890,7 +930,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;доля класса 1: вся выборка </span><span class="sc">{</span>y<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">, &quot;</span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;обучающая </span><span class="sc">{</span>y_train<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">, контрольная </span><span class="sc">{</span>y_test<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell039" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell040" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
@@ -905,7 +945,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#                                           sparse_output=False)</span></span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ...</span></code></pre></div>
 </div>
-<div id="cell040" class="cell code">
+<div id="cell041" class="cell code">
 <div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>X_train_t <span class="op">=</span> preprocessor.fit_transform(X_train)   <span class="co"># fit ТОЛЬКО на обучающей части</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>X_test_t <span class="op">=</span> preprocessor.transform(X_test)         <span class="co"># на контрольной -- только transform</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> preprocessor.get_feature_names_out()</span>
@@ -913,7 +953,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;матрица объектов-признаков: </span><span class="sc">{</span>X_train_t<span class="sc">.</span>shape<span class="sc">}</span><span class="ss"> (было </span><span class="sc">{</span>X_train<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> столбцов)&quot;</span>)</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;первые признаки:&quot;</span>, <span class="bu">list</span>(feature_names[:<span class="dv">6</span>]))</span></code></pre></div>
 </div>
-<div id="cell041" class="cell markdown">
+<div id="cell042" class="cell markdown">
 <h3 id="ориентир-с-чем-сравнивать-модели">Ориентир: с чем сравнивать
 модели</h3>
 <p>Матрица готова — можно обучать. Но прежде чем радоваться качеству,
@@ -922,7 +962,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p>Строгие определения функции потерь и риска будут на лекции 1; пока
 пользуемся привычными: доля правильных ответов и ROC-AUC.</p>
 </div>
-<div id="cell042" class="cell code">
+<div id="cell043" class="cell code">
 <div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.dummy <span class="im">import</span> DummyClassifier</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, roc_auc_score</span>
@@ -937,14 +977,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ROC-AUC&quot;</span>: roc_auc_score(y_test, m.predict_proba(X_test_t)[:, <span class="dv">1</span>])}</span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(results).T.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell043" class="cell markdown">
+<div id="cell044" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Насколько модель лучше константы? Чему равен
 ROC-AUC у константы и почему именно столько?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell044" class="cell code">
+<div id="cell045" class="cell code">
 <div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Каталог output/ -- то, что ноутбук создаёт сам (курсовые данные лежат в data/)</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib, joblib</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -955,7 +995,7 @@ ROC-AUC у константы и почему именно столько?</p>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>                    feature_names<span class="op">=</span>np.asarray(feature_names, dtype<span class="op">=</span><span class="bu">object</span>))</span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>joblib.dump(preprocessor, out_dir <span class="op">/</span> <span class="st">&quot;titanic_preprocessor.joblib&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell045" class="cell markdown">
+<div id="cell046" class="cell markdown">
 <h3 id="мостик-к-лекции-1">Мостик к лекции 1</h3>
 <p>Следующее занятие начнётся с воспроизведения численного примера из
 конспекта — МНК на выборке из восьми кошек
@@ -972,7 +1012,7 @@ ROC-AUC у константы и почему именно столько?</p>
 Численный эталон не обязан быть большим — он обязан быть
 <strong>проверяемым</strong>.</p>
 </div>
-<div id="cell046" class="cell code">
+<div id="cell047" class="cell code">
 <div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cats <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;банок_в_день&quot;</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>],</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;возраст&quot;</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">2</span>, <span class="dv">8</span>],</span>
@@ -982,7 +1022,7 @@ ROC-AUC у константы и почему именно столько?</p>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;сохранено в output/:&quot;</span>, <span class="op">*</span>[f.name <span class="cf">for</span> f <span class="kw">in</span> <span class="bu">sorted</span>(out_dir.iterdir())])</span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>display(cats)</span></code></pre></div>
 </div>
-<div id="cell047" class="cell markdown">
+<div id="cell048" class="cell markdown">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>

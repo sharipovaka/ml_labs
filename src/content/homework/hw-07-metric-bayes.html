@@ -272,11 +272,23 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 же, числа другие — поэтому отвечать придётся за свои числа, а не за
 преподавательские.</p>
 </blockquote>
+<h2 id="как-устроена-работа">Как устроена работа</h2>
+<p>Работа делится на две части, и делятся они по назначению, а не по
+сложности.</p>
+<p><strong>Обязательная часть — допуск.</strong> Без неё работа не
+принимается: это тот минимум, без которого занятие считается
+неусвоенным. Здесь всегда есть хотя бы одна реализация «с нуля»,
+сверенная с <code>scikit-learn</code> численно.</p>
+<p><strong>Часть на оценку</strong> (помечена значком ★). Она не нужна
+для допуска — но балл за работу выставляется именно по ней, и каждый
+выполненный пункт идёт в зачёт отдельно. Браться стоит даже за один
+пункт: это лучше, чем не браться вовсе.</p>
 <h2 id="что-нужно-сдать">Что нужно сдать</h2>
 <p>Заполненный ноутбук, в котором:</p>
 <ol>
-<li>выполнены все ячейки с <code># TODO</code>, код исполняется сверху
-вниз без ошибок в свежем ядре (Kernel → Restart &amp; Run All);</li>
+<li>выполнены все ячейки с <code># TODO</code> в обязательной части, код
+исполняется сверху вниз без ошибок в свежем ядре (Kernel → Restart &amp;
+Run All);</li>
 <li>под каждым заданием заполнена ячейка <strong>Вывод</strong> — своими
 словами, со ссылкой на полученные числа;</li>
 <li>графики подписаны: заголовок, оси, легенда;</li>
@@ -404,7 +416,33 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <code>variant[&quot;distance&quot;]</code>. Реализуйте <strong>один</strong> класс
 с параметром-методом.</p>
 </div>
-<div id="cell005" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell005" class="cell markdown">
+<blockquote>
+<p><strong>Напоминание — NumPy: <code>argsort</code> и ранг
+соседа.</strong> <code>np.argsort(a)</code> возвращает не
+отсортированный массив, а <strong>номера</strong> элементов в порядке
+возрастания: <code>argsort([30, 10, 20])</code> даёт
+<code>[1, 2, 0]</code> — «сначала элемент 1, потом 2, потом 0». С
+<code>axis=1</code> то же делается построчно.</p>
+<p>Дальше используется приём, который стоит запомнить:
+<code>argsort</code> от <code>argsort</code> даёт <strong>ранг</strong>
+каждого элемента, то есть его место в очереди. Если <code>D[j, i]</code>
+— расстояние от объекта
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+до объекта
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,
+то <code>rank[j, i] = 0</code> означает
+«<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+— ближайший сосед для
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>»,
+<code>rank[j, i] = 1</code> — второй по близости и так далее. Условие
+«взять
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+ближайших» превращается в одну строку <code>rank &lt; k</code>, без
+сортировок в цикле.</p>
+</blockquote>
+</div>
+<div id="cell006" class="cell code" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>KERNELS <span class="op">=</span> {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;прямоугольное&quot;</span>: <span class="kw">lambda</span> r: (np.<span class="bu">abs</span>(r) <span class="op">&lt;=</span> <span class="dv">1</span>) <span class="op">*</span> <span class="fl">0.5</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;треугольное&quot;</span>: <span class="kw">lambda</span> r: np.maximum(<span class="fl">0.0</span>, <span class="dv">1</span> <span class="op">-</span> np.<span class="bu">abs</span>(r)),</span>
@@ -442,14 +480,14 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>my_method <span class="op">=</span> METHOD_KEY[variant[<span class="st">&quot;metric_method&quot;</span>]]</span></code></pre></div>
 </div>
-<div id="cell006" class="cell markdown">
+<div id="cell007" class="cell markdown">
 <h3 id="задание-11-все-пять-на-одной-картинке">Задание 1.1. Все пять на
 одной картинке</h3>
 <p>Сверьте свой <code>knn</code> со <code>sklearn</code> (предсказания
 обязаны совпасть полностью) и покажите границы решения всех пяти методов
 при одном и том же ядре.</p>
 </div>
-<div id="cell007" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell008" class="cell code" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Xm, ym <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">220</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">1.6</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> StandardScaler().fit_transform(Xm)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Xa, Xv, ya, yv <span class="op">=</span> train_test_split(Xm, ym, test_size<span class="op">=</span><span class="fl">0.35</span>, stratify<span class="op">=</span>ym,</span>
@@ -461,7 +499,7 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#          (knn k=5; knn_weighted k=15, q=0.75; parzen_fixed h=0.6;</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#           parzen_variable k=10; potential h=0.6).</span></span></code></pre></div>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell009" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Чем отличаются границы разных весовых
 функций? Что происходит с парзеновским окном фиксированной ширины в
@@ -469,10 +507,41 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell009" class="cell markdown">
+<div id="cell010" class="cell markdown">
+<h3 id="задание-12-ваша-реализация-на-вашей-выборке">Задание 1.2. Ваша
+реализация на вашей выборке</h3>
+<p>Двумерная синтетика удобна тем, что видно границу. Но работать
+классификатор обязан на табличных данных, где смотреть не на что.
+Загрузите свою выборку и убедитесь, что ваш <code>knn</code> совпадает
+со <code>sklearn</code> <strong>на всех объектах</strong> — это проверка
+корректности, а не «примерно похоже».</p>
+</div>
+<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) загрузите свою выборку через load_personal(variant); если вариант</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          регрессионный -- бинаризуйте цель по медиане обучающей части;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) обучите свой MetricClassifier(method=&quot;knn&quot;, k=5) и</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#          KNeighborsClassifier(5);</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) напечатайте долю совпадающих предсказаний (обязана быть 1.0)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          и accuracy обеих реализаций.</span></span></code></pre></div>
+</div>
+<div id="cell012" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Совпали ли предсказания полностью? Если нет —
+где искать ошибку?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell013" class="cell markdown">
 <hr />
-<h1 id="задача-2-отступ-и-отбор-эталонов-stolp">Задача 2. Отступ и отбор
-эталонов (STOLP)</h1>
+<blockquote>
+<h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
+<p>Обязательная часть закончилась: если вы дошли досюда и всё работает,
+работа будет принята. Дальше идут задания, по которым выставляется балл.
+Каждый пункт засчитывается отдельно, поэтому имеет смысл сделать хотя бы
+один.</p>
+</blockquote>
+<h1 id="задача-2-отступ-и-отбор-эталонов-stolp">Задача 2★. Отступ и
+отбор эталонов (STOLP)</h1>
 <p>Определение 6.4: отступ объекта в метрическом классификаторе —</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi mathvariant="normal">Γ</mi><msub><mi>y</mi><mi>i</mi></msub></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><munder><mi>max</mi><mrow><mi>k</mi><mo>≠</mo><msub><mi>y</mi><mi>i</mi></msub></mrow></munder><msub><mi mathvariant="normal">Γ</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
 M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
@@ -488,30 +557,30 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 Алгоритм STOLP отбирает небольшое подмножество эталонов, выбрасывая шум
 и «неинформативную массовку».</p>
 </div>
-<div id="cell010" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> margins(clf, X, y):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;M(x_i) = Gamma_{y_i}(x_i) - max_{k != y_i} Gamma_k(x_i).</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Подсказка: возьмите clf.decision(X), выньте столбец своего класса,</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    в копии матрицы поставьте -inf на месте своего класса и возьмите максимум.</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stolp(X, y, delta<span class="op">=</span><span class="fl">0.0</span>, max_errors<span class="op">=</span><span class="fl">0.01</span>, k<span class="op">=</span><span class="dv">5</span>, kernel<span class="op">=</span><span class="st">&quot;Епанечникова&quot;</span>):</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;STOLP:</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">       1) посчитать отступы по классификатору на ПОЛНОЙ выборке и выбросить</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">          объекты с M &lt; delta (это шум);</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">       2) начать множество эталонов с одного объекта на класс -- с максимальным</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">          отступом;</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">       3) пока доля ошибок правила ближайшего эталона больше max_errors,</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">          добавлять ошибочно классифицированный объект (берите тот, у которого</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">          отступ по полной выборке наибольший -- он представляет целую область).</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">       Возвращает (индексы эталонов, отступы).</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> margins(clf, X, y):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;M(x_i) = Gamma_{y_i}(x_i) - max_{k != y_i} Gamma_k(x_i).</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Подсказка: возьмите clf.decision(X), выньте столбец своего класса,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">    в копии матрицы поставьте -inf на месте своего класса и возьмите максимум.</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stolp(X, y, delta<span class="op">=</span><span class="fl">0.0</span>, max_errors<span class="op">=</span><span class="fl">0.01</span>, k<span class="op">=</span><span class="dv">5</span>, kernel<span class="op">=</span><span class="st">&quot;Епанечникова&quot;</span>):</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;STOLP:</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">       1) посчитать отступы по классификатору на ПОЛНОЙ выборке и выбросить</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">          объекты с M &lt; delta (это шум);</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">       2) начать множество эталонов с одного объекта на класс -- с максимальным</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">          отступом;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">       3) пока доля ошибок правила ближайшего эталона больше max_errors,</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">          добавлять ошибочно классифицированный объект (берите тот, у которого</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">          отступ по полной выборке наибольший -- он представляет целую область).</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">       Возвращает (индексы эталонов, отступы).</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell011" class="cell markdown">
+<div id="cell015" class="cell markdown">
 <h3 id="задание-21-сколько-объектов-на-самом-деле-нужно">Задание 2.1.
 Сколько объектов на самом деле нужно</h3>
 <p>Возьмите выборку, испортите метки у части объектов (так бывает в
@@ -520,27 +589,27 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 распределения — порождайте одну выборку и делите её, а не вызывайте
 генератор дважды с разными <code>random_state</code>.</p>
 </div>
-<div id="cell012" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X_all, y_all <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">900</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">2.2</span>,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                          random_state<span class="op">=</span>RANDOM_STATE)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X_all <span class="op">=</span> StandardScaler().fit_transform(X_all)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>X_st, Xq, y_st, yq <span class="op">=</span> train_test_split(X_all, y_all, train_size<span class="op">=</span><span class="dv">300</span>, stratify<span class="op">=</span>y_all,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                                      random_state<span class="op">=</span>RANDOM_STATE)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>noise_idx <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>).choice(<span class="bu">len</span>(y_st), <span class="dv">18</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>y_st <span class="op">=</span> y_st.copy()</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>y_st[noise_idx] <span class="op">=</span> (y_st[noise_idx] <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> <span class="dv">3</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) примените STOLP, выведите число эталонов и сколько среди них</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#          объектов с испорченными метками;</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) сравните точность на ОТЛОЖЕННЫХ данных (Xq, yq): вся выборка</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#          с kNN(5) против правила ближайшего эталона.</span></span></code></pre></div>
+<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X_all, y_all <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">900</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                          random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X_all <span class="op">=</span> StandardScaler().fit_transform(X_all)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>X_st, Xq, y_st, yq <span class="op">=</span> train_test_split(X_all, y_all, train_size<span class="op">=</span><span class="dv">300</span>, stratify<span class="op">=</span>y_all,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                      random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>noise_idx <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>).choice(<span class="bu">len</span>(y_st), <span class="dv">18</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>y_st <span class="op">=</span> y_st.copy()</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>y_st[noise_idx] <span class="op">=</span> (y_st[noise_idx] <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> <span class="dv">3</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) примените STOLP, выведите число эталонов и сколько среди них</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#          объектов с испорченными метками;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) сравните точность на ОТЛОЖЕННЫХ данных (Xq, yq): вся выборка</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#          с kNN(5) против правила ближайшего эталона.</span></span></code></pre></div>
 </div>
-<div id="cell013" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте профиль отступов (столбики, упорядоченные по возрастанию M,</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       отрицательные другим цветом) и картинку выборки с отмеченными</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       эталонами и испорченными метками.</span></span></code></pre></div>
+<div id="cell017" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте профиль отступов (столбики, упорядоченные по возрастанию M,</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       отрицательные другим цветом) и картинку выборки с отмеченными</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       эталонами и испорченными метками.</span></span></code></pre></div>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell018" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Сколько объектов оставил STOLP и как
 изменилась точность? Попали ли испорченные метки в эталоны? Зачем вообще
@@ -548,27 +617,21 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell015" class="cell markdown">
-<h3 id="задание-22-метрический-классификатор-и-stolp-на-вашей-выборке">Задание
-2.2. Метрический классификатор и STOLP на вашей выборке</h3>
-<p>Синтетика двумерна, и на ней всё видно глазами. Проверим обе
-реализации там, где смотреть не на что: на вашей табличной матрице.
-Сначала убедитесь, что ваш <code>knn</code> совпадает со
-<code>sklearn</code> <strong>на ваших данных</strong>, затем сожмите
-обучающую выборку алгоритмом STOLP и посмотрите, сколько объектов
-осталось и что стало с качеством.</p>
+<div id="cell019" class="cell markdown">
+<h3 id="задание-22-stolp-на-вашей-выборке">Задание 2.2★. STOLP на вашей
+выборке</h3>
+<p>Сожмите свою обучающую выборку алгоритмом STOLP (данные уже загружены
+в задании 1.2) и посмотрите, сколько объектов осталось и что стало с
+качеством.</p>
 </div>
-<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) загрузите свою выборку через load_personal(variant) и при</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          необходимости бинаризуйте цель по медиане обучающей части;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) обучите свой MetricClassifier(method=&quot;knn&quot;, k=5) и убедитесь, что</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#          его предсказания совпадают с KNeighborsClassifier(5) полностью;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) примените stolp(...), обучите kNN ТОЛЬКО на эталонах и сведите все</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          три строки в таблицу вместе с числом объектов, которые модель</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          обязана хранить;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) напечатайте степень сжатия и число объектов с отрицательным отступом.</span></span></code></pre></div>
+<div id="cell020" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) примените stolp(...) к своей обучающей выборке (Xp_tr, yp_tr);</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) обучите kNN ТОЛЬКО на эталонах и сведите в таблицу три строки:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#          своя реализация на всей выборке, sklearn на всей выборке, своя</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#          на эталонах -- вместе с числом объектов, которые модель хранит;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) напечатайте степень сжатия и число объектов с отрицательным отступом.</span></span></code></pre></div>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell021" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Насколько сжалась выборка и что стало с
 качеством? Почему сжатая модель может оказаться <strong>лучше</strong>
@@ -576,7 +639,7 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell022" class="cell markdown">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>
