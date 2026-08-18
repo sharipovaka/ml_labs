@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw-06-trees-ensembles</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
+</style>
+</head>
+<body>
+<div id="cell000" class="cell markdown">
+<h1 id="домашняя-работа-6-дерево-и-adaboost-своими-руками">Домашняя
+работа 6. Дерево и AdaBoost своими руками</h1>
+<p><strong>Курс «Машинное обучение», 4 курс</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td>К лабораторной</td>
+<td>занятие 6 — Решающие деревья и композиции алгоритмов</td>
+</tr>
+<tr>
+<td>Опора</td>
+<td>материал семинара 6 и лекций до него</td>
+</tr>
+<tr>
+<td>Ожидаемое время</td>
+<td>4 часа</td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><strong>ваша индивидуальная таблица</strong> (по ФИО)</td>
+</tr>
+</tbody>
+</table>
+<p>Две классические реализации. Сначала решающее дерево: рекурсивное
+построение с перебором порогов — код короткий, но требует аккуратности.
+Затем AdaBoost строго по теореме 5.15, с проверкой, что формула для
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math>
+действительно доставляет минимум.\n\nОтлаживать обе реализации удобно на
+двумерной синтетике — там видно границу; а работать они обязаны на
+<strong>вашей</strong> табличной выборке, куда мы их и приложим.</p>
+<blockquote>
+<p><strong>Чем это отличается от занятия.</strong> На семинаре данные
+были учебные и общие — так удобно разбирать. Дома данные ваши: таблица
+порождается по ФИО, и ни у кого в группе она не повторяется. Приёмы те
+же, числа другие — поэтому отвечать придётся за свои числа, а не за
+преподавательские.</p>
+</blockquote>
+<h2 id="что-нужно-сдать">Что нужно сдать</h2>
+<p>Заполненный ноутбук, в котором:</p>
+<ol>
+<li>выполнены все ячейки с <code># TODO</code>, код исполняется сверху
+вниз без ошибок в свежем ядре (Kernel → Restart &amp; Run All);</li>
+<li>под каждым заданием заполнена ячейка <strong>Вывод</strong> — своими
+словами, со ссылкой на полученные числа;</li>
+<li>графики подписаны: заголовок, оси, легенда;</li>
+<li>в ячейке варианта вписано ваше ФИО.</li>
+</ol>
+<blockquote>
+<p>Списывание видно сразу: у каждого студента свой датасет и свой набор
+методов.</p>
+</blockquote>
+</div>
+<div id="cell001" class="cell code">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">&quot;ignore&quot;</span>, category<span class="op">=</span><span class="pp">FutureWarning</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Модули практикума (variants.py, labdata.py) ищем рядом с ноутбуком.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Если их нет -- значит, ноутбук открыт в Colab: скачиваем из репозитория курса.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>COURSE_FILES_URL <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/sharipovaka/mltest1/main/notebooks&quot;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _course_modules_dir():</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    here <span class="op">=</span> pathlib.Path.cwd()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> parent <span class="kw">in</span> [here, <span class="op">*</span>here.parents][:<span class="dv">4</span>]:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (parent <span class="op">/</span> <span class="st">&quot;variants.py&quot;</span>).exists():</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">str</span>(parent)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> urllib.request</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name <span class="kw">in</span> (<span class="st">&quot;variants.py&quot;</span>, <span class="st">&quot;labdata.py&quot;</span>):</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> pathlib.Path(name).exists():</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            urllib.request.urlretrieve(<span class="ss">f&quot;</span><span class="sc">{</span>COURSE_FILES_URL<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">&quot;</span>, name)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;загружен </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> из репозитория курса&quot;</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(here)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, _course_modules_dir())</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> get_variant, describe_variant  <span class="co"># noqa: E402</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>RANDOM_STATE <span class="op">=</span> <span class="dv">42</span>          <span class="co"># единый seed на всю работу: результаты воспроизводимы</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.figsize&quot;</span>: (<span class="fl">7.5</span>, <span class="fl">4.5</span>),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.dpi&quot;</span>: <span class="dv">110</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.grid&quot;</span>: <span class="va">True</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;grid.alpha&quot;</span>: <span class="fl">0.25</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.top&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.right&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;font.size&quot;</span>: <span class="dv">11</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;numpy&quot;</span>, np.__version__, <span class="st">&quot;| pandas&quot;</span>, pd.__version__)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> labdata <span class="im">import</span> load_personal</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> optimize</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> AdaBoostClassifier</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier, DecisionTreeRegressor</span></code></pre></div>
+</div>
+<div id="cell002" class="cell markdown">
+<h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
+<p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
+вариант вычисляется детерминированно, при повторном запуске он тот же
+самый.</p>
+<p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
+вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
+</div>
+<div id="cell003" class="cell code">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
+</div>
+<div id="cell004" class="cell code">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ваша выборка. Занятие про классификацию, поэтому регрессионный вариант</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># бинаризуем по медиане обучающей части.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_personal(variant)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Xp_tr, Xp_te <span class="op">=</span> data[<span class="st">&quot;X_train&quot;</span>], data[<span class="st">&quot;X_test&quot;</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>yp_tr, yp_te <span class="op">=</span> data[<span class="st">&quot;y_train&quot;</span>], data[<span class="st">&quot;y_test&quot;</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> data[<span class="st">&quot;task&quot;</span>] <span class="op">==</span> <span class="st">&quot;regression&quot;</span>:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    thr <span class="op">=</span> np.median(yp_tr)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    yp_tr, yp_te <span class="op">=</span> (yp_tr <span class="op">&gt;</span> thr).astype(<span class="bu">int</span>), (yp_te <span class="op">&gt;</span> thr).astype(<span class="bu">int</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>yp_tr, yp_te <span class="op">=</span> yp_tr.astype(<span class="bu">int</span>), yp_te.astype(<span class="bu">int</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>data[<span class="st">&#39;domain&#39;</span>]<span class="sc">}</span><span class="ss">: обучающая </span><span class="sc">{</span>Xp_tr<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, контрольная </span><span class="sc">{</span>Xp_te<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, &quot;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;доля класса 1 = </span><span class="sc">{</span>yp_tr<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell005" class="cell markdown">
+<hr />
+<h1 id="задача-1-решающее-дерево">Задача 1. Решающее дерево</h1>
+<p>Алгоритм: в вершине перебрать все признаки и все пороги, выбрать
+расщепление с максимальным приростом, рекурсивно повторить для обеих
+частей. Остановка — по глубине, по числу объектов или при нулевом
+приросте.</p>
+<p>Порогами достаточно брать середины между соседними
+<strong>различными</strong> значениями признака: между одинаковыми
+значениями разбиения не существует.</p>
+</div>
+<div id="cell006" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gini(y):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Gini(R) = 1 - sum p_k^2.&quot;&quot;&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Node:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Узел: либо лист со значением (вектор долей классов),</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">    либо предикат [x_feature &lt;= threshold] с двумя потомками.&quot;&quot;&quot;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyDecisionTree:</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Решающее дерево для классификации (критерий Джини).</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">    __init__(max_depth, min_samples_leaf, min_samples_split)</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">    _best_split(X, y) -&gt; (gain, feature, threshold): перебрать признаки и пороги</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">        (середины между соседними РАЗЛИЧНЫМИ значениями), вернуть лучший.</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">    _grow(X, y, depth): рекурсия; остановка по глубине, по числу объектов,</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">        при одном классе или при нулевом приросте.</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">    predict(X), n_leaves().</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span></span></code></pre></div>
+</div>
+<div id="cell007" class="cell markdown">
+<h3 id="задание-11-сверка-со-sklearn">Задание 1.1. Сверка со
+<code>sklearn</code></h3>
+<p>При одинаковых ограничениях ваше дерево обязано давать то же качество
+и то же число листьев. Расхождение на 1–2 листа допустимо: при равных
+приростах порядок перебора признаков может отличаться.</p>
+</div>
+<div id="cell008" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Xm, ym <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">400</span>, noise<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Xa, Xv, ya, yv <span class="op">=</span> train_test_split(Xm, ym, test_size<span class="op">=</span><span class="fl">0.35</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для max_depth in [1, 2, 3, 5, 8, 12, None] сравните своё дерево</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       и DecisionTreeClassifier(criterion=&quot;gini&quot;): точность на контроле</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       и число листьев.</span></span></code></pre></div>
+</div>
+<div id="cell009" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Совпало ли качество и число листьев? Где ваша
+реализация медленнее <code>sklearn</code> и почему?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell010" class="cell markdown">
+<h3 id="задание-12-ваше-дерево-на-вашей-выборке">Задание 1.2. Ваше
+дерево на вашей выборке</h3>
+<p><code>make_moons</code> — два признака и гладкая граница, то есть
+заведомо неудобный для дерева случай. Посмотрим, как ваше дерево ведёт
+себя на реальной табличной задаче: постройте кривую сложности (качество
+против <code>max_depth</code>) на своей выборке и сравните со
+<code>sklearn</code>.</p>
+</div>
+<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для max_depth из [1, 2, 3, 5, 8, 12, None] обучите СВОЁ дерево и</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       DecisionTreeClassifier на (Xp_tr, yp_tr); сведите в таблицу качество</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       на обучении и на контроле, число листьев у sklearn.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте кривую сложности: обе доли правильных ответов против глубины.</span></span></code></pre></div>
+</div>
+<div id="cell012" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> При какой глубине качество на контроле
+максимально? Что происходит с обучающей кривой и почему это не повод
+радоваться?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell013" class="cell markdown">
+<hr />
+<h1 id="задача-2-adaboost-по-теореме-515">Задача 2. AdaBoost по теореме
+5.15</h1>
+<p>Теорема 5.15: при весах
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>=</mo><mrow><mi>exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><msub><mi>y</mi><mi>i</mi></msub><msub><mi>F</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w_i = \exp(-y_iF_{t-1}(x_i))</annotation></semantics></math>
+и взвешенной ошибке
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi></mrow><mi>t</mi></msub><annotation encoding="application/x-tex">\mathrm{err}_t</annotation></semantics></math>
+оптимальный вес слабого классификатора равен</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>t</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mi>ln</mi><mo>⁡</mo></mrow><mfrac><mrow><mn>1</mn><mo>−</mo><msub><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi></mrow><mi>t</mi></msub></mrow><msub><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi></mrow><mi>t</mi></msub></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\alpha_t = \frac12\ln\frac{1 - \mathrm{err}_t}{\mathrm{err}_t},
+</annotation></semantics></math></p>
+<p>после чего веса обновляются:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>←</mo><msub><mi>w</mi><mi>i</mi></msub><mrow><mi>exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><msub><mi>α</mi><mi>t</mi></msub><msub><mi>y</mi><mi>i</mi></msub><msub><mi>b</mi><mi>t</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w_i \leftarrow w_i\exp(-\alpha_t y_i b_t(x_i))</annotation></semantics></math>
+с последующей нормировкой.</p>
+</div>
+<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> adaboost_fit(X, y, n_estimators<span class="op">=</span><span class="dv">200</span>, seed<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;AdaBoost для y из {-1, +1}. На каждом шаге:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">       1) обучить пень DecisionTreeClassifier(max_depth=1) с весами w</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">          (параметр sample_weight);</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">       2) посчитать взвешенную ошибку err_t (долю веса на ошибочных объектах);</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">       3) alpha_t = 0.5 * ln((1 - err_t)/err_t)   -- теорема 5.15;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">       4) w_i &lt;- w_i exp(-alpha_t y_i b_t(x_i)), нормировать.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">       Возвращает (список пней, массив alpha, историю по шагам).</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> adaboost_predict(X, stumps, alphas):</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;sign(sum alpha_t b_t(x)).&quot;&quot;&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+</div>
+<div id="cell015" class="cell markdown">
+<h3 id="задание-21-проверка-формулы-и-сверка-со-sklearn">Задание 2.1.
+Проверка формулы и сверка со <code>sklearn</code></h3>
+<p>Формула для
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math>
+получена дифференцированием
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>i</mi></msub><msub><mi>w</mi><mi>i</mi></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>α</mi><msub><mi>y</mi><mi>i</mi></msub><msub><mi>b</mi><mi>t</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">\sum_i w_ie^{-\alpha y_ib_t(x_i)}</annotation></semantics></math>
+по
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>.
+Проверьте её численно: минимизируйте эту функцию по
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+и сравните с формулой.</p>
+</div>
+<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Xb, yb <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">400</span>, noise<span class="op">=</span><span class="fl">0.32</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>yb <span class="op">=</span> np.where(yb <span class="op">==</span> <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Xba, Xbv, yba, ybv <span class="op">=</span> train_test_split(Xb, yb, test_size<span class="op">=</span><span class="fl">0.35</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) обучите свой AdaBoost и сравните точность с AdaBoostClassifier;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) для ПЕРВОГО шага (веса равномерные) сравните alpha по формуле</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          теоремы 5.15 с минимумом sum_i w_i exp(-alpha y_i b(x_i)),</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#          найденным optimize.minimize_scalar.</span></span></code></pre></div>
+</div>
+<div id="cell017" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте два графика: (а) ошибка композиции и экспоненциальная потеря</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       от T в логарифмическом масштабе; (б) err_t и alpha_t по шагам</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       с горизонталью на уровне 0.5.</span></span></code></pre></div>
+</div>
+<div id="cell018" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Совпал ли
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math>
+с численным минимумом? Как ведёт себя
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi></mrow><mi>t</mi></msub><annotation encoding="application/x-tex">\mathrm{err}_t</annotation></semantics></math>
+с ростом
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+и почему обучающая ошибка композиции падает до нуля, хотя каждый пень
+ошибается почти в 40 % случаев?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell019" class="cell markdown">
+<h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
+<p>Кратко ответьте на вопросы:</p>
+<ol>
+<li>Почему у случайного леса можно ставить
+<code>n_estimators=1000</code> не задумываясь, а у градиентного бустинга
+— нельзя?</li>
+<li>AdaBoost минимизирует экспоненциальную потерю
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>e</mi><mrow><mi>−</mi><mi>M</mi></mrow></msup><annotation encoding="application/x-tex">e^{-M}</annotation></semantics></math>.
+Сравните её с логистической
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>ln</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>M</mi></mrow></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\ln(1+e^{-M})</annotation></semantics></math>
+при
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>→</mo><mi>−</mi><mi>∞</mi></mrow><annotation encoding="application/x-tex">M \to -\infty</annotation></semantics></math>
+и объясните, почему AdaBoost чувствителен к выбросам в разметке.</li>
+</ol>
+<hr />
+<p>Проверьте перед сдачей: Kernel → Restart &amp; Run All проходит без
+ошибок, все ячейки <strong>Вывод</strong> заполнены, графики
+подписаны.</p>
+</div>
+</body>
+</html>

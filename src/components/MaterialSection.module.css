@@ -1,0 +1,214 @@
+/* Раздел с материалами: заголовок, список слева, просмотрщик справа */
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  margin-bottom: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ml-accent);
+}
+
+.title {
+  margin-bottom: 0.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+}
+
+.subtitle {
+  margin-bottom: 0;
+  color: var(--bs-secondary-color);
+  max-width: 46rem;
+}
+
+/* --- Список материалов --- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: sticky;
+  top: calc(var(--ml-navbar-height) + 1.25rem);
+  /* Материалов много — список прокручивается независимо от страницы */
+  max-height: calc(100vh - var(--ml-navbar-height) - 3rem);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Группа материалов внутри раздела («Лабораторные», «Демонстрации») */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.group + .group {
+  margin-top: 1.1rem;
+}
+
+.groupTitle {
+  margin: 0 0 0.15rem 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 0.85rem;
+  border: 1px solid transparent;
+  background: var(--bs-body-bg);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.listItem:hover {
+  transform: translateX(2px);
+  border-color: rgba(124, 58, 237, 0.35);
+  background: rgba(124, 58, 237, 0.06);
+}
+
+.listItemActive {
+  border-color: rgba(124, 58, 237, 0.5);
+  background: rgba(124, 58, 237, 0.1);
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.14);
+}
+
+.listIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--ml-gradient);
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.listBody {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.listTitle {
+  display: block;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.listDate {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  color: var(--bs-secondary-color);
+}
+
+/* --- Описание материала над iframe --- */
+
+.meta {
+  margin-bottom: 1rem;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Действия с ноутбуком: Colab, GitHub, скачивание */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.actions :global(.btn) {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Фирменный оранжевый Google Colab */
+.colabButton {
+  border: 1px solid rgba(249, 171, 0, 0.55);
+  color: #b45309;
+  background: transparent;
+}
+
+.colabButton:hover {
+  background: rgba(249, 171, 0, 0.14);
+  border-color: #f9ab00;
+  color: #92400e;
+}
+
+:global([data-bs-theme='dark']) .colabButton {
+  color: #fbbf24;
+}
+
+:global([data-bs-theme='dark']) .colabButton:hover {
+  color: #fcd34d;
+}
+
+.colabIcon {
+  margin-right: 0.45rem;
+  color: #f9ab00;
+  flex: none;
+}
+
+@media (max-width: 575.98px) {
+  .actions {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+.tag {
+  background: rgba(6, 182, 212, 0.14);
+  color: #0e7490;
+  font-weight: 500;
+}
+
+:global([data-bs-theme='dark']) .tag {
+  background: rgba(6, 182, 212, 0.2);
+  color: #67e8f9;
+}
+
+/* --- Переход между материалами --- */
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.pager :global(.btn) {
+  max-width: 48%;
+  display: inline-flex;
+  align-items: center;
+}

@@ -1,0 +1,16 @@
+/* Каркас: «прижатый» к низу подвал даже на коротких страницах */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(124, 58, 237, 0.14), transparent 60%),
+    radial-gradient(900px 400px at 5% 0%, rgba(6, 182, 212, 0.12), transparent 55%);
+  background-attachment: fixed;
+}
+
+.main {
+  flex: 1 0 auto;
+  padding-block: 1.75rem 3rem;
+}

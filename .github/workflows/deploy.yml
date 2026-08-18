@@ -1,0 +1,68 @@
+# Автоматическая сборка и публикация сайта на GitHub Pages.
+#
+# Настройка (один раз): Settings → Pages → Source: GitHub Actions.
+# После этого каждый push в main публикует новую версию сайта.
+#
+# Вариант с веткой gh-pages (npm run deploy) остаётся рабочим —
+# используйте что-то одно.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Параллельные деплои не нужны: берём последний
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # Конвертация здесь не нужна: готовый HTML уже лежит в src/content/
+      # и попадает в репозиторий. Материалы пересобираются локально
+      # командой `npm run convert` — там же, где лежат LaTeX-исходники лекций.
+      #
+      # Если захотите конвертировать прямо в CI, добавьте два шага
+      # (и не забудьте, что для --embed-resources нужен pandoc >= 3.0):
+      #
+      #   - run: sudo apt-get update && sudo apt-get install -y pandoc
+      #   - run: npm run convert
+
+      - name: Установить зависимости
+        run: npm ci
+
+      - name: Собрать проект
+        run: npm run build
+        env:
+          # Базовый путь берём из адреса репозитория: /<repo>/
+          PUBLIC_URL: /${{ github.event.repository.name }}/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

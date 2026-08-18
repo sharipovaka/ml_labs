@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw-07-metric-bayes</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
+</style>
+</head>
+<body>
+<div id="cell000" class="cell markdown">
+<h1 id="домашняя-работа-7-обобщённый-метрический-классификатор-и-stolp">Домашняя
+работа 7. Обобщённый метрический классификатор и STOLP</h1>
+<p><strong>Курс «Машинное обучение», 4 курс</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td>К лабораторной</td>
+<td>занятие 7 — Метрические и байесовские методы классификации</td>
+</tr>
+<tr>
+<td>Опора</td>
+<td>материал семинара 7 и лекций до него</td>
+</tr>
+<tr>
+<td>Ожидаемое время</td>
+<td>3–4 часа</td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><strong>ваша индивидуальная таблица</strong> (по ФИО)</td>
+</tr>
+</tbody>
+</table>
+<p>На занятии мы пользовались <code>KNeighborsClassifier</code>. Дома
+выяснится, что kNN, парзеновские окна и метод потенциальных функций —
+это <strong>одна формула</strong> с разной весовой функцией: реализовав
+её один раз, вы получите все пять методов сразу. Во второй задаче —
+отбор эталонов, который сокращает выборку в десятки раз, не теряя
+качества.</p>
+<blockquote>
+<p><strong>Чем это отличается от занятия.</strong> На семинаре данные
+были учебные и общие — так удобно разбирать. Дома данные ваши: таблица
+порождается по ФИО, и ни у кого в группе она не повторяется. Приёмы те
+же, числа другие — поэтому отвечать придётся за свои числа, а не за
+преподавательские.</p>
+</blockquote>
+<h2 id="что-нужно-сдать">Что нужно сдать</h2>
+<p>Заполненный ноутбук, в котором:</p>
+<ol>
+<li>выполнены все ячейки с <code># TODO</code>, код исполняется сверху
+вниз без ошибок в свежем ядре (Kernel → Restart &amp; Run All);</li>
+<li>под каждым заданием заполнена ячейка <strong>Вывод</strong> — своими
+словами, со ссылкой на полученные числа;</li>
+<li>графики подписаны: заголовок, оси, легенда;</li>
+<li>в ячейке варианта вписано ваше ФИО.</li>
+</ol>
+<blockquote>
+<p>Списывание видно сразу: у каждого студента свой датасет и свой набор
+методов.</p>
+</blockquote>
+</div>
+<div id="cell001" class="cell code">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">&quot;ignore&quot;</span>, category<span class="op">=</span><span class="pp">FutureWarning</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Модули практикума (variants.py, labdata.py) ищем рядом с ноутбуком.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Если их нет -- значит, ноутбук открыт в Colab: скачиваем из репозитория курса.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>COURSE_FILES_URL <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/sharipovaka/mltest1/main/notebooks&quot;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _course_modules_dir():</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    here <span class="op">=</span> pathlib.Path.cwd()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> parent <span class="kw">in</span> [here, <span class="op">*</span>here.parents][:<span class="dv">4</span>]:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (parent <span class="op">/</span> <span class="st">&quot;variants.py&quot;</span>).exists():</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">str</span>(parent)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> urllib.request</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name <span class="kw">in</span> (<span class="st">&quot;variants.py&quot;</span>, <span class="st">&quot;labdata.py&quot;</span>):</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> pathlib.Path(name).exists():</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            urllib.request.urlretrieve(<span class="ss">f&quot;</span><span class="sc">{</span>COURSE_FILES_URL<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">&quot;</span>, name)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;загружен </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> из репозитория курса&quot;</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(here)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, _course_modules_dir())</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> get_variant, describe_variant  <span class="co"># noqa: E402</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>RANDOM_STATE <span class="op">=</span> <span class="dv">42</span>          <span class="co"># единый seed на всю работу: результаты воспроизводимы</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.figsize&quot;</span>: (<span class="fl">7.5</span>, <span class="fl">4.5</span>),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.dpi&quot;</span>: <span class="dv">110</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.grid&quot;</span>: <span class="va">True</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;grid.alpha&quot;</span>: <span class="fl">0.25</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.top&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.right&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;font.size&quot;</span>: <span class="dv">11</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;numpy&quot;</span>, np.__version__, <span class="st">&quot;| pandas&quot;</span>, pd.__version__)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> labdata <span class="im">import</span> load_personal</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre></div>
+</div>
+<div id="cell002" class="cell markdown">
+<h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
+<p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
+вариант вычисляется детерминированно, при повторном запуске он тот же
+самый.</p>
+<p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
+вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
+</div>
+<div id="cell003" class="cell code">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">7</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
+</div>
+<div id="cell004" class="cell markdown">
+<hr />
+<h1 id="задача-1-пять-методов--одна-формула">Задача 1. Пять методов —
+одна формула</h1>
+<p>Определение 6.1 задаёт классификатор через веса соседей:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi>arg</mi><mo>⁡</mo></mrow><munder><mi>max</mi><mi>k</mi></munder><munder><mo>∑</mo><mi>i</mi></munder><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">[</mo><msub><mi>y</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow></msub><mo>=</mo><mi>k</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">]</mo><mspace width="0.167em"></mspace><mi>w</mi><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
+</annotation></semantics></math></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>метод</th>
+<th>вес
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w(i,x)</annotation></semantics></math></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+ближайших соседей</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>i</mi><mo>≤</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[i \le k]</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>kNN с весами</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>i</mi><mo>≤</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo><mspace width="0.167em"></mspace><msup><mi>q</mi><mrow><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup></mrow><annotation encoding="application/x-tex">[i \le k]\,q^{\,i}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>∈</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">q\in(0,1)</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>парзеновское окно ширины
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>ρ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>h</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K\bigl(\rho(x,x_{(i)})/h\bigr)</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>парзеновское окно переменной ширины</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>ρ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>ρ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K\bigl(\rho(x,x_{(i)})/\rho(x,x_{(k+1)})\bigr)</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>потенциальные функции</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>γ</mi><mi>i</mi></msub><mspace width="0.167em"></mspace><mi>K</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>ρ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>h</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\gamma_i\,K\bigl(\rho(x,x_i)/h\bigr)</annotation></semantics></math></td>
+</tr>
+</tbody>
+</table>
+<p>Ваш вариант: <code>variant[&quot;metric_method&quot;]</code>, ядро
+<code>variant[&quot;kernel&quot;]</code>, метрика
+<code>variant[&quot;distance&quot;]</code>. Реализуйте <strong>один</strong> класс
+с параметром-методом.</p>
+</div>
+<div id="cell005" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>KERNELS <span class="op">=</span> {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;прямоугольное&quot;</span>: <span class="kw">lambda</span> r: (np.<span class="bu">abs</span>(r) <span class="op">&lt;=</span> <span class="dv">1</span>) <span class="op">*</span> <span class="fl">0.5</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;треугольное&quot;</span>: <span class="kw">lambda</span> r: np.maximum(<span class="fl">0.0</span>, <span class="dv">1</span> <span class="op">-</span> np.<span class="bu">abs</span>(r)),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Епанечникова&quot;</span>: <span class="kw">lambda</span> r: np.maximum(<span class="fl">0.0</span>, <span class="fl">0.75</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> r <span class="op">**</span> <span class="dv">2</span>)),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;квартическое&quot;</span>: <span class="kw">lambda</span> r: np.maximum(<span class="fl">0.0</span>, (<span class="dv">15</span> <span class="op">/</span> <span class="dv">16</span>) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> r <span class="op">**</span> <span class="dv">2</span>) <span class="op">**</span> <span class="dv">2</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;гауссовское&quot;</span>: <span class="kw">lambda</span> r: np.exp(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> r <span class="op">**</span> <span class="dv">2</span>) <span class="op">/</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.pi),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: словарь DISTANCES с четырьмя метриками (евклидова -- через тождество</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#       из занятия 1, чтобы не было тройного цикла).</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MetricClassifier:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Обобщённый метрический классификатор (опр. 6.1).</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Один класс, пять методов -- различаются ТОЛЬКО функцией веса w(i, x):</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">      &#39;knn&#39;             : [i &lt;= k]</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">      &#39;knn_weighted&#39;    : [i &lt;= k] q^i</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">      &#39;parzen_fixed&#39;    : K(rho / h)</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">      &#39;parzen_variable&#39; : K(rho / rho_(k+1))</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">      &#39;potential&#39;       : gamma_i K(rho / h)</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">    Подсказка: номер соседа i получается двойным argsort матрицы расстояний.</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">    Класс должен наследоваться от sklearn.base.BaseEstimator и ClassifierMixin,</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">    иначе его нельзя передать в cross_val_score.</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">    Нужны методы: fit(X, y, gamma=None), decision(X), predict(X).</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>METHOD_KEY <span class="op">=</span> {</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;kNN с равными весами&quot;</span>: <span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;kNN с весами w(i) = q^i&quot;</span>: <span class="st">&quot;knn_weighted&quot;</span>,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;парзеновское окно фиксированной ширины&quot;</span>: <span class="st">&quot;parzen_fixed&quot;</span>,</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;парзеновское окно переменной ширины&quot;</span>: <span class="st">&quot;parzen_variable&quot;</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;метод потенциальных функций&quot;</span>: <span class="st">&quot;potential&quot;</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>my_method <span class="op">=</span> METHOD_KEY[variant[<span class="st">&quot;metric_method&quot;</span>]]</span></code></pre></div>
+</div>
+<div id="cell006" class="cell markdown">
+<h3 id="задание-11-все-пять-на-одной-картинке">Задание 1.1. Все пять на
+одной картинке</h3>
+<p>Сверьте свой <code>knn</code> со <code>sklearn</code> (предсказания
+обязаны совпасть полностью) и покажите границы решения всех пяти методов
+при одном и том же ядре.</p>
+</div>
+<div id="cell007" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Xm, ym <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">220</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">1.6</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> StandardScaler().fit_transform(Xm)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Xa, Xv, ya, yv <span class="op">=</span> train_test_split(Xm, ym, test_size<span class="op">=</span><span class="fl">0.35</span>, stratify<span class="op">=</span>ym,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                                  random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) сверьте свой knn(5) с KNeighborsClassifier(5) -- предсказания</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          должны совпасть полностью;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) постройте границы решения всех пяти методов на одном рисунке</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#          (knn k=5; knn_weighted k=15, q=0.75; parzen_fixed h=0.6;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#           parzen_variable k=10; potential h=0.6).</span></span></code></pre></div>
+</div>
+<div id="cell008" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Чем отличаются границы разных весовых
+функций? Что происходит с парзеновским окном фиксированной ширины в
+разреженной области выборки?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell009" class="cell markdown">
+<hr />
+<h1 id="задача-2-отступ-и-отбор-эталонов-stolp">Задача 2. Отступ и отбор
+эталонов (STOLP)</h1>
+<p>Определение 6.4: отступ объекта в метрическом классификаторе —</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi mathvariant="normal">Γ</mi><msub><mi>y</mi><mi>i</mi></msub></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><munder><mi>max</mi><mrow><mi>k</mi><mo>≠</mo><msub><mi>y</mi><mi>i</mi></msub></mrow></munder><msub><mi mathvariant="normal">Γ</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
+</annotation></semantics></math></p>
+<p>По величине отступа объекты делятся на эталонные
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>≫</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M \gg 0</annotation></semantics></math>),
+неинформативные, пограничные
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>≈</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M \approx 0</annotation></semantics></math>),
+ошибочные
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M &lt; 0</annotation></semantics></math>)
+и шумовые
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>≪</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M \ll 0</annotation></semantics></math>).
+Алгоритм STOLP отбирает небольшое подмножество эталонов, выбрасывая шум
+и «неинформативную массовку».</p>
+</div>
+<div id="cell010" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> margins(clf, X, y):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;M(x_i) = Gamma_{y_i}(x_i) - max_{k != y_i} Gamma_k(x_i).</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Подсказка: возьмите clf.decision(X), выньте столбец своего класса,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    в копии матрицы поставьте -inf на месте своего класса и возьмите максимум.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stolp(X, y, delta<span class="op">=</span><span class="fl">0.0</span>, max_errors<span class="op">=</span><span class="fl">0.01</span>, k<span class="op">=</span><span class="dv">5</span>, kernel<span class="op">=</span><span class="st">&quot;Епанечникова&quot;</span>):</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;STOLP:</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">       1) посчитать отступы по классификатору на ПОЛНОЙ выборке и выбросить</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">          объекты с M &lt; delta (это шум);</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">       2) начать множество эталонов с одного объекта на класс -- с максимальным</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">          отступом;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">       3) пока доля ошибок правила ближайшего эталона больше max_errors,</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">          добавлять ошибочно классифицированный объект (берите тот, у которого</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">          отступ по полной выборке наибольший -- он представляет целую область).</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">       Возвращает (индексы эталонов, отступы).</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+</div>
+<div id="cell011" class="cell markdown">
+<h3 id="задание-21-сколько-объектов-на-самом-деле-нужно">Задание 2.1.
+Сколько объектов на самом деле нужно</h3>
+<p>Возьмите выборку, испортите метки у части объектов (так бывает в
+реальной разметке) и посмотрите, что отберёт STOLP.</p>
+<p>Важно: обучающая и контрольная части должны быть из одного
+распределения — порождайте одну выборку и делите её, а не вызывайте
+генератор дважды с разными <code>random_state</code>.</p>
+</div>
+<div id="cell012" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X_all, y_all <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">900</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                          random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X_all <span class="op">=</span> StandardScaler().fit_transform(X_all)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>X_st, Xq, y_st, yq <span class="op">=</span> train_test_split(X_all, y_all, train_size<span class="op">=</span><span class="dv">300</span>, stratify<span class="op">=</span>y_all,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                                      random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>noise_idx <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>).choice(<span class="bu">len</span>(y_st), <span class="dv">18</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>y_st <span class="op">=</span> y_st.copy()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>y_st[noise_idx] <span class="op">=</span> (y_st[noise_idx] <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> <span class="dv">3</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) примените STOLP, выведите число эталонов и сколько среди них</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#          объектов с испорченными метками;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) сравните точность на ОТЛОЖЕННЫХ данных (Xq, yq): вся выборка</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#          с kNN(5) против правила ближайшего эталона.</span></span></code></pre></div>
+</div>
+<div id="cell013" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте профиль отступов (столбики, упорядоченные по возрастанию M,</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       отрицательные другим цветом) и картинку выборки с отмеченными</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       эталонами и испорченными метками.</span></span></code></pre></div>
+</div>
+<div id="cell014" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Сколько объектов оставил STOLP и как
+изменилась точность? Попали ли испорченные метки в эталоны? Зачем вообще
+отбирать эталоны?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell015" class="cell markdown">
+<h3 id="задание-22-метрический-классификатор-и-stolp-на-вашей-выборке">Задание
+2.2. Метрический классификатор и STOLP на вашей выборке</h3>
+<p>Синтетика двумерна, и на ней всё видно глазами. Проверим обе
+реализации там, где смотреть не на что: на вашей табличной матрице.
+Сначала убедитесь, что ваш <code>knn</code> совпадает со
+<code>sklearn</code> <strong>на ваших данных</strong>, затем сожмите
+обучающую выборку алгоритмом STOLP и посмотрите, сколько объектов
+осталось и что стало с качеством.</p>
+</div>
+<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) загрузите свою выборку через load_personal(variant) и при</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          необходимости бинаризуйте цель по медиане обучающей части;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) обучите свой MetricClassifier(method=&quot;knn&quot;, k=5) и убедитесь, что</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#          его предсказания совпадают с KNeighborsClassifier(5) полностью;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) примените stolp(...), обучите kNN ТОЛЬКО на эталонах и сведите все</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          три строки в таблицу вместе с числом объектов, которые модель</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          обязана хранить;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) напечатайте степень сжатия и число объектов с отрицательным отступом.</span></span></code></pre></div>
+</div>
+<div id="cell017" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Насколько сжалась выборка и что стало с
+качеством? Почему сжатая модель может оказаться <strong>лучше</strong>
+полной?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell018" class="cell markdown">
+<h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
+<p>Кратко ответьте на вопросы:</p>
+<ol>
+<li>Все пять методов — частные случаи одной формулы. У какого из них нет
+настраиваемых параметров вовсе и чем это удобно?</li>
+<li>Вы применили STOLP и получили 3 эталона из 500 при точности 0.95.
+Насколько такому результату можно доверять и что стоит проверить?</li>
+</ol>
+<hr />
+<p>Проверьте перед сдачей: Kernel → Restart &amp; Run All проходит без
+ошибок, все ячейки <strong>Вывод</strong> заполнены, графики
+подписаны.</p>
+</div>
+</body>
+</html>

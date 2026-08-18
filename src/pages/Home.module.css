@@ -1,0 +1,204 @@
+/* Главная страница */
+
+/* --- Первый экран --- */
+
+.hero {
+  padding: 3rem 0 2.5rem;
+  text-align: center;
+}
+
+.eyebrow {
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ml-accent);
+}
+
+.heroTitle {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.heroText {
+  max-width: 44rem;
+  margin: 0 auto 2rem;
+  font-size: 1.06rem;
+  color: var(--bs-secondary-color);
+}
+
+.heroText code {
+  background: rgba(124, 58, 237, 0.1);
+  padding: 0.1em 0.4em;
+  border-radius: 6px;
+  color: var(--ml-accent);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem;
+  margin: 3rem 0 0;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat dt {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  background: var(--ml-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stat dd {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: var(--bs-secondary-color);
+}
+
+/* --- Секции --- */
+
+.section {
+  margin-top: 3.25rem;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+/* Пояснение под заголовком раздела: почему домашняя устроена иначе. */
+.sectionText {
+  max-width: 62ch;
+  margin: -0.5rem 0 1.25rem;
+  color: var(--bs-secondary-color, #6c757d);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+}
+
+/* --- Карточка материала --- */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  background: var(--bs-body-bg);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--ml-gradient);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(124, 58, 237, 0.35);
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+:global([data-bs-theme='dark']) .card {
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+:global([data-bs-theme='dark']) .card:hover {
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.5);
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--ml-gradient);
+  color: #fff;
+  margin-bottom: 0.9rem;
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.28);
+}
+
+.cardBadge {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.cardText {
+  flex: 1 1 auto;
+  font-size: 0.9rem;
+  color: var(--bs-secondary-color);
+  margin-bottom: 1rem;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+:global([data-bs-theme='dark']) .cardFooter {
+  border-top-color: rgba(148, 163, 184, 0.16);
+}
+
+.cardLink {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ml-accent);
+}

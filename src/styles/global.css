@@ -1,0 +1,65 @@
+/* Глобальные стили проекта.
+   Кастомные стили компонентов лежат в CSS-модулях (*.module.css),
+   здесь — только то, что действительно должно быть глобальным. */
+
+:root {
+  --ml-accent: #7c3aed;
+  --ml-accent-2: #06b6d4;
+  --ml-gradient: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+  --ml-navbar-height: 60px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Плавная прокрутка к якорям, но с уважением к настройкам доступности */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Ссылки внутри контента — акцентного цвета */
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* Универсальный «градиентный текст» для заголовков */
+.ml-gradient-text {
+  background: var(--ml-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Фокус виден всегда — важно для доступности */
+:focus-visible {
+  outline: 2px solid var(--ml-accent-2);
+  outline-offset: 2px;
+}
+
+/* Ссылка «пропустить навигацию» для клавиатуры и скринридеров */
+.ml-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1080;
+  padding: 0.5rem 1rem;
+  background: var(--ml-accent);
+  color: #fff;
+  border-radius: 0 0 0.5rem 0;
+}
+
+.ml-skip-link:focus {
+  left: 0;
+}

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw-03-gradient-regularization</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
+</style>
+</head>
+<body>
+<div id="cell000" class="cell markdown">
+<h1 id="домашняя-работа-3-оптимизация-и-регуляризация-изнутри">Домашняя
+работа 3. Оптимизация и регуляризация изнутри</h1>
+<p><strong>Курс «Машинное обучение», 4 курс</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td>К лабораторной</td>
+<td>занятие 3 — Градиентный спуск, обусловленность и регуляризация</td>
+</tr>
+<tr>
+<td>Опора</td>
+<td>материал семинара 3 и лекций до него</td>
+</tr>
+<tr>
+<td>Ожидаемое время</td>
+<td>3–4 часа</td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><strong>ваша индивидуальная таблица</strong> (по ФИО)</td>
+</tr>
+</tbody>
+</table>
+<p>На занятии мы вызывали <code>Ridge</code> и <code>Lasso</code> и
+пользовались готовым градиентным спуском. Дома напишем оптимизацию сами:
+стохастический спуск с расписаниями шага, LASSO покоординатным спуском
+(и добьёмся совпадения со <code>sklearn</code> до
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>10</mn></mrow></msup><annotation encoding="application/x-tex">10^{-10}</annotation></semantics></math>),
+а в конце увидим, что регуляризация — не трюк, а априорное предположение
+о весах.\n\nКак и в домашней работе 2: контролируемая синтетика нужна
+там, где требуется заранее известный ответ (сходимость SGD, истинные
+веса априорного распределения), а выводы проверяются на
+<strong>вашей</strong> матрице «объекты–признаки».</p>
+<blockquote>
+<p><strong>Чем это отличается от занятия.</strong> На семинаре данные
+были учебные и общие — так удобно разбирать. Дома данные ваши: таблица
+порождается по ФИО, и ни у кого в группе она не повторяется. Приёмы те
+же, числа другие — поэтому отвечать придётся за свои числа, а не за
+преподавательские.</p>
+</blockquote>
+<h2 id="что-нужно-сдать">Что нужно сдать</h2>
+<p>Заполненный ноутбук, в котором:</p>
+<ol>
+<li>выполнены все ячейки с <code># TODO</code>, код исполняется сверху
+вниз без ошибок в свежем ядре (Kernel → Restart &amp; Run All);</li>
+<li>под каждым заданием заполнена ячейка <strong>Вывод</strong> — своими
+словами, со ссылкой на полученные числа;</li>
+<li>графики подписаны: заголовок, оси, легенда;</li>
+<li>в ячейке варианта вписано ваше ФИО.</li>
+</ol>
+<blockquote>
+<p>Списывание видно сразу: у каждого студента свой датасет и свой набор
+методов.</p>
+</blockquote>
+</div>
+<div id="cell001" class="cell code">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">&quot;ignore&quot;</span>, category<span class="op">=</span><span class="pp">FutureWarning</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Модули практикума (variants.py, labdata.py) ищем рядом с ноутбуком.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Если их нет -- значит, ноутбук открыт в Colab: скачиваем из репозитория курса.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>COURSE_FILES_URL <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/sharipovaka/mltest1/main/notebooks&quot;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _course_modules_dir():</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    here <span class="op">=</span> pathlib.Path.cwd()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> parent <span class="kw">in</span> [here, <span class="op">*</span>here.parents][:<span class="dv">4</span>]:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (parent <span class="op">/</span> <span class="st">&quot;variants.py&quot;</span>).exists():</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">str</span>(parent)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> urllib.request</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name <span class="kw">in</span> (<span class="st">&quot;variants.py&quot;</span>, <span class="st">&quot;labdata.py&quot;</span>):</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> pathlib.Path(name).exists():</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            urllib.request.urlretrieve(<span class="ss">f&quot;</span><span class="sc">{</span>COURSE_FILES_URL<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">&quot;</span>, name)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;загружен </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> из репозитория курса&quot;</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(here)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, _course_modules_dir())</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> get_variant, describe_variant  <span class="co"># noqa: E402</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>RANDOM_STATE <span class="op">=</span> <span class="dv">42</span>          <span class="co"># единый seed на всю работу: результаты воспроизводимы</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.figsize&quot;</span>: (<span class="fl">7.5</span>, <span class="fl">4.5</span>),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.dpi&quot;</span>: <span class="dv">110</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.grid&quot;</span>: <span class="va">True</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;grid.alpha&quot;</span>: <span class="fl">0.25</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.top&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.right&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;font.size&quot;</span>: <span class="dv">11</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;numpy&quot;</span>, np.__version__, <span class="st">&quot;| pandas&quot;</span>, pd.__version__)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> labdata <span class="im">import</span> load_personal</span></code></pre></div>
+</div>
+<div id="cell002" class="cell markdown">
+<h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
+<p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
+вариант вычисляется детерминированно, при повторном запуске он тот же
+самый.</p>
+<p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
+вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
+</div>
+<div id="cell003" class="cell code">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
+</div>
+<div id="cell004" class="cell code">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ваша выборка (эталонная предобработка занятия 1)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_personal(variant)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X_tr, X_te <span class="op">=</span> data[<span class="st">&quot;X_train&quot;</span>], data[<span class="st">&quot;X_test&quot;</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>y_tr, y_te <span class="op">=</span> data[<span class="st">&quot;y_train&quot;</span>], data[<span class="st">&quot;y_test&quot;</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>feat <span class="op">=</span> np.asarray(data[<span class="st">&quot;feature_names&quot;</span>])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>data[<span class="st">&#39;domain&#39;</span>]<span class="sc">}</span><span class="ss">: обучающая </span><span class="sc">{</span>X_tr<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, контрольная </span><span class="sc">{</span>X_te<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;cond(X^T X) = </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>cond(X_tr.T <span class="op">@</span> X_tr)<span class="sc">:.3e}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell005" class="cell code">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Контролируемая выборка для задач 1 и 3: истинные веса известны</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>X_gd <span class="op">=</span> np.column_stack([x1, <span class="fl">0.6</span> <span class="op">*</span> x1 <span class="op">+</span> <span class="fl">0.8</span> <span class="op">*</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>y_gd <span class="op">=</span> X_gd <span class="op">@</span> np.array([<span class="fl">2.0</span>, <span class="op">-</span><span class="fl">1.0</span>]) <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.5</span>, n)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>theta_star <span class="op">=</span> np.linalg.lstsq(X_gd, y_gd, rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;theta* (эталон) = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(theta_star, <span class="dv">4</span>)<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell006" class="cell markdown">
+<hr />
+<h1 id="задача-1-стохастический-градиентный-спуск">Задача 1.
+Стохастический градиентный спуск</h1>
+<p>Определение 2.4 использует <strong>усреднённый</strong> функционал
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>ℓ</mi></mfrac><msub><mo>∑</mo><mi>i</mi></msub><msub><mi>Q</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Q(\theta)=\frac1\ell\sum_i Q_i(\theta)</annotation></semantics></math>,
+где
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mi>i</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">⟨</mo><mi>θ</mi><mo>,</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">Q_i = (\langle\theta,x_i\rangle - y_i)^2</annotation></semantics></math>.
+Тогда
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>∇</mi><msub><mi>Q</mi><mi>i</mi></msub><mo>=</mo><mn>2</mn><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">⟨</mo><mi>θ</mi><mo>,</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\nabla Q_i = 2x_i(\langle\theta,x_i\rangle - y_i)</annotation></semantics></math>,
+а для мини-пакета градиент усредняется по объектам пакета.</p>
+<p>Ключевой факт из лекции: при <strong>постоянном</strong> шаге SGD не
+сходится в точку, а колеблется вокруг
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>θ</mi><mo>*</mo></msup><annotation encoding="application/x-tex">\theta^*</annotation></semantics></math>.
+Для сходимости нужен убывающий шаг, удовлетворяющий условию
+Роббинса–Монро:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>t</mi></msub><msub><mi>η</mi><mi>t</mi></msub><mo>=</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">\sum_t\eta_t=\infty</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>t</mi></msub><msubsup><mi>η</mi><mi>t</mi><mn>2</mn></msubsup><mo>&lt;</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">\sum_t\eta_t^2&lt;\infty</annotation></semantics></math>.</p>
+</div>
+<div id="cell007" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sgd(X, y, eta0, n_epochs<span class="op">=</span><span class="dv">40</span>, batch_size<span class="op">=</span><span class="dv">1</span>, schedule<span class="op">=</span><span class="st">&quot;const&quot;</span>, generator<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;SGD для УСРЕДНЁННОГО Q. Возвращает (theta, история Q по эпохам).</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">    На каждой эпохе перемешать объекты и идти пакетами размера batch_size.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Градиент по пакету: 2 X_b^T (X_b theta - y_b) / |B|.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">    schedule: &#39;const&#39; -&gt; eta0; &#39;sqrt&#39; -&gt; eta0/sqrt(t); &#39;inverse&#39; -&gt; eta0/t,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">    где t -- номер ШАГА (не эпохи).</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+</div>
+<div id="cell008" class="cell markdown">
+<h3 id="задание-11-размер-пакета-и-расписание-шага">Задание 1.1. Размер
+пакета и расписание шага</h3>
+</div>
+<div id="cell009" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lam_avg <span class="op">=</span> np.linalg.eigvalsh(X_gd.T <span class="op">@</span> X_gd <span class="op">/</span> <span class="bu">len</span>(X_gd)).<span class="bu">max</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>eta0 <span class="op">=</span> <span class="fl">0.5</span> <span class="op">/</span> lam_avg</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Q_star <span class="op">=</span> np.mean((X_gd <span class="op">@</span> theta_star <span class="op">-</span> y_gd) <span class="op">**</span> <span class="dv">2</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: (а) на одном графике сравните batch_size = 1, 8, 32 и полный градиент</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#           при постоянном шаге (по оси Q откладывайте Q - Q*, масштаб лог.);</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       (б) на втором -- три расписания шага при batch_size = 1.</span></span></code></pre></div>
+</div>
+<div id="cell010" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: проверьте условие Роббинса--Монро численно: для расписаний</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       eta0/sqrt(t) и eta0/t посчитайте суммы eta_t и eta_t^2 на 100000 шагах.</span></span></code></pre></div>
+</div>
+<div id="cell011" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Почему при постоянном шаге SGD не сходится, а
+полный градиент — сходится? Как высота «полки» зависит от размера
+пакета? Какое расписание удовлетворяет условию Роббинса–Монро?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell012" class="cell markdown">
+<hr />
+<h1 id="задача-2-lasso-покоординатным-спуском">Задача 2. LASSO
+покоординатным спуском</h1>
+<p>Явной формулы для LASSO нет, но при фиксированных остальных
+координатах задача по одной координате решается точно. Обозначим
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>r</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>j</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><mo>=</mo><mi>y</mi><mo>−</mo><msub><mo>∑</mo><mrow><mi>k</mi><mo>≠</mo><mi>j</mi></mrow></msub><msub><mi>x</mi><mi>k</mi></msub><msub><mi>θ</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">r^{(-j)} = y - \sum_{k\ne j}x_k\theta_k</annotation></semantics></math>;
+минимизируется
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><msup><mi>r</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>j</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><mo>−</mo><msub><mi>x</mi><mi>j</mi></msub><msub><mi>θ</mi><mi>j</mi></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>+</mo><mi>λ</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">\|r^{(-j)} - x_j\theta_j\|^2 + \lambda|\theta_j|</annotation></semantics></math>,
+и из условия на субградиент</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mi>j</mi></msub><mo>=</mo><mfrac><mrow><mi>S</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>x</mi><mi>j</mi></msub><mo>,</mo><msup><mi>r</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>j</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><mo stretchy="false" form="postfix">⟩</mo><mo>,</mo><mspace width="0.222em"></mspace><mi>λ</mi><mi>/</mi><mn>2</mn><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="postfix">∥</mo><msub><mi>x</mi><mi>j</mi></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>S</mi><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo>,</mo><mi>γ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">g</mi><mi mathvariant="normal">n</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi>max</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">|</mo><mi>z</mi><mo stretchy="false" form="prefix">|</mo><mi>−</mi><mi>γ</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\theta_j = \frac{S\bigl(\langle x_j, r^{(-j)}\rangle,\ \lambda/2\bigr)}{\|x_j\|^2},
+\qquad
+S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
+</annotation></semantics></math></p>
+<p>Функция
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+— «мягкий порог»: она <strong>обнуляет</strong> координату, если её
+вклад меньше порога. Отсюда и разреженность, которую мы видели на
+занятии.</p>
+</div>
+<div id="cell013" class="cell markdown">
+<blockquote>
+<p><strong>Напоминание — субградиент.</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|\theta_j|</annotation></semantics></math>
+не дифференцируема в нуле, поэтому условие «производная равна нулю»
+неприменимо. Для выпуклой функции его заменяет
+<strong>субградиент</strong>: любой вектор
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>,
+для которого
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mo stretchy="false" form="prefix">⟨</mo><mi>g</mi><mo>,</mo><mi>z</mi><mo>−</mo><mi>θ</mi><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">f(z)\ge f(\theta) + \langle g, z-\theta\rangle</annotation></semantics></math>
+при всех
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+— то есть любая опорная прямая, лежащая под графиком. У гладкой функции
+субградиент один и равен градиенту, а у
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>θ</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|\theta|</annotation></semantics></math>
+в нуле это <strong>весь отрезок</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[-1, 1]</annotation></semantics></math>.
+Условие минимума выпуклой функции:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+принадлежит множеству субградиентов. Именно из-за «люфта»
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[-1,1]</annotation></semantics></math>
+в нуле у LASSO целый диапазон значений
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><msub><mi>x</mi><mi>j</mi></msub><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\langle x_j, r\rangle</annotation></semantics></math>
+даёт ровно
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\theta_j = 0</annotation></semantics></math>
+— так и получается разреженность.</p>
+</blockquote>
+</div>
+<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> soft_threshold(z, gamma):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;S(z, gamma) = sign(z) * max(|z| - gamma, 0).&quot;&quot;&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lasso_cd(X, y, lam, n_iter<span class="op">=</span><span class="dv">300</span>, tol<span class="op">=</span><span class="fl">1e-10</span>):</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Покоординатный спуск. Первый столбец X -- единицы, он НЕ штрафуется.</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Схема: theta = 0; повторять до сходимости:</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">      для каждой координаты j пересчитать theta_j по формуле выше,</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">      поддерживая вектор невязки resid = y - X theta.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+</div>
+<div id="cell015" class="cell markdown">
+<h3 id="задание-21-сверка-со-sklearn">Задание 2.1. Сверка со
+<code>sklearn</code></h3>
+<p>Внимание на нормировку: <code>sklearn</code> минимизирует
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mrow><mn>2</mn><mi>ℓ</mi></mrow></mfrac><mo stretchy="false" form="postfix">∥</mo><mi>y</mi><mo>−</mo><mi>X</mi><mi>w</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>+</mo><mi>α</mi><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><msub><mo stretchy="false" form="postfix">∥</mo><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\frac{1}{2\ell}\|y - Xw\|^2 + \alpha\|w\|_1</annotation></semantics></math>,
+а наш функционал —
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>X</mi><mi>θ</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>+</mo><mi>λ</mi><mo stretchy="false" form="postfix">∥</mo><mi>θ</mi><msub><mo stretchy="false" form="postfix">∥</mo><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\|X\theta - y\|^2 + \lambda\|\theta\|_1</annotation></semantics></math>.
+Выразите
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+через
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+и добейтесь совпадения до
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>10</mn></mrow></msup><annotation encoding="application/x-tex">10^{-10}</annotation></semantics></math>.</p>
+</div>
+<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Lasso</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>n_obj <span class="op">=</span> <span class="dv">120</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>X_sp <span class="op">=</span> rng.normal(size<span class="op">=</span>(n_obj, <span class="dv">12</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>theta_sparse <span class="op">=</span> np.zeros(<span class="dv">12</span>)<span class="op">;</span> theta_sparse[[<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">7</span>]] <span class="op">=</span> [<span class="fl">3.0</span>, <span class="op">-</span><span class="fl">2.0</span>, <span class="fl">1.5</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>y_sp <span class="op">=</span> X_sp <span class="op">@</span> theta_sparse <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.3</span>, n_obj)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>X_sp1 <span class="op">=</span> np.column_stack([np.ones(n_obj), X_sp])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для lambda = 1, 10, 60 сравните lasso_cd со sklearn.linear_model.Lasso.</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#       Подберите alpha так, чтобы функционалы совпали (см. текст выше),</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#       и выведите расхождение и число ненулевых коэффициентов у обоих.</span></span></code></pre></div>
+</div>
+<div id="cell017" class="cell markdown">
+<h3 id="задание-22-регуляризационный-путь-на-ваших-данных">Задание 2.2.
+Регуляризационный путь на ваших данных</h3>
+<p>Теперь примените свой <code>lasso_cd</code> к <strong>вашей</strong>
+матрице. Постройте регуляризационный путь: как меняются коэффициенты при
+росте
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+— и назовите признаки, которые держатся дольше всех.</p>
+</div>
+<div id="cell018" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) добавьте к X_tr столбец единиц;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) постройте сетку lambda от lam_max = 2*max|X^T (y - mean y)| вниз</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#          на четыре порядка (np.logspace, 40 точек);</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) для каждой lambda вызовите свой lasso_cd и соберите путь;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) нарисуйте коэффициенты против lambda в логарифмической шкале</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          (ось lambda -- по убыванию);</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       5) назовите 5 признаков, которые остаются ненулевыми дольше всех.</span></span></code></pre></div>
+</div>
+<div id="cell019" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Совпало ли с точностью
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>10</mn></mrow></msup><annotation encoding="application/x-tex">10^{-10}</annotation></semantics></math>?
+Сколько ненулевых координат осталось при
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>60</mn></mrow><annotation encoding="application/x-tex">\lambda = 60</annotation></semantics></math>
+и совпало ли это с истинным числом полезных признаков?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell020" class="cell markdown">
+<hr />
+<h1 id="задача-3-регуляризация-как-априорное-знание">Задача 3.
+Регуляризация как априорное знание</h1>
+<p>Утверждение 2.11: при гауссовском шуме
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>∼</mo><mi>𝒩</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\varepsilon\sim\mathcal N(0,\sigma^2)</annotation></semantics></math>
+и гауссовском априорном распределении весов
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msup><mi>τ</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\theta_j\sim\mathcal N(0,\tau^2)</annotation></semantics></math>
+оценка апостериорного максимума совпадает с гребневой регрессией,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mi>/</mi><msup><mi>τ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\lambda = \sigma^2/\tau^2</annotation></semantics></math>.
+Для лапласовского априорного
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>∝</mo><msup><mi>e</mi><mrow><mi>−</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">|</mo><mi>/</mi><mi>b</mi></mrow></msup></mrow><annotation encoding="application/x-tex">p(\theta_j)\propto e^{-|\theta_j|/b}</annotation></semantics></math>
+получается LASSO с
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mi>/</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">\lambda = 2\sigma^2/b</annotation></semantics></math>.</p>
+</div>
+<div id="cell021" class="cell markdown">
+<blockquote>
+<p><strong>Напоминание — априорное распределение и MAP.</strong> В
+байесовском подходе параметр
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+считается случайным. <strong>Априорное</strong> распределение
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p(\theta)</annotation></semantics></math>
+— то, что мы думаем о нём <em>до</em> данных («веса скорее малы, чем
+велики»). По формуле Байеса
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo>∣</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>∝</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>∣</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p(\theta\mid X) \propto p(X\mid\theta)\,p(\theta)</annotation></semantics></math>
+получается <strong>апостериорное</strong> — то, что мы думаем
+<em>после</em>. Оценка <strong>MAP</strong> (maximum a posteriori) —
+точка его максимума:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">A</mi><mi mathvariant="normal">P</mi></mrow></msub><mo>=</mo><mrow><mi>arg</mi><mo>⁡</mo></mrow><munder><mi>max</mi><mi>θ</mi></munder><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">[</mo><mrow><mi>ln</mi><mo>⁡</mo></mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>∣</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mrow><mi>ln</mi><mo>⁡</mo></mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">]</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\theta_{\mathrm{MAP}} = \arg\max_\theta\bigl[\ln p(X\mid\theta) + \ln p(\theta)\bigr].
+</annotation></semantics></math></p>
+<p>Первое слагаемое — то самое правдоподобие из занятия 2 (при
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>≡</mo></mrow><annotation encoding="application/x-tex">p(\theta)\equiv</annotation></semantics></math>
+const получается обычный ММП), второе — штраф. Отсюда и смысл
+утверждения 2.11: регуляризация не «математический трюк», а ровно запись
+априорного знания. Гауссовское априорное даёт
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><msubsup><mi>θ</mi><mi>j</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">\sum\theta_j^2</annotation></semantics></math>,
+лапласовское —
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">\sum|\theta_j|</annotation></semantics></math>.</p>
+</blockquote>
+</div>
+<div id="cell022" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> optimize</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ridge_fit(X, y, lam):</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;theta*_lambda по теореме 2.9; первый столбец X -- единицы, не штрафуется.&quot;&quot;&quot;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>sigma, tau, b_lap <span class="op">=</span> <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.4</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) напишите -ln p(theta | X, y) для гауссовского и лапласовского</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#          априорных распределений (theta[0] не штрафуется);</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) минимизируйте обе численно (для лапласовской -- method=&quot;Powell&quot;);</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) сравните с ridge_fit(sigma^2/tau^2) и lasso_cd(2 sigma^2/b).</span></span></code></pre></div>
+</div>
+<div id="cell023" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: нарисуйте обе априорные плотности на одном графике.</span></span></code></pre></div>
+</div>
+<div id="cell024" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Совпали ли MAP-оценки с формулами? Какая
+плотность сильнее «настаивает» на нулевом весе и как это объясняет
+разреженность LASSO?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell025" class="cell markdown">
+<h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
+<p>Кратко ответьте на вопросы:</p>
+<ol>
+<li>Вы взяли шаг
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mn>0.9</mn><mi>/</mi><msub><mi>λ</mi><mi>max</mi></msub></mrow><annotation encoding="application/x-tex">\eta = 0.9/\lambda_{\max}</annotation></semantics></math>,
+и спуск всё равно разошёлся. Назовите две возможные причины.</li>
+<li>Почему покоординатный спуск удобен именно для LASSO и плохо
+подходит, например, для задачи с ограничением
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>j</mi></msub><msub><mi>θ</mi><mi>j</mi></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sum_j\theta_j = 1</annotation></semantics></math>?</li>
+</ol>
+<hr />
+<p>Проверьте перед сдачей: Kernel → Restart &amp; Run All проходит без
+ошибок, все ячейки <strong>Вывод</strong> заполнены, графики
+подписаны.</p>
+</div>
+</body>
+</html>
