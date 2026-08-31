@@ -926,20 +926,20 @@ exploratory data analysis) — это не украшение отчёта, а �
 которого не должно быть</h1>
 <p>Вернёмся к находке: <code>alive</code> совпадает с целевой переменной
 идеально. Формально это обычный категориальный признак со значениями
-<code>yes</code>/<code>no</code>. Посмотрим, что будет, если подать в
-модель только его.</p>
+<code>yes</code>/<code>no</code>. Посмотрим, что будет, если отвечать по
+одному лишь этому столбцу.</p>
+<p>Никакой модели для этого не нужно — хватит арифметики: сравним ответ
+правила с истиной и посчитаем долю совпадений.</p>
 </div>
 <div id="cell041" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>alive01 <span class="op">=</span> df_raw[<span class="st">&quot;alive&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;yes&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;no&quot;</span>: <span class="dv">0</span>}).to_frame()</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> cross_val_score(tree, alive01, df_raw[TARGET], cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&quot;roc_auc&quot;</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;ROC-AUC по ОДНОМУ признаку alive: </span><span class="sc">{</span>score<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;alive совпадает с survived на всех объектах:&quot;</span>,</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      (alive01[<span class="st">&quot;alive&quot;</span>] <span class="op">==</span> df_raw[TARGET]).<span class="bu">all</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Никакой модели не нужно: правило &quot;отвечаем то, что записано в alive&quot;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>alive01 <span class="op">=</span> df_raw[<span class="st">&quot;alive&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;yes&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;no&quot;</span>: <span class="dv">0</span>})</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>correct <span class="op">=</span> (alive01 <span class="op">==</span> df_raw[TARGET])</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;alive совпадает с survived на всех объектах:&quot;</span>, correct.<span class="bu">all</span>())</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;доля правильных ответов у такого правила: </span><span class="sc">{</span>correct<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;доля самого частого класса, для сравнения: &quot;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span>df_raw[TARGET]<span class="sc">.</span>value_counts(normalize<span class="op">=</span><span class="va">True</span>)<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
 <div id="cell042" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Убираем утечку и два признака-дубликата: из каждой пары оставляем один</span></span>
@@ -1239,31 +1239,30 @@ exploratory data analysis) — это не украшение отчёта, а �
 <div id="cell063" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="ориентир-с-чем-сравнивать-модели">Ориентир: с чем сравнивать
 модели</h3>
-<p>Матрица готова — можно обучать. Но прежде чем радоваться качеству,
-надо знать, сколько даёт <strong>тривиальный ответ</strong>: для
-классификации это самый частый класс, для регрессии — среднее.</p>
-<p>Строгие определения функции потерь и риска будут на лекции 1; пока
-пользуемся привычными: доля правильных ответов и ROC-AUC.</p>
+<p>Матрица готова — можно обучать. Но обучать пока нечем: первая модель
+курса появится на занятии 2. Зато уже сейчас нужно знать, <strong>с чем
+её сравнивать</strong>.</p>
+<p>Ориентир — это качество самого тривиального ответа: для классификации
+отвечать всегда самым частым классом, для регрессии — средним. То число,
+которое обязана побить любая модель, иначе она не нужна.</p>
+<p>Меряем долей правильных ответов: она не требует никакой теории.
+Строгие определения функции потерь и риска будут на лекции 1, а честные
+метрики классификации — на занятии 4.</p>
 </div>
 <div id="cell064" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.dummy <span class="im">import</span> DummyClassifier</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, roc_auc_score</span>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Самый частый класс определяем по ОБУЧАЮЩЕЙ части, проверяем на контрольной</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>most_frequent <span class="op">=</span> y_train.value_counts().idxmax()</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>baseline <span class="op">=</span> (y_test <span class="op">==</span> most_frequent).mean()</span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {<span class="st">&quot;константа (самый частый класс)&quot;</span>: DummyClassifier(strategy<span class="op">=</span><span class="st">&quot;most_frequent&quot;</span>),</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;логистическая регрессия&quot;</span>: LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>)}</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {}</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> models.items():</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    m.fit(X_train_t, y_train)</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    results[name] <span class="op">=</span> {<span class="st">&quot;accuracy&quot;</span>: accuracy_score(y_test, m.predict(X_test_t)),</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ROC-AUC&quot;</span>: roc_auc_score(y_test, m.predict_proba(X_test_t)[:, <span class="dv">1</span>])}</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(results).T.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;самый частый класс в обучающей выборке: </span><span class="sc">{</span>most_frequent<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;его доля в обучающей:                   </span><span class="sc">{</span>(y_train <span class="op">==</span> most_frequent)<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;доля правильных ответов на контрольной: </span><span class="sc">{</span>baseline<span class="sc">:.4f}</span><span class="ss">   &lt;-- ОРИЕНТИР&quot;</span>)</span></code></pre></div>
 </div>
 <div id="cell065" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
-<p><strong>Вывод.</strong> Насколько модель лучше константы? Чему равен
-ROC-AUC у константы и почему именно столько?</p>
+<p><strong>Вывод.</strong> Чему равна доля правильных ответов у
+константы и почему это число надо узнать <strong>до</strong> того, как
+радоваться качеству модели?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
@@ -1318,8 +1317,8 @@ ROC-AUC у константы и почему именно столько?</p>
 кредит».</li>
 <li>Почему параметры масштабирования оценивают только по обучающей
 выборке? Что именно завышается, если это правило нарушить?</li>
-<li>Вы получили accuracy 0.93. Какие ещё два числа нужно знать, чтобы
-понять, хороший это результат?</li>
+<li>Вы получили долю правильных ответов 0.93. Какие ещё два числа нужно
+знать, чтобы понять, хороший это результат?</li>
 <li>На карте корреляций <code>alone</code> и <code>sibsp</code> дают
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>r</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>0.58</mn></mrow><annotation encoding="application/x-tex">|r| = 0.58</annotation></semantics></math>
 — далеко от единицы. При этом <code>alone</code> в точности равен
