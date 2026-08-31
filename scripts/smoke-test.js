@@ -81,17 +81,17 @@ const { prepareHtml } = require(path.join(SRC, 'utils/notebookHtml.js'));
 
 console.log('Реестр материалов');
 
-check('девять семинаров и девять домашних работ', () => {
-  if (content.seminars.length !== 9) throw new Error(`семинаров ${content.seminars.length}`);
+check('девять лабораторных и девять домашних работ', () => {
+  if (content.labSessions.length !== 9) throw new Error(`лабораторных ${content.labSessions.length}`);
   if (content.homework.length !== 9) throw new Error(`домашних ${content.homework.length}`);
-  if (content.labs.length !== 18) throw new Error(`всего ${content.labs.length}`);
+  if (content.materials.length !== 18) throw new Error(`всего ${content.materials.length}`);
 });
 
 check('у каждого материала заполнены обязательные поля', () => {
   const required = [
     'slug', 'title', 'description', 'date', 'tags', 'icon', 'group', 'source', 'load',
   ];
-  content.labs.forEach((lab) => {
+  content.materials.forEach((lab) => {
     required.forEach((field) => {
       if (lab[field] === undefined) throw new Error(`${lab.slug}: нет поля ${field}`);
     });
@@ -100,7 +100,7 @@ check('у каждого материала заполнены обязател�
 
 check('slug уникальны и совпадают с именами файлов', () => {
   const seen = new Set();
-  content.labs.forEach((lab) => {
+  content.materials.forEach((lab) => {
     if (seen.has(lab.slug)) throw new Error(`повтор slug: ${lab.slug}`);
     seen.add(lab.slug);
     const notebook = path.join(ROOT, lab.source);
@@ -115,16 +115,20 @@ check('slug уникальны и совпадают с именами файл�
   });
 });
 
-check('материалы разбиваются ровно на две группы', () => {
-  const groups = content.groupMaterials(content.labs);
-  if (groups.length !== 2) throw new Error(`групп ${groups.length}`);
-  if (groups[0].items.length !== 9 || groups[1].items.length !== 9) {
-    throw new Error('группы разного размера');
-  }
+check('материалы разбиваются на девять групп по занятиям', () => {
+  const groups = content.groupMaterials(content.materials);
+  if (groups.length !== 9) throw new Error(`групп ${groups.length}`);
+  groups.forEach((group, i) => {
+    if (group.items.length !== 2) throw new Error(`${group.name}: ${group.items.length} материала`);
+    if (group.items[0].kind !== 'lab' || group.items[1].kind !== 'homework') {
+      throw new Error(`${group.name}: порядок не «лабораторная, затем домашняя»`);
+    }
+    if (group.name !== `Занятие ${i + 1}`) throw new Error(`неожиданная группа ${group.name}`);
+  });
 });
 
 check('решения не попали в опубликованные материалы', () => {
-  content.labs.forEach((lab) => {
+  content.materials.forEach((lab) => {
     if (lab.source.includes('solution')) throw new Error(`${lab.slug}: решение в реестре`);
   });
   ['labs', 'homework'].forEach((dir) => {
@@ -137,7 +141,7 @@ check('решения не попали в опубликованные мате
 });
 
 check('findMaterial находит по slug и по умолчанию', () => {
-  const { findMaterial, labs } = content;
+  const { findMaterial, materials: labs } = content;
   if (findMaterial(labs, labs[3].slug) !== labs[3]) throw new Error('поиск по slug');
   if (findMaterial(labs) !== labs[0]) throw new Error('без slug должен быть первый');
   if (findMaterial(labs, 'нет-такого') !== undefined) throw new Error('несуществующий slug');
@@ -187,7 +191,7 @@ pages.forEach(([name, file, route, expect]) => {
 
 // Отдельно проверяем открытие материала по :slug — именно этот путь падал
 // белым экраном. Нужен настоящий <Routes>, иначе useParams пуст.
-content.labs.forEach((lab) => {
+content.materials.forEach((lab) => {
   check(`${lab.slug} открывается по своему адресу`, () => {
     const Notebooks = require(path.join(ROOT, 'src/pages/Notebooks.jsx')).default;
     const html = renderToString(
