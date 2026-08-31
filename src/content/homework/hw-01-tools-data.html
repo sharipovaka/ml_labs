@@ -231,7 +231,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="домашняя-работа-1-своя-таблица-утечка-пропуски-и-кодирование">Домашняя
 работа 1. Своя таблица: утечка, пропуски и кодирование</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -260,7 +260,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 ни у кого в группе не повторяется. Дефекты в ней те же по природе, что и
 в «Титанике», но расположены иначе, и найти их придётся
 самостоятельно.\n\nТри задачи: разведка с поиском утечки, заполнение
-пропусков с учётом механизма и своя реализация One-Hot кодирования.</p>
+пропусков и своя реализация One-Hot кодирования. Каждая ячейка —
+небольшая: почти везде каркас уже написан, дописать нужно одну-две
+строки.</p>
 <blockquote>
 <p><strong>Чем это отличается от занятия.</strong> На семинаре данные
 были учебные и общие — так удобно разбирать. Дома данные ваши: таблица
@@ -295,7 +297,7 @@ Run All);</li>
 методов.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell001" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -343,7 +345,7 @@ Run All);</li>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> make_table</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
 <p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
 вариант вычисляется детерминированно, при повторном запуске он тот же
@@ -351,112 +353,161 @@ Run All);</li>
 <p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
 вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
 </div>
-<div id="cell003" class="cell code">
+<div id="cell003" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell code">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_raw, meta <span class="op">=</span> make_table(variant)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>TASK, TARGET <span class="op">=</span> meta[<span class="st">&quot;task&quot;</span>], meta[<span class="st">&quot;target&quot;</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>meta[<span class="st">&#39;domain&#39;</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>df_raw<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> объектов, </span><span class="sc">{</span>df_raw<span class="sc">.</span>shape[<span class="dv">1</span>] <span class="op">-</span> <span class="dv">1</span><span class="sc">}</span><span class="ss"> признаков&quot;</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;тип задачи: </span><span class="sc">{</span>TASK<span class="sc">}</span><span class="ss">, целевая переменная: </span><span class="sc">{</span>TARGET<span class="sc">}</span><span class="ss">&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df_raw.head(<span class="dv">5</span>)</span></code></pre></div>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df_raw.head()</span></code></pre></div>
 </div>
-<div id="cell005" class="cell markdown">
+<div id="cell005" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-1-разведка-что-не-так-с-этой-таблицей">Задача 1.
 Разведка: что не так с этой таблицей</h1>
-<p>Повторите на своих данных путь частей 3–4 занятия. Дефекты те же по
-природе, что у «Титаника», но есть и два новых, которых там не было:
-<strong>числовой столбец, записанный строкой</strong> (типовой экспорт
-из русского Excel: <code>&#39;438 900,00&#39;</code> — пробел как разделитель
-разрядов, запятая как десятичный) и <strong>опечатки масштаба</strong> —
-потерянный десятичный разделитель, из-за которого отдельные значения
-завышены примерно в 100 раз.</p>
+<p>Повторите на своих данных путь частей 2–4 занятия. Дефекты те же по
+природе, что у «Титаника», но есть и два новых: <strong>числовой
+столбец, записанный строкой</strong> (типовой экспорт из русского Excel:
+<code>&#39;438 900,00&#39;</code> — пробел как разделитель разрядов, запятая как
+десятичный) и <strong>опечатки масштаба</strong> — потерянный десятичный
+разделитель, из-за которого отдельные значения завышены примерно в 100
+раз.</p>
 </div>
-<div id="cell006" class="cell markdown">
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-11-сводка-по-столбцам">Задание 1.1. Сводка по
 столбцам</h3>
-<p>Постройте таблицу: тип, число уникальных значений, доля пропусков,
-пример значения. Найдите столбцы, прочитанные как <code>object</code>,
-хотя по смыслу они числовые, и столбцы, бесполезные уже сейчас (одно
-значение на всю таблицу).</p>
+<p>Постройте такую же сводку, как на занятии: тип, число уникальных
+значений, доля пропусков. Отдельно найдите столбцы, бесполезные уже
+сейчас — те, где одно значение встречается чаще, чем в 99 % строк.</p>
 </div>
-<div id="cell007" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: соберите сводку по столбцам (тип, уникальных, доля пропусков, пример),</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       найдите практически константные столбцы (одно значение чаще 99 %)</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       и посчитайте число полных дубликатов строк.</span></span></code></pre></div>
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (5 строк): сводка по столбцам -- тип, уникальных, доля пропусков.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   Образец -- часть 2 занятия: pd.DataFrame({...}) из df_raw.dtypes,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   df_raw.nunique() и df_raw.isna().mean(). Ещё напечатайте число</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   полных дубликатов строк: df_raw.duplicated().sum().</span></span></code></pre></div>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell008" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (4 строки): для каждого столбца посчитайте долю самого частого значения</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   (df_raw[col].value_counts(normalize=True, dropna=False).iloc[0])</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   и напечатайте те столбцы, где эта доля больше 0.99.</span></span></code></pre></div>
+</div>
+<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-12-числовой-столбец-записанный-строкой">Задание 1.2.
 Числовой столбец, записанный строкой</h3>
 <p>Напишите <code>to_numeric_safe(s)</code>: если столбец объектный, но
 после удаления пробелов и замены запятой на точку он разбирается в число
-— преобразовать. Порог <code>threshold</code>: если не разобралась
-бóльшая доля непустых значений, столбец действительно нечисловой, и его
+— преобразовать его. Если же не разобралась заметная доля непустых
+значений, столбец действительно нечисловой (город, категория), и его
 надо вернуть без изменений.</p>
 </div>
-<div id="cell009" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_numeric_safe(s: pd.Series, threshold: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.2</span>) <span class="op">-&gt;</span> pd.Series:</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Строковый столбец -&gt; числовой, если он на самом деле числовой.&quot;&quot;&quot;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> s.dtype <span class="op">!=</span> <span class="bu">object</span>:</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> s</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (3-4 строки):</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   1) убрать пробелы (в т.ч. неразрывные \u00a0) и заменить &#39;,&#39; на &#39;.&#39;;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   2) pd.to_numeric(..., errors=&quot;coerce&quot;);</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   3) если доля непреобразованных НЕПУСТЫХ значений &gt; threshold,</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#      столбец действительно нечисловой -- вернуть s без изменений.</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_raw.copy()</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: примените to_numeric_safe ко всем столбцам и напечатайте, что изменилось.</span></span></code></pre></div>
+<div id="cell010" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_numeric_safe(s):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Строковый столбец -&gt; числовой, если он на самом деле числовой.&quot;&quot;&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> s.dtype <span class="op">!=</span> <span class="bu">object</span>:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> s</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (4 строки):</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   1) cleaned -- убрать пробелы: .str.replace(r&quot;\s&quot;, &quot;&quot;, regex=True),</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#      заменить запятую на точку: .str.replace(&quot;,&quot;, &quot;.&quot;, regex=False);</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   2) converted = pd.to_numeric(cleaned, errors=&quot;coerce&quot;);</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   3) lost -- доля значений, которые были непустыми, а числом не стали:</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#      (converted.isna() &amp; s.notna()).mean();</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   4) вернуть converted, если lost &lt; 0.2, иначе s без изменений.</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell010" class="cell markdown">
-<h3 id="задание-13-категории-дубликаты-опечатки-масштаба">Задание 1.3.
-Категории, дубликаты, опечатки масштаба</h3>
-<p>Приведите категории к единому написанию (в таблице встречаются
-<code>Москва</code>, <code>москва</code>, <code>МОСКВА</code> — для
-<code>pandas</code> это три разные категории), удалите полные дубликаты
-и вырожденные признаки, а затем найдите и <strong>исправьте</strong>
-опечатки масштаба: значения, превышающие 99-й перцентиль более чем в 30
-раз.</p>
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Применяем ко всем столбцам и смотрим, что изменилось</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_raw.copy()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> df.columns:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    before <span class="op">=</span> df[col].dtype</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    df[col] <span class="op">=</span> to_numeric_safe(df[col])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> before <span class="op">!=</span> df[col].dtype:</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>before<span class="sc">}</span><span class="ss"> -&gt; </span><span class="sc">{</span>df[col]<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="задание-13-категории-дубликаты-вырожденные-признаки">Задание
+1.3. Категории, дубликаты, вырожденные признаки</h3>
+<p>В таблице встречаются <code>Москва</code>, <code>москва</code>,
+<code>МОСКВА</code> — для <code>pandas</code> это три разные категории.
+Приведите их к единому написанию, а затем удалите полные дубликаты строк
+и почти константные столбцы.</p>
 <p>Про дубликаты: на занятии мы их <strong>не</strong> удаляли — у
 «Титаника» нет идентификатора, и совпадение всех признаков там означало
 просто двух похожих пассажиров. Здесь идентификатор есть, и у
 дублирующихся строк совпадает <strong>в том числе
 <code>id</code></strong> — проверьте это сами. Значит, задвоилась
 запись, а не объект, и такие строки удаляют.</p>
-<p>Для каждого исправленного столбца напечатайте корреляцию с целевой
-переменной <strong>до и после</strong> исправления.</p>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) привести категории meta[&quot;categorical&quot;] к нижнему регистру без пробелов</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          по краям; напечатать число категорий до и после;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) удалить полные дубликаты и вырожденные признаки (одно значение &gt; 99 %);</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) найти опечатки масштаба (значение &gt; 30 * квантиль 0.99), поделить их</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          на 100 и напечатать корреляцию признака с целью ДО и ПОСЛЕ.</span></span></code></pre></div>
+<div id="cell013" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;категорий было:&quot;</span>, {c: df[c].nunique() <span class="cf">for</span> c <span class="kw">in</span> meta[<span class="st">&quot;categorical&quot;</span>]})</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2 строки): для каждого столбца из meta[&quot;categorical&quot;] уберите пробелы</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   по краям и приведите к нижнему регистру: .str.strip().str.lower()</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;категорий стало:&quot;</span>, {c: df[c].nunique() <span class="cf">for</span> c <span class="kw">in</span> meta[<span class="st">&quot;categorical&quot;</span>]})</span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown">
-<h3 id="задание-14-признак-утечка">Задание 1.4. Признак-утечка</h3>
+<div id="cell014" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (5 строк):</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   1) напечатайте число полных дубликатов и удалите их:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#      df.drop_duplicates().reset_index(drop=True);</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   2) соберите список почти константных столбцов (задание 1.1, но по df),</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#      удалите их и напечатайте, что осталось.</span></span></code></pre></div>
+</div>
+<div id="cell015" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="задание-14-опечатки-масштаба">Задание 1.4. Опечатки
+масштаба</h3>
+<p>Потерянный десятичный разделитель завышает значение примерно в 100
+раз. Найдите такие значения — превышающие 99-й перцентиль столбца более
+чем в 30 раз, — поделите их на 100 и напечатайте корреляцию признака с
+целевой переменной <strong>до и после</strong> исправления.</p>
+</div>
+<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> df.select_dtypes(include<span class="op">=</span><span class="st">&quot;number&quot;</span>).columns.drop(TARGET)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> num_cols:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    bad <span class="op">=</span> df[col] <span class="op">&gt;</span> <span class="dv">30</span> <span class="op">*</span> df[col].quantile(<span class="fl">0.99</span>)      <span class="co"># маска подозрительных значений</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bad.<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (4 строки): запомните корреляцию df[col].corr(df[TARGET]) ДО,</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   поделите подозрительные значения на 100 (df.loc[bad, col] = ...)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   и напечатайте, сколько значений исправлено и какой стала корреляция.</span></span></code></pre></div>
+</div>
+<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="задание-15-признак-утечка">Задание 1.5. Признак-утечка</h3>
 <p>На занятии утечкой был <code>alive</code> — копия ответа. В вашей
 таблице она устроена тоньше: есть столбец <code>id</code>, формально
 числовой. Обучите дерево <strong>на одном лишь</strong> <code>id</code>
 и посмотрите на качество; постройте диаграмму рассеяния «<code>id</code>
 против цели».</p>
 </div>
-<div id="cell013" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) обучите дерево глубины 4 на ОДНОМ признаке id и оцените качество</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          скользящим контролем (scoring=&quot;r2&quot; для регрессии, &quot;roc_auc&quot; для</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#          классификации);</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) постройте диаграмму рассеяния id против целевой переменной;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) удалите столбец id.</span></span></code></pre></div>
+<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier, DecisionTreeRegressor</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Модель и метрика зависят от типа вашей задачи -- выбираем автоматически</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> TASK <span class="op">==</span> <span class="st">&quot;regression&quot;</span>:</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    tree, scoring <span class="op">=</span> DecisionTreeRegressor(max_depth<span class="op">=</span><span class="dv">4</span>, random_state<span class="op">=</span>RANDOM_STATE), <span class="st">&quot;r2&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    tree, scoring <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">4</span>, random_state<span class="op">=</span>RANDOM_STATE), <span class="st">&quot;roc_auc&quot;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;задача:&quot;</span>, TASK, <span class="st">&quot;| метрика:&quot;</span>, scoring)</span></code></pre></div>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell019" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2 строки): оцените качество скользящим контролем на ОДНОМ признаке id --</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   cross_val_score(tree, df[[&quot;id&quot;]], df[TARGET], cv=5, scoring=scoring)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   и напечатайте среднее.</span></span></code></pre></div>
+</div>
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (5 строк): постройте диаграмму рассеяния id против целевой переменной</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   (ax.scatter, подпишите оси и заголовок), а затем удалите столбец id.</span></span></code></pre></div>
+</div>
+<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Какое качество дал один лишь <code>id</code>
 и откуда взялась эта связь? Чем эта утечка опаснее, чем
@@ -464,10 +515,10 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell015" class="cell markdown">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
-<h1 id="задача-2-заполнение-пропусков-с-учётом-механизма">Задача 2.
-Заполнение пропусков с учётом механизма</h1>
+<h1 id="задача-2-чем-заполнять-пропуски">Задача 2. Чем заполнять
+пропуски</h1>
 <p>На занятии мы видели, что <code>dropna()</code> может выбросить 80 %
 выборки и сдвинуть распределение. Теперь разберёмся, чем заполнять — и
 почему «медианой» это не всегда правильный ответ.</p>
@@ -487,63 +538,86 @@ Run All);</li>
 заполнение общей медианой систематически искажает признак. Сейчас
 измерим, насколько.</p>
 </div>
-<div id="cell016" class="cell markdown">
+<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-21-найти-столбец-с-mar-и-его-драйвер">Задание 2.1. Найти
 столбец с MAR и его драйвер</h3>
 <p>Для каждого числового столбца с пропусками найдите признак, сильнее
 всего связанный с <em>фактом</em> пропуска. Мера связи: модуль разности
 средних в группах «значение есть» и «значение пропущено», в единицах
-стандартного отклонения.</p>
+стандартного отклонения. Каркас с двойным циклом уже написан — допишите
+саму меру.</p>
 </div>
-<div id="cell017" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> df.select_dtypes(include<span class="op">=</span><span class="st">&quot;number&quot;</span>).columns <span class="cf">if</span> c <span class="op">!=</span> TARGET]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>with_na <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> num_cols <span class="cf">if</span> df[c].isna().<span class="bu">any</span>()]</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для каждой пары (столбец с пропусками, другой числовой признак)</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       посчитайте |mean(есть) - mean(пропуск)| / std(признака)</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       и соберите таблицу, отсортированную по убыванию этой величины.</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>link <span class="op">=</span> ...</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>display(link.head(<span class="dv">8</span>).<span class="bu">round</span>(<span class="dv">3</span>))</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: верхняя строка -- искомая пара</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>MAR_COL, DRIVER <span class="op">=</span> ..., ...</span></code></pre></div>
+<div id="cell024" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> df.select_dtypes(include<span class="op">=</span><span class="st">&quot;number&quot;</span>).columns <span class="cf">if</span> c <span class="op">!=</span> TARGET]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>with_na <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> num_cols <span class="cf">if</span> df[c].isna().<span class="bu">any</span>()]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;столбцы с пропусками:&quot;</span>, with_na)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> with_na:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    is_na <span class="op">=</span> df[col].isna()                 <span class="co"># True там, где значение пропущено</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> other <span class="kw">in</span> num_cols:</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> other <span class="op">==</span> col <span class="kw">or</span> <span class="kw">not</span> df[other].std() <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># </span><span class="al">TODO</span><span class="co"> (2 строки): diff -- модуль разности средних признака other</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   в группах ~is_na и is_na; добавьте в rows словарь</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   {&quot;пропуски в&quot;: col, &quot;драйвер&quot;: other,</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    &quot;разница средних / sigma&quot;: diff / df[other].std()}</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2 строки): соберите из rows таблицу, отсортируйте по убыванию</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   меры связи и покажите первые пять строк</span></span></code></pre></div>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell025" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (1 строка): верхняя строка таблицы -- искомая пара</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>MAR_COL, DRIVER <span class="op">=</span> ..., ...</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;сильнее всего связаны: пропуски в «</span><span class="sc">{</span>MAR_COL<span class="sc">}</span><span class="ss">» и признак «</span><span class="sc">{</span>DRIVER<span class="sc">}</span><span class="ss">»&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-22-два-способа-заполнения">Задание 2.2. Два способа
 заполнения</h3>
-<p>Заполните пропуски в <code>MAR_COL</code> двумя способами — общей
-медианой и медианой внутри квартилей драйвера (квартили — квантили
-уровней 0.25, 0.5 и 0.75, они делят выборку на четыре равные по
-численности группы) — и сравните каждый результат с эталоном:
-распределением значений на объектах, где значение известно.</p>
-<p>Мера близости — статистика Колмогорова–Смирнова
-(<code>scipy.stats.ks_2samp</code>): максимальное расхождение
-эмпирических функций распределения.</p>
+<p>Заполните пропуски в <code>MAR_COL</code> двумя способами:</p>
+<ul>
+<li><strong>общей медианой</strong> — одно и то же число всем
+объектам;</li>
+<li><strong>медианой внутри квартилей драйвера</strong> — своё число
+каждой группе.</li>
+</ul>
+<p>Эталон, с которым сравниваем, — объекты, где значение известно.</p>
 </div>
-<div id="cell019" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>known <span class="op">=</span> df.loc[df[MAR_COL].notna(), MAR_COL]</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>flag <span class="op">=</span> df[MAR_COL].isna()</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: (а) filled_global -- заполнить общей медианой;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       (б) filled_grouped -- медианой внутри квартилей драйвера</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#           (pd.qcut(df[DRIVER], q=4) и groupby(...).transform(&quot;median&quot;)).</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для каждого способа посчитайте stats.ks_2samp(заполненные, known)</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#       и сведите в таблицу вместе со средним и стандартным отклонением.</span></span></code></pre></div>
+<div id="cell027" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>known <span class="op">=</span> df.loc[df[MAR_COL].notna(), MAR_COL]     <span class="co"># эталон: известные значения</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>is_na <span class="op">=</span> df[MAR_COL].isna()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (1 строка): filled_global -- заполнить пропуски общей медианой known.median()</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (3 строки): filled_grouped --</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   groups = pd.qcut(df[DRIVER], q=4, duplicates=&quot;drop&quot;);</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_median = df.groupby(groups, observed=True)[MAR_COL].transform(&quot;median&quot;);</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   заполнить пропуски group_median, а оставшиеся -- known.median().</span></span></code></pre></div>
 </div>
-<div id="cell020" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте гистограммы: известные значения и оба варианта заполнения.</span></span></code></pre></div>
+<div id="cell028" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Сравниваем то, что подставлено вместо пропусков, с эталоном</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>report <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;эталон (значение известно)&quot;</span>: [known.mean(), known.std()],</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;общая медиана&quot;</span>: [filled_global[is_na].mean(), filled_global[is_na].std()],</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;медиана по квартилям&quot;</span>: [filled_grouped[is_na].mean(), filled_grouped[is_na].std()],</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>}, index<span class="op">=</span>[<span class="st">&quot;среднее&quot;</span>, <span class="st">&quot;ст. отклонение&quot;</span>])</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>display(report.<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell029" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (6 строк): постройте на одних осях три гистограммы -- известные значения,</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   заполненные общей медианой и заполненные по квартилям драйвера.</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Общие корзины: bins = np.histogram_bin_edges(known, bins=30),</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   плотность вместо счётчиков: density=True. Подпишите оси и легенду.</span></span></code></pre></div>
+</div>
+<div id="cell030" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
-<p><strong>Вывод.</strong> Какой способ дал меньшую статистику
-Колмогорова–Смирнова? Что происходит с дисперсией признака при
-заполнении константой и чем это опасно?</p>
+<p><strong>Вывод.</strong> Что произошло со стандартным отклонением
+подставленных значений в каждом случае и чем это опасно? Почему по
+одному только среднему нельзя решить, какой способ лучше?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell022" class="cell markdown">
+<div id="cell031" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -555,10 +629,10 @@ Run All);</li>
 <h1 id="задача-3-своя-реализация-one-hot-кодирования">Задача 3★. Своя
 реализация One-Hot кодирования</h1>
 <p>На занятии мы вызвали <code>OneHotEncoder</code> и заметили, что
-сумма индикаторов по строке равна единице. Теперь напишем кодировщик
-сами и доведём это наблюдение до числа.</p>
+сумма индикаторов по строке равна единице. Теперь напишем такой
+кодировщик сами и сверим с библиотечным численно.</p>
 </div>
-<div id="cell023" class="cell markdown">
+<div id="cell032" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-31-функция-one_hot">Задание 3.1. Функция
 <code>one_hot</code></h3>
 <p><code>one_hot(series, categories=None)</code> возвращает матрицу
@@ -568,58 +642,59 @@ Run All);</li>
 контроле может встретиться категория, которой не было в обучении, а
 ширина матрицы обязана сохраниться.</p>
 </div>
-<div id="cell024" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_hot(series, categories<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Индикаторное кодирование. Возвращает (матрица (n, k), список категорий).&quot;&quot;&quot;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: 1) если categories не задан -- отсортированные уникальные значения без NaN;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       2) матрица нулей (n, len(categories));</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       3) для каждого объекта поставить 1 в столбец своей категории;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">#          незнакомое значение и NaN оставить нулевой строкой.</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+<div id="cell033" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_hot(series, categories<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Индикаторное кодирование. Возвращает (матрица (n, k), список категорий).&quot;&quot;&quot;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> pd.Series(series).astype(<span class="bu">object</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> categories <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        categories <span class="op">=</span> <span class="bu">sorted</span>(values.dropna().unique())     <span class="co"># категории из самих данных</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    categories <span class="op">=</span> <span class="bu">list</span>(categories)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (5 строк):</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   1) словарь &quot;категория -&gt; номер столбца&quot;: {c: j for j, c in enumerate(...)};</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   2) матрица нулей формы (len(values), len(categories));</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   3) цикл по объектам: поставить 1.0 в столбец своей категории,</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#      а незнакомое значение и NaN оставить нулевой строкой;</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   4) вернуть (матрица, categories).</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell025" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>cat_col <span class="op">=</span> meta[<span class="st">&quot;categorical&quot;</span>][<span class="dv">0</span>]</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>known_cat <span class="op">=</span> df[cat_col].dropna()</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>train, test <span class="op">=</span> known_cat.iloc[: <span class="bu">len</span>(known_cat) <span class="op">//</span> <span class="dv">2</span>], known_cat.iloc[<span class="bu">len</span>(known_cat) <span class="op">//</span> <span class="dv">2</span>:]</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: закодируйте train (категории из данных) и test (категории из train),</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       сверьте обе матрицы с OneHotEncoder(handle_unknown=&quot;ignore&quot;),</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#       проверьте, что незнакомое значение и NaN дают нулевые строки.</span></span></code></pre></div>
+<div id="cell034" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="задание-32-сверка-со-scikit-learn">Задание 3.2. Сверка со
+<code>scikit-learn</code></h3>
+<p>Разделите известные значения категориального признака пополам. Первую
+половину кодируйте «как обучающую» (категории берутся из данных), вторую
+— «как контрольную»: категории те же, что были на обучении. Обе матрицы
+обязаны совпасть с <code>OneHotEncoder(handle_unknown=&#39;ignore&#39;)</code>
+численно.</p>
 </div>
-<div id="cell026" class="cell markdown">
-<h3 id="задание-32-зачем-dropfirst">Задание 3.2. Зачем
-<code>drop=&#39;first&#39;</code></h3>
-<p>Сумма всех индикаторов по строке равна единице — то есть совпадает со
-столбцом свободного члена. Значит, столбцы линейно зависимы и
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^{\mathsf T}X</annotation></semantics></math>
-вырождена.</p>
-<p>Убедитесь численно: соберите «столбец единиц + полный One-Hot»,
-посмотрите ранг и число обусловленности, затем повторите с отброшенной
-первой категорией. Напомним оценку с занятия:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi></mrow><mo>=</mo><msup><mn>10</mn><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">\mathrm{cond} = 10^{k}</annotation></semantics></math>
-означает потерю примерно
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
-верных знаков.</p>
+<div id="cell035" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>cat_col <span class="op">=</span> meta[<span class="st">&quot;categorical&quot;</span>][<span class="dv">0</span>]</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>values <span class="op">=</span> df[cat_col].dropna()</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>train, test <span class="op">=</span> values.iloc[: <span class="bu">len</span>(values) <span class="op">//</span> <span class="dv">2</span>], values.iloc[<span class="bu">len</span>(values) <span class="op">//</span> <span class="dv">2</span>:]</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (6 строк): закодируйте train (категории из данных) и test (категории из</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   train), затем сверьте обе матрицы с OneHotEncoder(handle_unknown=&quot;ignore&quot;):</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   enc.fit_transform(train.to_frame()) и enc.transform(test.to_frame()).</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   Напечатайте максимум модуля разности в каждом случае.</span></span></code></pre></div>
 </div>
-<div id="cell027" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) A_full = [столбец единиц | полный One-Hot],</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          A_drop = [столбец единиц | One-Hot без первого столбца];</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) для каждой выведите число столбцов, ранг и cond(A^T A);</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) покажите, что сумма индикаторов по строке равна 1;</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) постройте два РАЗНЫХ вектора весов с одинаковым прогнозом на A_full</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          (прибавьте c к свободному члену и вычтите c из индикаторов).</span></span></code></pre></div>
+<div id="cell036" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка поведения на незнакомой категории и на пропуске</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>strange, _ <span class="op">=</span> one_hot(pd.Series([<span class="st">&quot;такой-категории-нет&quot;</span>, np.nan]), categories<span class="op">=</span>cats)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;незнакомое значение и NaN дают нулевые строки:&quot;</span>, strange.<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;ширина матрицы сохранена:&quot;</span>, strange.shape[<span class="dv">1</span>] <span class="op">==</span> <span class="bu">len</span>(cats))</span></code></pre></div>
 </div>
-<div id="cell028" class="cell markdown">
+<div id="cell037" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
-<p><strong>Вывод.</strong> Чему равен ранг в каждом случае и как
-меняется обусловленность? Почему для решающего дерева этой проблемы не
-возникает?</p>
+<p><strong>Вывод.</strong> Почему нулевая строка — правильное поведение
+для незнакомой категории? И почему сумма индикаторов, равная единице,
+мешает линейной модели, но не мешает решающему дереву?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell029" class="cell markdown">
+<div id="cell038" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>
