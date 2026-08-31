@@ -231,7 +231,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="домашняя-работа-2-как-на-самом-деле-решают-мнк">Домашняя работа
 2. Как на самом деле решают МНК</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -302,7 +302,7 @@ Run All);</li>
 методов.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell001" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -350,7 +350,7 @@ Run All);</li>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> labdata <span class="im">import</span> load_personal</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
 <p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
 вариант вычисляется детерминированно, при повторном запуске он тот же
@@ -358,13 +358,13 @@ Run All);</li>
 <p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
 вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
 </div>
-<div id="cell003" class="cell code">
+<div id="cell003" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell code">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ваша выборка, приведённая к матрицам «объекты-признаки».</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load_personal повторяет предобработку занятия 1 (та же, что вы делали руками</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># в домашней работе 1), чтобы дальнейшее не зависело от аккуратности вашего кода.</span></span>
@@ -377,7 +377,7 @@ Run All);</li>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;cond(X) = </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>cond(X_tr)<span class="sc">:.3e}</span><span class="ss">, &quot;</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;cond(X^T X) = </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>cond(X_tr.T <span class="op">@</span> X_tr)<span class="sc">:.3e}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell markdown">
+<div id="cell005" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-1-матричное-дифференцирование-проверка-конечными-разностями">Задача
 1. Матричное дифференцирование: проверка конечными разностями</h1>
@@ -398,11 +398,11 @@ Run All);</li>
 это будет в занятиях 3 и 4) такая проверка за пять строк ловит ошибку в
 выкладке.</p>
 </div>
-<div id="cell006" class="cell markdown">
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-11-функция-numeric_grad">Задание 1.1. Функция
 <code>numeric_grad</code></h3>
 </div>
-<div id="cell007" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> numeric_grad(f, w, h<span class="op">=</span><span class="fl">1e-6</span>):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Градиент центральными разностями.</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -412,7 +412,7 @@ Run All);</li>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-12-проверка-трёх-формул-на-вашей-матрице">Задание 1.2.
 Проверка трёх формул на вашей матрице</h3>
 <p>Проверьте все три тождества, взяв в качестве
@@ -431,7 +431,7 @@ Run All);</li>
 и расхождение в тысячу единиц означает совпадение в десяти верных
 знаках, а вовсе не поломку формулы.</p>
 </div>
-<div id="cell009" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell009" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> X_tr.shape[<span class="dv">1</span>]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>w0 <span class="op">=</span> rng.normal(size<span class="op">=</span>n)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> rng.normal(size<span class="op">=</span>n)</span>
@@ -445,7 +445,7 @@ Run All);</li>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># сам градиент большой, и абсолютная ошибка ни о чём не говорит.</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка считается пройденной при относительной ошибке &lt; 1e-4.</span></span></code></pre></div>
 </div>
-<div id="cell010" class="cell markdown">
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-13-воспроизведение-примера-122">Задание 1.3.
 Воспроизведение примера 1.22</h3>
 <p>Единственный численный пример лекции 1 — про градиент
@@ -462,7 +462,7 @@ Run All);</li>
 многомерного нормального распределения, а через неё — в QDA и LDA
 (занятие 7) и в EM (занятие 8).</p>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>A0 <span class="op">=</span> np.array([[<span class="fl">3.0</span>, <span class="fl">1.0</span>], [<span class="fl">2.0</span>, <span class="fl">4.0</span>]])          <span class="co"># произвольная невырожденная 2x2</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) определите det_of_vec(v) = определитель матрицы v.reshape(2, 2);</span></span>
@@ -471,14 +471,14 @@ Run All);</li>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) сравните с двумя выражениями: det(A) * inv(A).T (утв. 1.21)</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          и [[d, -c], [-b, a]] (пример 1.22). Оба должны совпасть.</span></span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown">
+<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпали ли все три матрицы? Почему у
 определителя градиент выражается через обратную матрицу?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-14-выбор-шага-h">Задание 1.4. Выбор шага
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math></h3>
 <p>Постройте зависимость ошибки проверки от
@@ -494,12 +494,12 @@ Run All);</li>
 на ваших данных). У кривой должен быть минимум — найдите его и объясните
 обе ветви.</p>
 </div>
-<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell014" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для h из np.logspace(-1, -12, 40) посчитайте ОТНОСИТЕЛЬНУЮ ошибку</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       численного градиента для f(w) = ||X_tr w - y||^2 и постройте график</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       в двойном логарифмическом масштабе. Отметьте минимум.</span></span></code></pre></div>
 </div>
-<div id="cell015" class="cell markdown">
+<div id="cell015" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Почему ошибка растёт и при слишком большом, и
 при слишком малом
@@ -508,7 +508,7 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell016" class="cell markdown">
+<div id="cell016" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-2-пять-способов-решить-мнк">Задача 2. Пять способов
 решить МНК</h1>
@@ -532,7 +532,7 @@ Run All);</li>
 с отсечением малых сингулярных чисел.</li>
 </ol>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — QR- и сингулярное разложение.</strong>
 <strong>QR:</strong> любую матрицу
@@ -578,7 +578,7 @@ Run All);</li>
 теорема 8.9 лекции 8, там же SVD станет самостоятельным сюжетом.</p>
 </blockquote>
 </div>
-<div id="cell018" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> linalg</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -609,7 +609,7 @@ Run All);</li>
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>SOLVERS <span class="op">=</span> {<span class="st">&quot;inv&quot;</span>: fit_inv, <span class="st">&quot;solve&quot;</span>: fit_solve, <span class="st">&quot;QR&quot;</span>: fit_qr,</span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>           <span class="st">&quot;lstsq&quot;</span>: fit_lstsq, <span class="st">&quot;SVD вручную&quot;</span>: fit_svd}</span></code></pre></div>
 </div>
-<div id="cell019" class="cell markdown">
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-21-сверка-на-примере-из-конспекта">Задание 2.1. Сверка
 на примере из конспекта</h3>
 <p>Прежде чем применять решатели к своим данным — проверьте их на
@@ -617,7 +617,7 @@ Run All);</li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>≈</mo><mo stretchy="false" form="prefix">(</mo><mn>2.201</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0.893</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0.114</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\theta^*\approx(2.201,\ 0.893,\ 0.114)</annotation></semantics></math>
 на выборке из восьми кошек — это эталон из части 1 занятия.</p>
 </div>
-<div id="cell020" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">2</span>, <span class="dv">8</span>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>y_cats <span class="op">=</span> np.array([<span class="fl">3.0</span>, <span class="fl">4.2</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="fl">4.8</span>, <span class="fl">6.0</span>, <span class="fl">3.4</span>, <span class="fl">6.6</span>])</span>
@@ -626,7 +626,7 @@ Run All);</li>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: примените все пять решателей и сведите в таблицу вместе с</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       отличием от эталона theta* = (2.2009, 0.8931, 0.1136).</span></span></code></pre></div>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-22-где-они-ломаются">Задание 2.2. Где они ломаются</h3>
 <p>Матрица Вандермонда
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msubsup><mi>t</mi><mi>i</mi><mrow><mspace width="0.167em"></mspace><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">X_{ij} = t_i^{\,j-1}</annotation></semantics></math>
@@ -639,7 +639,9 @@ Run All);</li>
 и постройте
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>X</mi><msub><mi>θ</mi><mtext mathvariant="normal">истина</mtext></msub></mrow><annotation encoding="application/x-tex">y = X\theta_{\text{истина}}</annotation></semantics></math>
 <strong>без шума</strong>: тогда любая ошибка — чисто вычислительная.
-Это тот же приём, что с матрицей Гильберта на занятии 1.</p>
+Это общий приём построения эталона: не искать данные с известным
+ответом, а <strong>задать ответ первым</strong> и сгенерировать данные
+под него.</p>
 <p>Постройте график
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mover><mi>θ</mi><mo accent="true">̂</mo></mover><mo>−</mo><msub><mi>θ</mi><mtext mathvariant="normal">истина</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|\hat\theta - \theta_{\text{истина}}\|</annotation></semantics></math>
 от числа столбцов для всех пяти методов и рядом — рост
@@ -647,7 +649,7 @@ Run All);</li>
 и
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>X</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathrm{cond}(X)^2</annotation></semantics></math>.</p>
 </div>
-<div id="cell022" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell022" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">120</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>degrees <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">15</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -659,12 +661,13 @@ Run All);</li>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: два графика в логарифмическом масштабе: ошибки методов и</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#       cond(X), cond(X)^2, уровень 1/eps.</span></span></code></pre></div>
 </div>
-<div id="cell023" class="cell markdown">
+<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-23-а-что-на-ваших-данных">Задание 2.3. А что на ваших
 данных</h3>
 <p>Теперь примените все пять решателей к своей матрице. Но сначала —
-небольшой эксперимент, ради которого стоит вернуться к домашней работе
-1.</p>
+эксперимент, обещанный на занятии 1: там мы заметили, что сумма
+индикаторов One-Hot по строке тождественно равна единице, и отложили
+разбор до сих пор.</p>
 <p><code>load_personal</code> кодирует категории с
 <code>drop=&#39;first&#39;</code>, то есть отбрасывает по одной категории в
 каждом блоке индикаторов. Параметр <code>drop_first=False</code>
@@ -672,7 +675,7 @@ Run All);</li>
 матрицы, добавьте к каждой столбец единиц под свободный член и сравните:
 число обусловленности, ранг, а затем решения всех пяти способов.</p>
 </div>
-<div id="cell024" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell024" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) full = load_personal(variant, drop_first=False) -- полный One-Hot;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) к обеим матрицам (data и full) добавьте столбец единиц;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) для каждой напечатайте число столбцов, РАНГ, cond(X) и cond(X^T X);</span></span>
@@ -683,7 +686,7 @@ Run All);</li>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># В конце оставьте Xc_tr, Xc_te -- эталонную матрицу со столбцом единиц:</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># она понадобится в задаче 3.</span></span></code></pre></div>
 </div>
-<div id="cell025" class="cell markdown">
+<div id="cell025" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> С какого числа обусловленности
 <code>inv</code> и <code>solve</code> дают бессмысленный ответ? Почему
@@ -691,7 +694,7 @@ QR и SVD держатся дольше? Что показала ваша мат
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell026" class="cell markdown">
+<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -720,7 +723,7 @@ QR и SVD держатся дольше? Что показала ваша мат
 параметры должны быть известны), а потом посмотрим, что даёт каждая
 потеря на ваших данных.</p>
 </div>
-<div id="cell027" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell027" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> optimize</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -744,7 +747,7 @@ QR и SVD держатся дольше? Что показала ваша мат
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>outliers <span class="op">=</span> rng.choice(n, size<span class="op">=</span><span class="dv">6</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>y_dirty[outliers] <span class="op">+=</span> rng.choice([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], <span class="dv">6</span>) <span class="op">*</span> rng.uniform(<span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">6</span>)</span></code></pre></div>
 </div>
-<div id="cell028" class="cell markdown">
+<div id="cell028" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-31-ммп-против-мнк">Задание 3.1. ММП против МНК</h3>
 <p>Для чистых и для испорченных данных найдите
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
@@ -753,16 +756,16 @@ QR и SVD держатся дольше? Что показала ваша мат
 и минимизацией лапласовского. Лапласовская функция негладкая —
 используйте <code>method=&quot;Nelder-Mead&quot;</code>.</p>
 </div>
-<div id="cell029" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell029" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для y_clean и y_dirty найдите theta тремя способами</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (lstsq, минимизация neg_loglik_gauss, минимизация neg_loglik_laplace)</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       и сведите в таблицу. Сравните с THETA_TRUE.</span></span></code></pre></div>
 </div>
-<div id="cell030" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell030" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: нарисуйте данные с выбросами, обе подогнанные прямые</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (гауссовскую и лапласовскую) и истинную зависимость.</span></span></code></pre></div>
 </div>
-<div id="cell031" class="cell markdown">
+<div id="cell031" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-32-какая-потеря-подходит-вашим-данным">Задание 3.2.
 Какая потеря подходит вашим данным</h3>
 <p>Обучите на своей выборке две модели — МНК
@@ -775,7 +778,7 @@ QR и SVD держатся дольше? Что показала ваша мат
 — и сравните их на контрольной части по MSE <strong>и</strong> по MAE.
 Постройте гистограмму остатков МНК: похожа ли она на гауссовскую?</p>
 </div>
-<div id="cell032" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell032" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) обучите МНК на (Xc_tr, y_tr) и медианную регрессию</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          QuantileRegressor(quantile=0.5, alpha=0.0, solver=&quot;highs&quot;) на (X_tr, y_tr);</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) сравните обе модели на контроле по MSE И по MAE -- в одной таблице;</span></span>
@@ -783,7 +786,7 @@ QR и SVD держатся дольше? Что показала ваша мат
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          с тем же средним и стандартным отклонением; напечатайте асимметрию</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          и эксцесс остатков.</span></span></code></pre></div>
 </div>
-<div id="cell033" class="cell markdown">
+<div id="cell033" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпали ли ММП при гауссовском шуме и МНК?
 Какая прямая устояла против выбросов и почему? Какая потеря выиграла на
@@ -791,7 +794,7 @@ QR и SVD держатся дольше? Что показала ваша мат
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell034" class="cell markdown">
+<div id="cell034" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>
