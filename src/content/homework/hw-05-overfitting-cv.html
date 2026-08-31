@@ -231,7 +231,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="домашняя-работа-5-скользящий-контроль-изнутри-и-vc-размерность">Домашняя
 работа 5. Скользящий контроль изнутри и VC-размерность</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -264,10 +264,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <code>GridSearchCV</code> как чёрными ящиками. Дома напишем контроль
 сами, воспроизведём численный пример из конспекта, измерим смещение
 «лучшего значения по сетке» и проверим перебором, чему равна
-VC-размерность линейного классификатора.\n\nСвою реализацию контроля вы
-примените к <strong>своей</strong> выборке и сверите со
-<code>sklearn</code>; эксперименты про смещение и VC-размерность идут на
-контролируемых данных — там нужен заранее известный ответ.</p>
+VC-размерность линейного классификатора.</p>
+<p>Свою реализацию контроля вы примените к <strong>своей</strong>
+выборке и сверите со <code>sklearn</code>; эксперименты про смещение и
+VC-размерность идут на контролируемых данных — там нужен заранее
+известный ответ.</p>
 <blockquote>
 <p><strong>Чем это отличается от занятия.</strong> На семинаре данные
 были учебные и общие — так удобно разбирать. Дома данные ваши: таблица
@@ -302,7 +303,7 @@ Run All);</li>
 методов.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell001" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -354,7 +355,7 @@ Run All);</li>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV, KFold, StratifiedKFold</span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
 <p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
 вариант вычисляется детерминированно, при повторном запуске он тот же
@@ -362,13 +363,13 @@ Run All);</li>
 <p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
 вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
 </div>
-<div id="cell003" class="cell code">
+<div id="cell003" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">5</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell code">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ваша выборка (эталонная предобработка занятия 1)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_personal(variant)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X_tr, X_te <span class="op">=</span> data[<span class="st">&quot;X_train&quot;</span>], data[<span class="st">&quot;X_test&quot;</span>]</span>
@@ -376,7 +377,7 @@ Run All);</li>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>data[<span class="st">&#39;domain&#39;</span>]<span class="sc">}</span><span class="ss">: задача </span><span class="sc">{</span>data[<span class="st">&#39;task&#39;</span>]<span class="sc">}</span><span class="ss">, &quot;</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;обучающая </span><span class="sc">{</span>X_tr<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, контрольная </span><span class="sc">{</span>X_te<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell markdown">
+<div id="cell005" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-1-скользящий-контроль-своими-руками">Задача 1. Скользящий
 контроль своими руками</h1>
@@ -390,7 +391,7 @@ Run All);</li>
 и
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">L</mi><mi mathvariant="normal">O</mi><mi mathvariant="normal">O</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>Б</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>30</mn></mrow><annotation encoding="application/x-tex">\mathrm{LOO}(Б)=30</annotation></semantics></math>.</p>
 </div>
-<div id="cell006" class="cell markdown">
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — LOO.</strong> Leave-one-out, контроль с
 исключением по одному: предельный случай
@@ -410,7 +411,7 @@ Run All);</li>
 обучений вместо 5–10 (это мы измерили на семинаре).</p>
 </blockquote>
 </div>
-<div id="cell007" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loo(method, y):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Контроль по отдельным объектам: L обучений на L-1 объекте.</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -424,7 +425,7 @@ Run All);</li>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: воспроизведите таблицу примера 4.9 и оба значения LOO</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       (метод А -- np.mean, метод Б -- всегда 0).</span></span></code></pre></div>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-12-своя-реализация-q-кратного-контроля">Задание 1.2.
 Своя реализация
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math>-кратного
@@ -435,7 +436,7 @@ Run All);</li>
 <code>sklearn.model_selection.KFold</code> при
 <code>shuffle=False</code> — они обязаны совпасть.</p>
 </div>
-<div id="cell009" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell009" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_kfold(n, q, shuffle<span class="op">=</span><span class="va">True</span>, seed<span class="op">=</span><span class="dv">0</span>):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;q непересекающихся блоков; возвращает пары (train_idx, test_idx).</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -451,7 +452,7 @@ Run All);</li>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: сверьте своё разбиение со sklearn KFold при shuffle=False.</span></span></code></pre></div>
 </div>
-<div id="cell010" class="cell markdown">
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-13-свой-контроль-на-своей-выборке">Задание 1.3. Свой
 контроль на своей выборке</h3>
 <p>Примените <code>my_cross_val_score</code> к вашей матрице и сверьте
@@ -460,7 +461,7 @@ Run All);</li>
 При одинаковых разбиениях числа обязаны совпасть до машинной точности —
 если нет, ошибка в вашем <code>my_kfold</code>.</p>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Ridge</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -470,14 +471,14 @@ Run All);</li>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          scoring=&quot;neg_mean_squared_error&quot;) и сравните поблочно;</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) выведите max|своя - sklearn| и оценку со стандартным отклонением.</span></span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown">
+<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпали ли оценки поблочно? Насколько велик
 разброс между блоками и о чём он говорит?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -496,7 +497,7 @@ Run All);</li>
 <p>Измерим смещение на <strong>чистом шуме</strong>, где истинное AUC
 заведомо равно 0.5.</p>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — парный критерий и
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-значение.</strong>
@@ -519,7 +520,7 @@ Run All);</li>
 Для парного сравнения: <code>scipy.stats.ttest_rel</code>.</p>
 </blockquote>
 </div>
-<div id="cell015" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>N_TRIALS, n_o, n_f <span class="op">=</span> <span class="dv">30</span>, <span class="dv">80</span>, <span class="dv">100</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> {<span class="st">&quot;C&quot;</span>: np.logspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">10</span>)}</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>inner <span class="op">=</span> StratifiedKFold(<span class="dv">4</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">1</span>)</span>
@@ -532,7 +533,7 @@ Run All);</li>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#             GridSearchCV с inner для подбора C.</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>naive_arr, nested_arr <span class="op">=</span> ..., ...</span></code></pre></div>
 </div>
-<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) сравните средние обеих оценок с истиной 0.5 (со стандартной ошибкой);</span></span>
@@ -540,7 +541,7 @@ Run All);</li>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          и парный критерий stats.ttest_rel;</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) постройте boxplot обеих оценок с линией 0.5.</span></span></code></pre></div>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> На данных без всякой связи истинное AUC равно
 0.5. Что показали обе оценки? Почему парная разность разрешается
@@ -548,7 +549,7 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-3-vc-размерность-перебором">Задача 3. VC-размерность
 перебором</h1>
@@ -572,7 +573,7 @@ Run All);</li>
 то есть задача линейного программирования с нулевой целевой функцией:
 важна только совместность.</p>
 </div>
-<div id="cell019" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell019" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -594,12 +595,12 @@ Run All);</li>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#       (и для квадрата, и для случая «точка внутри треугольника»);</span></span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#       выведите конкретную нереализуемую разметку в каждом случае.</span></span></code></pre></div>
 </div>
-<div id="cell020" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для n = 2, 3, 5 и d = 2..8 посчитайте долю реализуемых разметок</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (усредните по 15 случайным наборам точек), сведите в таблицу</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       и постройте график с вертикальными отметками d = n + 1.</span></span></code></pre></div>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Какая разметка четырёх точек оказалась
 нереализуемой в каждом случае? Где ломается кривая доли разделимых
@@ -608,7 +609,7 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell022" class="cell markdown">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>

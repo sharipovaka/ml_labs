@@ -341,7 +341,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;numpy&quot;</span>, np.__version__, <span class="st">&quot;| pandas&quot;</span>, pd.__version__)</span>
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> labdata <span class="im">import</span> load_titanic</span></code></pre></div>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> labdata <span class="im">import</span> load_titanic</span></code></pre></div>
 </div>
 <div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
@@ -450,7 +452,96 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;полных дубликатов строк: </span><span class="sc">{</span>df_raw<span class="sc">.</span>duplicated()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>df_raw.head()</span></code></pre></div>
 </div>
-<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell011" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="что-означают-столбцы">Что означают столбцы</h3>
+<p>Таблицу нельзя анализировать, не зная, что в ней записано: половина
+ошибок в анализе данных — это неверно понятый столбец. Описание берётся
+из документации к данным, а не угадывается по названию.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Столбец</th>
+<th>Тип</th>
+<th>Что означает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>survived</code></td>
+<td>0/1</td>
+<td><strong>целевая переменная</strong>: выжил ли пассажир</td>
+</tr>
+<tr>
+<td><code>pclass</code></td>
+<td>1, 2, 3</td>
+<td>класс билета; 1 — первый (дорогой), 3 — третий</td>
+</tr>
+<tr>
+<td><code>age</code></td>
+<td>число</td>
+<td>возраст в годах; для младенцев дробный (0.42 = 5 месяцев)</td>
+</tr>
+<tr>
+<td><code>sibsp</code></td>
+<td>целое</td>
+<td>сколько братьев, сестёр и супругов плыло вместе с пассажиром</td>
+</tr>
+<tr>
+<td><code>parch</code></td>
+<td>целое</td>
+<td>сколько родителей и детей плыло вместе с пассажиром</td>
+</tr>
+<tr>
+<td><code>fare</code></td>
+<td>число</td>
+<td>стоимость билета в фунтах</td>
+</tr>
+<tr>
+<td><code>embarked</code></td>
+<td>C, Q, S</td>
+<td>порт посадки: Шербур, Квинстаун, Саутгемптон</td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>First…</td>
+<td>тот же <code>pclass</code>, записанный словом</td>
+</tr>
+<tr>
+<td><code>deck</code></td>
+<td>A…G</td>
+<td>палуба каюты; известна не для всех</td>
+</tr>
+<tr>
+<td><code>embark_town</code></td>
+<td>Cherbourg…</td>
+<td>тот же <code>embarked</code>, записанный полным названием</td>
+</tr>
+<tr>
+<td><code>alive</code></td>
+<td>yes/no</td>
+<td>«выжил ли пассажир» — словами</td>
+</tr>
+<tr>
+<td><code>alone</code></td>
+<td>True/False</td>
+<td>плыл ли пассажир без семьи</td>
+</tr>
+</tbody>
+</table>
+<p>Уже по этой таблице видно две неприятности, которые мы сейчас
+подтвердим числами: три пары столбцов описывают одно и то же
+(<code>pclass</code>/<code>class</code>,
+<code>embarked</code>/<code>embark_town</code>,
+<code>survived</code>/<code>alive</code>), а <code>alone</code> выглядит
+производным от <code>sibsp</code> и <code>parch</code>. Проверять это на
+глаз мы не будем — для каждой догадки есть однострочная проверка.</p>
+</div>
+<div id="cell012" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Сводка по столбцам: тип, сколько разных значений, сколько пропусков</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>info <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;тип&quot;</span>: df_raw.dtypes.astype(<span class="bu">str</span>),</span>
@@ -459,7 +550,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>display(info)</span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Почему <code>deck</code> в таком виде почти
 бесполезна? И что делать со 124 повторяющимися строками — это ошибка
@@ -467,70 +558,319 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="числовая-сводка-describe">Числовая сводка:
+<code>describe</code></h3>
+<p><code>info</code> показал, из чего таблица состоит;
+<code>describe</code> показывает, какие в ней числа. Смотреть надо не на
+среднее, а на края: минимум, максимум и расстояние между медианой и
+максимумом. Именно там прячутся ошибки ввода, единицы измерения и
+выбросы.</p>
+</div>
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>display(df_raw.describe().T.<span class="bu">round</span>(<span class="dv">2</span>))                 <span class="co"># числовые столбцы</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>display(df_raw.describe(include<span class="op">=</span><span class="st">&quot;object&quot;</span>).T)          <span class="co"># строковые: сколько, каких, какое чаще</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;пассажиров с нулевым тарифом: </span><span class="sc">{</span>(df_raw[<span class="st">&#39;fare&#39;</span>] <span class="op">==</span> <span class="dv">0</span>)<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;возраст: от </span><span class="sc">{</span>df_raw[<span class="st">&#39;age&#39;</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">}</span><span class="ss"> до </span><span class="sc">{</span>df_raw[<span class="st">&#39;age&#39;</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">}</span><span class="ss"> лет&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell016" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Что настораживает в строке <code>fare</code>?
+А какой минимум у <code>age</code> и что он означает?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-3-смотрим-на-данные-глазами">Часть 3. Смотрим на данные
 глазами</h1>
-<p>Таблицу мы прочитали, но ещё не видели. Разведочный анализ отвечает
-на три вопроса, и на каждый есть свой график:</p>
+<p>Таблицу мы прочитали, но ещё не видели. Разведочный анализ (EDA,
+exploratory data analysis) — это не украшение отчёта, а способ найти в
+данных то, чего <code>describe</code> не показывает. Каждому вопросу
+отвечает свой тип графика:</p>
 <table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
 <thead>
 <tr>
 <th>Вопрос</th>
 <th>График</th>
+<th>Функция</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>как устроен отдельный признак</td>
 <td>гистограмма</td>
+<td><code>sns.histplot</code></td>
 </tr>
 <tr>
-<td>различает ли признак классы</td>
-<td>ящик с усами по классам</td>
+<td>как соотносятся категории</td>
+<td>столбики с разбивкой</td>
+<td><code>sns.countplot</code></td>
 </tr>
 <tr>
-<td>как признаки связаны между собой</td>
-<td>тепловая карта корреляций</td>
+<td>различается ли доля классов между группами</td>
+<td>столбики средних с интервалом</td>
+<td><code>sns.barplot</code></td>
+</tr>
+<tr>
+<td>как признак распределён внутри групп</td>
+<td>ящик с усами, скрипка</td>
+<td><code>sns.boxplot</code>, <code>sns.violinplot</code></td>
+</tr>
+<tr>
+<td>как признаки связаны попарно</td>
+<td>тепловая карта, матрица диаграмм</td>
+<td><code>sns.heatmap</code>, <code>sns.pairplot</code></td>
 </tr>
 </tbody>
 </table>
-<p>Третий вопрос сегодня главный: именно карта корреляций найдёт нам то,
-что мы пока не заметили.</p>
+<p>Последний вопрос сегодня главный: именно карта корреляций найдёт нам
+то, что мы пока не заметили. Но начнём с распределений — и заодно
+познакомимся с библиотекой, которая рисует всё перечисленное.</p>
 </div>
-<div id="cell014" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Вопрос 1: как устроен отдельный признак</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.6</span>))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, col <span class="kw">in</span> <span class="bu">zip</span>(axes, (<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>)):</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    ax.hist(df_raw[col].dropna(), bins<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(col)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">&quot;объектов&quot;</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f&quot;</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: скошенность </span><span class="sc">{</span>df_raw[col]<span class="sc">.</span>skew()<span class="sc">:+.2f}</span><span class="ss">&quot;</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
-</div>
-<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Вопрос 2: различает ли признак классы</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>by_class <span class="op">=</span> [df_raw.loc[df_raw[TARGET] <span class="op">==</span> k, <span class="st">&quot;fare&quot;</span>].dropna() <span class="cf">for</span> k <span class="kw">in</span> (<span class="dv">0</span>, <span class="dv">1</span>)]</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">3.6</span>))</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ax.boxplot(by_class, tick_labels<span class="op">=</span>[<span class="st">&quot;погиб&quot;</span>, <span class="st">&quot;выжил&quot;</span>])</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ax.set_yscale(<span class="st">&quot;log&quot;</span>)               <span class="co"># тариф сильно скошен: на линейной оси не видно</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">&quot;fare&quot;</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Тариф по исходу&quot;</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>display(df_raw.groupby(TARGET)[[<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>]].median().<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div>
-</div>
-<div id="cell016" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
-<p><strong>Вывод.</strong> Какой из двух признаков различает выживших, а
-какой почти нет? Зачем на тарифе логарифмическая шкала?</p>
+<p><strong>Напоминание — seaborn: зачем ещё одна библиотека для
+графиков.</strong> <code>matplotlib</code> рисует
+<strong>массивы</strong>: вы сами разбиваете данные на группы, сами
+считаете агрегаты, сами подписываете легенду. <code>seaborn</code> —
+надстройка над ним, которая рисует <strong>таблицы</strong>: вы
+говорите, какой столбец по оси
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>,
+какой по
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+и какой столбец задаёт цвет, а группировку и подписи она делает
+сама.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>sns.histplot(df, x<span class="op">=</span><span class="st">&quot;age&quot;</span>, hue<span class="op">=</span><span class="st">&quot;survived&quot;</span>)   <span class="co"># df -- таблица, hue -- чем красить</span></span></code></pre></div>
+<p>Три вещи, которые стоит запомнить сразу:</p>
+<ul>
+<li><strong><code>hue</code></strong> — «разбей по этому столбцу и
+раскрась». Главный приём seaborn: почти в каждой функции он превращает
+один график в сравнение групп.</li>
+<li><strong><code>ax=</code></strong> — куда рисовать. Функции уровня
+осей (<code>histplot</code>, <code>boxplot</code>,
+<code>countplot</code>, <code>barplot</code>, <code>violinplot</code>,
+<code>heatmap</code>) принимают готовую ось matplotlib, поэтому свободно
+смешиваются с <code>plt.subplots</code>. Функции уровня фигуры
+(<code>pairplot</code>, <code>catplot</code>, <code>jointplot</code>)
+сами создают всю фигуру целиком — <code>ax=</code> им передать
+нельзя.</li>
+<li><strong><code>sns.set_theme()</code></strong> — меняет
+<code>plt.rcParams</code>, то есть оформление <strong>всех</strong>
+графиков, включая нарисованные чистым matplotlib.</li>
+</ul>
+<p>Всё, что делает seaborn, можно написать и на matplotlib — просто
+вместо одной строки получится десять. Ниже мы посмотрим на обе записи
+одного и того же графика и сравним.</p>
+</blockquote>
+</div>
+<div id="cell019" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Вопрос 1: как устроен отдельный признак -- чистый matplotlib</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.6</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, col <span class="kw">in</span> <span class="bu">zip</span>(axes, (<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>)):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    ax.hist(df_raw[col].dropna(), bins<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(col)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">&quot;объектов&quot;</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f&quot;</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: скошенность </span><span class="sc">{</span>df_raw[col]<span class="sc">.</span>skew()<span class="sc">:+.2f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
+</div>
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># То же самое на seaborn -- и сразу с разбивкой по исходу.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">&quot;whitegrid&quot;</span>, palette<span class="op">=</span><span class="st">&quot;deep&quot;</span>)   <span class="co"># оформление всех графиков ниже</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({<span class="st">&quot;figure.dpi&quot;</span>: <span class="dv">110</span>, <span class="st">&quot;font.size&quot;</span>: <span class="dv">11</span>})   <span class="co"># вернём настройки курса</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">3.8</span>))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>sns.histplot(df_raw, x<span class="op">=</span><span class="st">&quot;age&quot;</span>, hue<span class="op">=</span>TARGET, bins<span class="op">=</span><span class="dv">30</span>, kde<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>sns.histplot(df_raw, x<span class="op">=</span><span class="st">&quot;fare&quot;</span>, hue<span class="op">=</span>TARGET, bins<span class="op">=</span><span class="dv">30</span>, log_scale<span class="op">=</span>(<span class="va">True</span>, <span class="va">False</span>), ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">&quot;Возраст: распределение по исходу&quot;</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">&quot;Тариф (логарифмическая ось)&quot;</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
+</div>
+<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Что нового показала разбивка по
+<code>hue</code>, чего не было на первой паре гистограмм? И почему на
+тарифе пришлось включить логарифмическую ось?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="категориальные-признаки-сколько-кого-и-какова-доля-выживших">Категориальные
+признаки: сколько кого и какова доля выживших</h3>
+<p>Гистограмма отвечает на вопрос о числовом признаке. Для
+категориального (<code>pclass</code>, <code>embarked</code>,
+<code>alone</code>) нужны две разные картинки, и путать их нельзя:</p>
+<ul>
+<li><code>countplot</code> — <strong>сколько</strong> объектов в каждой
+категории (размер группы);</li>
+<li><code>barplot</code> по целевой переменной — <strong>какая
+доля</strong> в группе выжила, с доверительным интервалом среднего.</li>
+</ul>
+<p>Первое говорит, насколько выводу можно верить, второе — каков сам
+вывод.</p>
+</div>
+<div id="cell023" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>cat_cols <span class="op">=</span> [<span class="st">&quot;pclass&quot;</span>, <span class="st">&quot;embarked&quot;</span>, <span class="st">&quot;alone&quot;</span>]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">6.4</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j, col <span class="kw">in</span> <span class="bu">enumerate</span>(cat_cols):</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    sns.countplot(df_raw, x<span class="op">=</span>col, hue<span class="op">=</span>TARGET, ax<span class="op">=</span>axes[<span class="dv">0</span>, j])</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, j].set_title(<span class="ss">f&quot;</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: размер групп&quot;</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    sns.barplot(df_raw, x<span class="op">=</span>col, y<span class="op">=</span>TARGET, errorbar<span class="op">=</span>(<span class="st">&quot;ci&quot;</span>, <span class="dv">95</span>), ax<span class="op">=</span>axes[<span class="dv">1</span>, j])</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, j].axhline(df_raw[TARGET].mean(), ls<span class="op">=</span><span class="st">&quot;--&quot;</span>, c<span class="op">=</span><span class="st">&quot;0.3&quot;</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, j].set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, j].set_title(<span class="ss">f&quot;</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: доля выживших&quot;</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;доля выживших по выборке: </span><span class="sc">{</span>df_raw[TARGET]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">   (пунктир на нижних графиках)&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell024" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Те же числа таблицей: размер группы и доля выживших</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> cat_cols:</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> df_raw.groupby(col, dropna<span class="op">=</span><span class="va">False</span>)[TARGET].agg([<span class="st">&quot;size&quot;</span>, <span class="st">&quot;mean&quot;</span>])</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    display(t.rename(columns<span class="op">=</span>{<span class="st">&quot;size&quot;</span>: <span class="st">&quot;объектов&quot;</span>, <span class="st">&quot;mean&quot;</span>: <span class="st">&quot;доля выживших&quot;</span>}).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
+</div>
+<div id="cell025" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Какой признак разделяет классы сильнее всего?
+Порт <code>C</code> даёт
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.554</mn><annotation encoding="application/x-tex">0.554</annotation></semantics></math>
+против
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.337</mn><annotation encoding="application/x-tex">0.337</annotation></semantics></math>
+у <code>S</code> — значит ли это, что порт посадки влиял на
+выживание?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="ящик-и-скрипка-распределение-внутри-групп">Ящик и скрипка:
+распределение внутри групп</h3>
+<p>Столбик показывает одно число на группу — среднее. Чтобы увидеть
+<strong>всё</strong> распределение внутри группы, есть два графика:</p>
+<ul>
+<li><strong>ящик с усами</strong> (<code>boxplot</code>) — медиана,
+квартили, выбросы; компактно и сравнимо между группами;</li>
+<li><strong>скрипка</strong> (<code>violinplot</code>) — та же коробка
+плюс сглаженная плотность; видно форму, в том числе два горба, которые
+ящик показать не в состоянии.</li>
+</ul>
+<p>Опция <code>split=True</code> у скрипки складывает две половинки
+одной группы — удобно, когда <code>hue</code> бинарный.</p>
+</div>
+<div id="cell027" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="fl">12.5</span>, <span class="fl">4.2</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sns.boxplot(df_raw, x<span class="op">=</span>TARGET, y<span class="op">=</span><span class="st">&quot;fare&quot;</span>, hue<span class="op">=</span>TARGET, legend<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_yscale(<span class="st">&quot;log&quot;</span>)          <span class="co"># тариф сильно скошен: на линейной оси не видно</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticks([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="st">&quot;погиб&quot;</span>, <span class="st">&quot;выжил&quot;</span>])</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">&quot;Тариф по исходу (ящик с усами)&quot;</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>sns.violinplot(df_raw, x<span class="op">=</span><span class="st">&quot;pclass&quot;</span>, y<span class="op">=</span><span class="st">&quot;age&quot;</span>, hue<span class="op">=</span>TARGET, split<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>               gap<span class="op">=</span><span class="fl">0.1</span>, cut<span class="op">=</span><span class="dv">0</span>, inner<span class="op">=</span><span class="st">&quot;quartile&quot;</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])   <span class="co"># cut=0: не рисовать за пределами данных</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">&quot;Возраст по классу и исходу (скрипка)&quot;</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>display(df_raw.groupby(TARGET)[[<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>]].median().<span class="bu">round</span>(<span class="dv">1</span>))</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>display(df_raw.groupby(<span class="st">&quot;pclass&quot;</span>)[[<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>]].median().<span class="bu">round</span>(<span class="dv">1</span>))</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>kids <span class="op">=</span> df_raw[df_raw[<span class="st">&quot;age&quot;</span>] <span class="op">&lt;</span> <span class="dv">10</span>]</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;пассажиры младше 10 лет:&quot;</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>display(kids.groupby(<span class="st">&quot;pclass&quot;</span>)[TARGET].agg([<span class="st">&quot;size&quot;</span>, <span class="st">&quot;mean&quot;</span>]).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
+</div>
+<div id="cell028" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Какой из двух признаков различает выживших, а
+какой почти нет? Что скрипка показала такого, чего не видно на
+ящике?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell029" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="матрица-диаграмм-всё-против-всего">Матрица диаграмм: всё против
+всего</h3>
+<p><code>pairplot</code> рисует сетку: по диагонали — распределение
+каждого признака, вне диагонали — диаграммы рассеяния для каждой пары.
+Это функция <strong>уровня фигуры</strong>: она создаёт всю сетку сама,
+поэтому <code>ax=</code> ей не передают. С <code>corner=True</code>
+рисуется только нижний треугольник — верхний повторял бы его
+зеркально.</p>
+<p>Полезно как первый общий взгляд, но дорого: для
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+признаков это порядка
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>n</mi><mn>2</mn></msup><annotation encoding="application/x-tex">n^2</annotation></semantics></math>
+графиков. На широких таблицах берут подмножество столбцов, как
+здесь.</p>
+</div>
+<div id="cell030" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>, <span class="st">&quot;sibsp&quot;</span>, <span class="st">&quot;parch&quot;</span>, TARGET]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.pairplot(df_raw[cols].dropna(), hue<span class="op">=</span>TARGET, corner<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                 height<span class="op">=</span><span class="fl">1.75</span>, plot_kws<span class="op">=</span>{<span class="st">&quot;s&quot;</span>: <span class="dv">12</span>, <span class="st">&quot;alpha&quot;</span>: <span class="fl">0.55</span>})</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>g.figure.suptitle(<span class="st">&quot;Попарные связи числовых признаков&quot;</span>, y<span class="op">=</span><span class="fl">1.01</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+</div>
+<div id="cell031" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Видно ли на матрице диаграмм что-то, чего не
+дали предыдущие графики? И где у неё предел?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell032" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="пропуск--это-тоже-признак">Пропуск — это тоже признак</h3>
+<p>Последний вопрос разведки задают редко, а он часто самый полезный:
+<strong>не несёт ли информации сам факт пропуска?</strong> У
+<code>deck</code> пропущено 77 % значений, и проверить это ничего не
+стоит — сделаем из пропуска отдельный бинарный признак и посмотрим на
+долю выживших.</p>
+</div>
+<div id="cell033" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dm <span class="op">=</span> df_raw.assign(deck_known<span class="op">=</span>df_raw[<span class="st">&quot;deck&quot;</span>].notna(),</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                   age_missing<span class="op">=</span>df_raw[<span class="st">&quot;age&quot;</span>].isna())</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">3.8</span>))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>sns.barplot(dm, x<span class="op">=</span><span class="st">&quot;deck_known&quot;</span>, y<span class="op">=</span>TARGET, errorbar<span class="op">=</span>(<span class="st">&quot;ci&quot;</span>, <span class="dv">95</span>), ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(dm[TARGET].mean(), ls<span class="op">=</span><span class="st">&quot;--&quot;</span>, c<span class="op">=</span><span class="st">&quot;0.3&quot;</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">&quot;Доля выживших: палуба записана или нет&quot;</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>sns.barplot(dm, x<span class="op">=</span><span class="st">&quot;pclass&quot;</span>, y<span class="op">=</span><span class="st">&quot;age_missing&quot;</span>, errorbar<span class="op">=</span>(<span class="st">&quot;ci&quot;</span>, <span class="dv">95</span>), ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">&quot;Доля пропусков в age по классу билета&quot;</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>display(pd.crosstab(dm[<span class="st">&quot;deck_known&quot;</span>], dm[<span class="st">&quot;pclass&quot;</span>], normalize<span class="op">=</span><span class="st">&quot;index&quot;</span>).<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;доля выживших в зависимости от того, записана ли палуба:&quot;</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>display(dm.groupby(<span class="st">&quot;deck_known&quot;</span>)[TARGET].agg([<span class="st">&quot;size&quot;</span>, <span class="st">&quot;mean&quot;</span>]).<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;доля пропусков в age по классу:&quot;</span>,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>      dm.groupby(<span class="st">&quot;pclass&quot;</span>)[<span class="st">&quot;age_missing&quot;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>).to_dict())</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">то же ВНУТРИ первого класса -- где смешение с pclass исключено:&quot;</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>display(dm[dm[<span class="st">&quot;pclass&quot;</span>] <span class="op">==</span> <span class="dv">1</span>].groupby(<span class="st">&quot;deck_known&quot;</span>)[TARGET].agg([<span class="st">&quot;size&quot;</span>, <span class="st">&quot;mean&quot;</span>]).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
+</div>
+<div id="cell034" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Пропуск в <code>deck</code> — случайность или
+сигнал? И почему этого мало, чтобы объявить «палуба записана» полезным
+признаком?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell035" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-31-найти-признаки-дублирующие-друг-друга">Задание 3.1.
 Найти признаки, дублирующие друг друга</h3>
 <p>Корреляция Пирсона считается только для чисел, поэтому сначала
@@ -540,38 +880,37 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 близким к единице — это признаки, несущие <strong>одну и ту же</strong>
 информацию.</p>
 </div>
-<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df_raw.copy()</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&quot;alive&quot;</span>] <span class="op">=</span> d[<span class="st">&quot;alive&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;yes&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;no&quot;</span>: <span class="dv">0</span>})</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&quot;class&quot;</span>] <span class="op">=</span> d[<span class="st">&quot;class&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;First&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;Second&quot;</span>: <span class="dv">2</span>, <span class="st">&quot;Third&quot;</span>: <span class="dv">3</span>})</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&quot;alone&quot;</span>] <span class="op">=</span> d[<span class="st">&quot;alone&quot;</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> d.select_dtypes(include<span class="op">=</span><span class="st">&quot;number&quot;</span>).corr()      <span class="co"># матрица корреляций</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;признаков в карте:&quot;</span>, <span class="bu">len</span>(C))</span></code></pre></div>
+<div id="cell036" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df_raw.copy()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&quot;alive&quot;</span>] <span class="op">=</span> d[<span class="st">&quot;alive&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;yes&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;no&quot;</span>: <span class="dv">0</span>})</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&quot;class&quot;</span>] <span class="op">=</span> d[<span class="st">&quot;class&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;First&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;Second&quot;</span>: <span class="dv">2</span>, <span class="st">&quot;Third&quot;</span>: <span class="dv">3</span>})</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&quot;alone&quot;</span>] <span class="op">=</span> d[<span class="st">&quot;alone&quot;</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> d.select_dtypes(include<span class="op">=</span><span class="st">&quot;number&quot;</span>).corr()      <span class="co"># матрица корреляций</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;признаков в карте:&quot;</span>, <span class="bu">len</span>(C))</span></code></pre></div>
 </div>
-<div id="cell019" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">5.5</span>))</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> ax.imshow(C, cmap<span class="op">=</span><span class="st">&quot;RdBu_r&quot;</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(C)), C.columns, rotation<span class="op">=</span><span class="dv">90</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(C)), C.columns)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>fig.colorbar(im, label<span class="op">=</span><span class="st">&quot;коэффициент корреляции&quot;</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Связи между признаками&quot;</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
+<div id="cell037" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">7.5</span>, <span class="fl">5.8</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sns.heatmap(C, cmap<span class="op">=</span><span class="st">&quot;RdBu_r&quot;</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">&quot;.2f&quot;</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">&quot;size&quot;</span>: <span class="dv">7</span>}, linewidths<span class="op">=</span><span class="fl">0.4</span>, square<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>            cbar_kws<span class="op">=</span>{<span class="st">&quot;label&quot;</span>: <span class="st">&quot;коэффициент корреляции&quot;</span>}, ax<span class="op">=</span>ax)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Связи между признаками&quot;</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>pairs <span class="op">=</span> []</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(C.columns):</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> b <span class="kw">in</span> C.columns[i <span class="op">+</span> <span class="dv">1</span>:]:           <span class="co"># каждую пару берём ровно один раз</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># </span><span class="al">TODO</span><span class="co"> (1 строка): добавьте в pairs словарь</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   {&quot;признак A&quot;: a, &quot;признак B&quot;: b, &quot;|r|&quot;: abs(C.loc[a, b])}</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2 строки): соберите из pairs таблицу, отсортируйте по |r| по убыванию</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                  и покажите первые пять строк</span></span></code></pre></div>
+<div id="cell038" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>pairs <span class="op">=</span> []</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(C.columns):</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> b <span class="kw">in</span> C.columns[i <span class="op">+</span> <span class="dv">1</span>:]:           <span class="co"># каждую пару берём ровно один раз</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># </span><span class="al">TODO</span><span class="co"> (1 строка): добавьте в pairs словарь</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   {&quot;признак A&quot;: a, &quot;признак B&quot;: b, &quot;|r|&quot;: abs(C.loc[a, b])}</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2 строки): соберите из pairs таблицу, отсортируйте по |r| по убыванию</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                  и покажите первые пять строк</span></span></code></pre></div>
 </div>
-<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell039" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Две пары дали
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>r</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>1.000</mn></mrow><annotation encoding="application/x-tex">|r| = 1.000</annotation></semantics></math>.
@@ -581,7 +920,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell040" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-4-признак-которого-не-должно-быть">Часть 4. Признак,
 которого не должно быть</h1>
@@ -590,29 +929,29 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <code>yes</code>/<code>no</code>. Посмотрим, что будет, если подать в
 модель только его.</p>
 </div>
-<div id="cell023" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>alive01 <span class="op">=</span> df_raw[<span class="st">&quot;alive&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;yes&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;no&quot;</span>: <span class="dv">0</span>}).to_frame()</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> cross_val_score(tree, alive01, df_raw[TARGET], cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&quot;roc_auc&quot;</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;ROC-AUC по ОДНОМУ признаку alive: </span><span class="sc">{</span>score<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;alive совпадает с survived на всех объектах:&quot;</span>,</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>      (alive01[<span class="st">&quot;alive&quot;</span>] <span class="op">==</span> df_raw[TARGET]).<span class="bu">all</span>())</span></code></pre></div>
+<div id="cell041" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>alive01 <span class="op">=</span> df_raw[<span class="st">&quot;alive&quot;</span>].<span class="bu">map</span>({<span class="st">&quot;yes&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;no&quot;</span>: <span class="dv">0</span>}).to_frame()</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> cross_val_score(tree, alive01, df_raw[TARGET], cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&quot;roc_auc&quot;</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;ROC-AUC по ОДНОМУ признаку alive: </span><span class="sc">{</span>score<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;alive совпадает с survived на всех объектах:&quot;</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      (alive01[<span class="st">&quot;alive&quot;</span>] <span class="op">==</span> df_raw[TARGET]).<span class="bu">all</span>())</span></code></pre></div>
 </div>
-<div id="cell024" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Убираем утечку и два признака-дубликата: из каждой пары оставляем один</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_raw.drop(columns<span class="op">=</span>[<span class="st">&quot;alive&quot;</span>,          <span class="co"># копия целевой переменной</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;class&quot;</span>,          <span class="co"># то же, что pclass, только словами</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;embark_town&quot;</span>])   <span class="co"># то же, что embarked, только названием</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;alone&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;alone&quot;</span>].astype(<span class="bu">int</span>)       <span class="co"># бинарный признак кодируем 0/1</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;осталось признаков:&quot;</span>, df.shape[<span class="dv">1</span>] <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(df.columns.drop(TARGET)))</span></code></pre></div>
+<div id="cell042" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Убираем утечку и два признака-дубликата: из каждой пары оставляем один</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_raw.drop(columns<span class="op">=</span>[<span class="st">&quot;alive&quot;</span>,          <span class="co"># копия целевой переменной</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;class&quot;</span>,          <span class="co"># то же, что pclass, только словами</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;embark_town&quot;</span>])   <span class="co"># то же, что embarked, только названием</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;alone&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;alone&quot;</span>].astype(<span class="bu">int</span>)       <span class="co"># бинарный признак кодируем 0/1</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;осталось признаков:&quot;</span>, df.shape[<span class="dv">1</span>] <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(df.columns.drop(TARGET)))</span></code></pre></div>
 </div>
-<div id="cell025" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell043" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Откуда идеальное качество и почему
 <code>alive</code> необходимо удалить, хотя он «лучший признак в
@@ -620,7 +959,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell044" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-5-типы-признаков-и-кодирование">Часть 5. Типы признаков и
 кодирование</h1>
@@ -680,17 +1019,17 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><code>pclass</code> — порядковый (1 лучше 2 лучше 3),
 <code>embarked</code> — номинальный.</p>
 </div>
-<div id="cell027" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Номинальный -&gt; индикаторы; порядковый оставляем числом, порядок задаём мы</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> OneHotEncoder(sparse_output<span class="op">=</span><span class="va">False</span>).fit_transform(df[[<span class="st">&quot;embarked&quot;</span>]].fillna(<span class="st">&quot;?&quot;</span>))</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;embarked -&gt;&quot;</span>, E.shape[<span class="dv">1</span>], <span class="st">&quot;столбцов-индикаторов&quot;</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;сумма индикаторов по строке всегда:&quot;</span>, np.unique(E.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)))</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;pclass:&quot;</span>, <span class="bu">sorted</span>(df[<span class="st">&quot;pclass&quot;</span>].unique().tolist()), <span class="st">&quot;-- порядок уже закодирован&quot;</span>)</span></code></pre></div>
+<div id="cell045" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Номинальный -&gt; индикаторы; порядковый оставляем числом, порядок задаём мы</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> OneHotEncoder(sparse_output<span class="op">=</span><span class="va">False</span>).fit_transform(df[[<span class="st">&quot;embarked&quot;</span>]].fillna(<span class="st">&quot;?&quot;</span>))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;embarked -&gt;&quot;</span>, E.shape[<span class="dv">1</span>], <span class="st">&quot;столбцов-индикаторов&quot;</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;сумма индикаторов по строке всегда:&quot;</span>, np.unique(E.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)))</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;pclass:&quot;</span>, <span class="bu">sorted</span>(df[<span class="st">&quot;pclass&quot;</span>].unique().tolist()), <span class="st">&quot;-- порядок уже закодирован&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell028" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell046" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Почему для <code>embarked</code> нельзя
 обойтись одним столбцом с числами 1, 2, 3? И почему сумма индикаторов,
@@ -698,14 +1037,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell029" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell047" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-6-пропуски-выбросы-и-масштаб">Часть 6. Пропуски, выбросы и
 масштаб</h1>
 <p>Три вещи, которые надо сделать с числовыми признаками, — и в каждой
 есть ловушка.</p>
 </div>
-<div id="cell030" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell048" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — квантиль, квартиль, IQR.</strong> Квантиль
 уровня
@@ -738,18 +1077,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 один выброс тянет за собой.</p>
 </blockquote>
 </div>
-<div id="cell031" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (а) Пропуски: сколько стоит &quot;просто удалить строки&quot;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>variants_na <span class="op">=</span> {</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;как есть&quot;</span>: df,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;dropna() по всем столбцам&quot;</span>: df.dropna(),</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;сначала убрать deck, потом dropna()&quot;</span>: df.drop(columns<span class="op">=</span>[<span class="st">&quot;deck&quot;</span>]).dropna(),</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, d <span class="kw">in</span> variants_na.items():</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">:36s}</span><span class="ss"> строк </span><span class="sc">{</span><span class="bu">len</span>(d)<span class="sc">:4d}</span><span class="ss">, доля выживших </span><span class="sc">{</span>d[TARGET]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<div id="cell049" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (а) Пропуски: сколько стоит &quot;просто удалить строки&quot;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>variants_na <span class="op">=</span> {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;как есть&quot;</span>: df,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;dropna() по всем столбцам&quot;</span>: df.dropna(),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;сначала убрать deck, потом dropna()&quot;</span>: df.drop(columns<span class="op">=</span>[<span class="st">&quot;deck&quot;</span>]).dropna(),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, d <span class="kw">in</span> variants_na.items():</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">:36s}</span><span class="ss"> строк </span><span class="sc">{</span><span class="bu">len</span>(d)<span class="sc">:4d}</span><span class="ss">, доля выживших </span><span class="sc">{</span>d[TARGET]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell032" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell050" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Что произошло с долей выживших при
 <code>dropna()</code> по всем столбцам и почему? Как это связано с 77 %
@@ -757,25 +1096,25 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell033" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (б) Выбросы: два правила дают очень разный ответ</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> (<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>):</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> df[col].dropna()</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    q1, q3 <span class="op">=</span> s.quantile(<span class="fl">0.25</span>), s.quantile(<span class="fl">0.75</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    iqr <span class="op">=</span> q3 <span class="op">-</span> q1</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    n_iqr <span class="op">=</span> ((s <span class="op">&lt;</span> q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> iqr) <span class="op">|</span> (s <span class="op">&gt;</span> q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> iqr)).<span class="bu">sum</span>()</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    n_sigma <span class="op">=</span> (np.<span class="bu">abs</span>(s <span class="op">-</span> s.mean()) <span class="op">&gt;</span> <span class="dv">3</span> <span class="op">*</span> s.std()).<span class="bu">sum</span>()</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>col<span class="sc">:5s}</span><span class="ss">: 1.5 IQR -&gt; </span><span class="sc">{</span>n_iqr<span class="sc">:3d}</span><span class="ss"> объектов, &quot;</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&quot;3 sigma -&gt; </span><span class="sc">{</span>n_sigma<span class="sc">:3d}</span><span class="ss">, скошенность </span><span class="sc">{</span>s<span class="sc">.</span>skew()<span class="sc">:+.2f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<div id="cell051" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (б) Выбросы: два правила дают очень разный ответ</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> (<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>):</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> df[col].dropna()</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    q1, q3 <span class="op">=</span> s.quantile(<span class="fl">0.25</span>), s.quantile(<span class="fl">0.75</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    iqr <span class="op">=</span> q3 <span class="op">-</span> q1</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    n_iqr <span class="op">=</span> ((s <span class="op">&lt;</span> q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> iqr) <span class="op">|</span> (s <span class="op">&gt;</span> q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> iqr)).<span class="bu">sum</span>()</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    n_sigma <span class="op">=</span> (np.<span class="bu">abs</span>(s <span class="op">-</span> s.mean()) <span class="op">&gt;</span> <span class="dv">3</span> <span class="op">*</span> s.std()).<span class="bu">sum</span>()</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>col<span class="sc">:5s}</span><span class="ss">: 1.5 IQR -&gt; </span><span class="sc">{</span>n_iqr<span class="sc">:3d}</span><span class="ss"> объектов, &quot;</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&quot;3 sigma -&gt; </span><span class="sc">{</span>n_sigma<span class="sc">:3d}</span><span class="ss">, скошенность </span><span class="sc">{</span>s<span class="sc">.</span>skew()<span class="sc">:+.2f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell034" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell052" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Почему на <code>fare</code> правила
 расходятся в шесть раз? Надо ли удалять эти 116 объектов?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell035" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell053" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-61-своя-стандартизация">Задание 6.1. Своя
 стандартизация</h3>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>σ</mi></mrow><annotation encoding="application/x-tex">z = (x - \mu)/\sigma</annotation></semantics></math>
@@ -786,29 +1125,29 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 первая из девяти таких сверок в курсе</strong>: своя реализация обязана
 совпадать с библиотечной численно, а не «примерно».</p>
 </div>
-<div id="cell036" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
-<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> standardize(X, mu<span class="op">=</span><span class="va">None</span>, sigma<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;z = (x - mu) / sigma. Если mu и sigma не заданы -- оценить их по X.&quot;&quot;&quot;</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.asarray(X, dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (3 строки):</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   1) если mu is None -- посчитать mu = X.mean(axis=0) и sigma = X.std(axis=0);</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   2) нулевые sigma заменить на 1: np.where(sigma &gt; 0, sigma, 1.0);</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   3) вернуть (X - mu) / sigma, mu, sigma</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+<div id="cell054" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> standardize(X, mu<span class="op">=</span><span class="va">None</span>, sigma<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;z = (x - mu) / sigma. Если mu и sigma не заданы -- оценить их по X.&quot;&quot;&quot;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.asarray(X, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (3 строки):</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   1) если mu is None -- посчитать mu = X.mean(axis=0) и sigma = X.std(axis=0);</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   2) нулевые sigma заменить на 1: np.where(sigma &gt; 0, sigma, 1.0);</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   3) вернуть (X - mu) / sigma, mu, sigma</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell037" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>X_num <span class="op">=</span> df[[<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>]].fillna(df[[<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>]].median()).to_numpy()</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>Z_my, mu, sigma <span class="op">=</span> standardize(X_num)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>Z_sk <span class="op">=</span> StandardScaler().fit_transform(X_num)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;max|своя - sklearn| = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">abs</span>(Z_my <span class="op">-</span> Z_sk)<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2e}</span><span class="ss">&quot;</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;совпадает численно:&quot;</span>, np.allclose(Z_my, Z_sk))</span></code></pre></div>
+<div id="cell055" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>X_num <span class="op">=</span> df[[<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>]].fillna(df[[<span class="st">&quot;age&quot;</span>, <span class="st">&quot;fare&quot;</span>]].median()).to_numpy()</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>Z_my, mu, sigma <span class="op">=</span> standardize(X_num)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>Z_sk <span class="op">=</span> StandardScaler().fit_transform(X_num)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;max|своя - sklearn| = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">abs</span>(Z_my <span class="op">-</span> Z_sk)<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2e}</span><span class="ss">&quot;</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;совпадает численно:&quot;</span>, np.allclose(Z_my, Z_sk))</span></code></pre></div>
 </div>
-<div id="cell038" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell056" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Зачем <code>standardize</code> принимает
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
@@ -818,7 +1157,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell039" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell057" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-7-честное-разбиение-и-первый-ориентир">Часть 7. Честное
 разбиение и первый ориентир</h1>
@@ -833,7 +1172,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 занятии 5. Порядок действий: <strong>сначала делим, потом
 обрабатываем</strong>, а не наоборот.</p>
 </div>
-<div id="cell040" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell058" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — стратификация.</strong> При случайном делении
 выборки доли классов в частях могут заметно разойтись — особенно если
@@ -843,21 +1182,21 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 он не нужен (классов нет), а для классификации — практически всегда.</p>
 </blockquote>
 </div>
-<div id="cell041" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> df.drop(columns<span class="op">=</span>[TARGET]), df[TARGET]</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> <span class="bu">list</span>(X.select_dtypes(include<span class="op">=</span><span class="st">&quot;number&quot;</span>).columns)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>cat_cols <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> X.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> num_cols]</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>RANDOM_STATE, stratify<span class="op">=</span>y)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;обучающая </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss">, контрольная </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;числовые:&quot;</span>, num_cols)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;категориальные:&quot;</span>, cat_cols)</span></code></pre></div>
+<div id="cell059" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> df.drop(columns<span class="op">=</span>[TARGET]), df[TARGET]</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> <span class="bu">list</span>(X.select_dtypes(include<span class="op">=</span><span class="st">&quot;number&quot;</span>).columns)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>cat_cols <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> X.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> num_cols]</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>RANDOM_STATE, stratify<span class="op">=</span>y)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;обучающая </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss">, контрольная </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;числовые:&quot;</span>, num_cols)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;категориальные:&quot;</span>, cat_cols)</span></code></pre></div>
 </div>
-<div id="cell042" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell060" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-71-сборка-предобработки">Задание 7.1. Сборка
 предобработки</h3>
 <p>Числовые и категориальные столбцы обрабатываются по-разному, поэтому
@@ -869,35 +1208,35 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p>Ветка для чисел уже собрана — соберите по образцу ветку для
 категорий.</p>
 </div>
-<div id="cell043" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
-<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Ветка для чисел: заполнить пропуски медианой, затем стандартизовать</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>num_branch <span class="op">=</span> Pipeline([(<span class="st">&quot;impute&quot;</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">&quot;median&quot;</span>)),</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                       (<span class="st">&quot;scale&quot;</span>, StandardScaler())])</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2 строки): по образцу соберите ветку для категорий --</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   SimpleImputer(strategy=&quot;most_frequent&quot;), затем</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   OneHotEncoder(handle_unknown=&quot;ignore&quot;, sparse_output=False)</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>cat_branch <span class="op">=</span> ...</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer([(<span class="st">&quot;num&quot;</span>, num_branch, num_cols),</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>                                  (<span class="st">&quot;cat&quot;</span>, cat_branch, cat_cols)])</span></code></pre></div>
+<div id="cell061" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Ветка для чисел: заполнить пропуски медианой, затем стандартизовать</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>num_branch <span class="op">=</span> Pipeline([(<span class="st">&quot;impute&quot;</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">&quot;median&quot;</span>)),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>                       (<span class="st">&quot;scale&quot;</span>, StandardScaler())])</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2 строки): по образцу соберите ветку для категорий --</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   SimpleImputer(strategy=&quot;most_frequent&quot;), затем</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   OneHotEncoder(handle_unknown=&quot;ignore&quot;, sparse_output=False)</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>cat_branch <span class="op">=</span> ...</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer([(<span class="st">&quot;num&quot;</span>, num_branch, num_cols),</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>                                  (<span class="st">&quot;cat&quot;</span>, cat_branch, cat_cols)])</span></code></pre></div>
 </div>
-<div id="cell044" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>X_train_t <span class="op">=</span> preprocessor.fit_transform(X_train)   <span class="co"># fit ТОЛЬКО на обучающей части</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>X_test_t <span class="op">=</span> preprocessor.transform(X_test)         <span class="co"># на контрольной -- только transform</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> preprocessor.get_feature_names_out()</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;матрица объектов-признаков: </span><span class="sc">{</span>X_train_t<span class="sc">.</span>shape<span class="sc">}</span><span class="ss"> (было </span><span class="sc">{</span>X_train<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> столбцов)&quot;</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;первые признаки:&quot;</span>, <span class="bu">list</span>(feature_names[:<span class="dv">6</span>]))</span></code></pre></div>
+<div id="cell062" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>X_train_t <span class="op">=</span> preprocessor.fit_transform(X_train)   <span class="co"># fit ТОЛЬКО на обучающей части</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>X_test_t <span class="op">=</span> preprocessor.transform(X_test)         <span class="co"># на контрольной -- только transform</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> preprocessor.get_feature_names_out()</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;матрица объектов-признаков: </span><span class="sc">{</span>X_train_t<span class="sc">.</span>shape<span class="sc">}</span><span class="ss"> (было </span><span class="sc">{</span>X_train<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> столбцов)&quot;</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;первые признаки:&quot;</span>, <span class="bu">list</span>(feature_names[:<span class="dv">6</span>]))</span></code></pre></div>
 </div>
-<div id="cell045" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell063" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="ориентир-с-чем-сравнивать-модели">Ориентир: с чем сравнивать
 модели</h3>
 <p>Матрица готова — можно обучать. Но прежде чем радоваться качеству,
@@ -906,40 +1245,40 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p>Строгие определения функции потерь и риска будут на лекции 1; пока
 пользуемся привычными: доля правильных ответов и ROC-AUC.</p>
 </div>
-<div id="cell046" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.dummy <span class="im">import</span> DummyClassifier</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, roc_auc_score</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {<span class="st">&quot;константа (самый частый класс)&quot;</span>: DummyClassifier(strategy<span class="op">=</span><span class="st">&quot;most_frequent&quot;</span>),</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;логистическая регрессия&quot;</span>: LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>)}</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {}</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> models.items():</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    m.fit(X_train_t, y_train)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    results[name] <span class="op">=</span> {<span class="st">&quot;accuracy&quot;</span>: accuracy_score(y_test, m.predict(X_test_t)),</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ROC-AUC&quot;</span>: roc_auc_score(y_test, m.predict_proba(X_test_t)[:, <span class="dv">1</span>])}</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(results).T.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
+<div id="cell064" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.dummy <span class="im">import</span> DummyClassifier</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, roc_auc_score</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {<span class="st">&quot;константа (самый частый класс)&quot;</span>: DummyClassifier(strategy<span class="op">=</span><span class="st">&quot;most_frequent&quot;</span>),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;логистическая регрессия&quot;</span>: LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>)}</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {}</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> models.items():</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    m.fit(X_train_t, y_train)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    results[name] <span class="op">=</span> {<span class="st">&quot;accuracy&quot;</span>: accuracy_score(y_test, m.predict(X_test_t)),</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ROC-AUC&quot;</span>: roc_auc_score(y_test, m.predict_proba(X_test_t)[:, <span class="dv">1</span>])}</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(results).T.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell047" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell065" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Насколько модель лучше константы? Чему равен
 ROC-AUC у константы и почему именно столько?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell048" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Каталог output/ -- то, что ноутбук создаёт сам (курсовые данные лежат в data/)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib, joblib</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>out_dir <span class="op">=</span> pathlib.Path(<span class="st">&quot;output&quot;</span>)<span class="op">;</span> out_dir.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>np.savez_compressed(out_dir <span class="op">/</span> <span class="st">&quot;titanic_prepared.npz&quot;</span>, X_train<span class="op">=</span>X_train_t,</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                    X_test<span class="op">=</span>X_test_t, y_train<span class="op">=</span>np.asarray(y_train),</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                    y_test<span class="op">=</span>np.asarray(y_test),</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                    feature_names<span class="op">=</span>np.asarray(feature_names, dtype<span class="op">=</span><span class="bu">object</span>))</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>joblib.dump(preprocessor, out_dir <span class="op">/</span> <span class="st">&quot;titanic_preprocessor.joblib&quot;</span>)</span></code></pre></div>
+<div id="cell066" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Каталог output/ -- то, что ноутбук создаёт сам (курсовые данные лежат в data/)</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib, joblib</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>out_dir <span class="op">=</span> pathlib.Path(<span class="st">&quot;output&quot;</span>)<span class="op">;</span> out_dir.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>np.savez_compressed(out_dir <span class="op">/</span> <span class="st">&quot;titanic_prepared.npz&quot;</span>, X_train<span class="op">=</span>X_train_t,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                    X_test<span class="op">=</span>X_test_t, y_train<span class="op">=</span>np.asarray(y_train),</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>                    y_test<span class="op">=</span>np.asarray(y_test),</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>                    feature_names<span class="op">=</span>np.asarray(feature_names, dtype<span class="op">=</span><span class="bu">object</span>))</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>joblib.dump(preprocessor, out_dir <span class="op">/</span> <span class="st">&quot;titanic_preprocessor.joblib&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell049" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell067" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="мостик-к-лекции-1">Мостик к лекции 1</h3>
 <p>Следующее занятие начнётся с МНК на выборке из восьми кошек
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mn>1</mn></msub><annotation encoding="application/x-tex">f_1</annotation></semantics></math>
@@ -958,17 +1297,17 @@ ROC-AUC у константы и почему именно столько?</p>
 не обязан быть большим — он обязан быть
 <strong>проверяемым</strong>.</p>
 </div>
-<div id="cell050" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cats <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;банок_в_день&quot;</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>],</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;возраст&quot;</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">2</span>, <span class="dv">8</span>],</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;вес&quot;</span>: [<span class="fl">3.0</span>, <span class="fl">4.2</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="fl">4.8</span>, <span class="fl">6.0</span>, <span class="fl">3.4</span>, <span class="fl">6.6</span>],</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>cats.to_csv(out_dir <span class="op">/</span> <span class="st">&quot;cats.csv&quot;</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;сохранено в output/:&quot;</span>, <span class="op">*</span>[f.name <span class="cf">for</span> f <span class="kw">in</span> <span class="bu">sorted</span>(out_dir.iterdir())])</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>display(cats)</span></code></pre></div>
+<div id="cell068" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>cats <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;банок_в_день&quot;</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>],</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;возраст&quot;</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">2</span>, <span class="dv">8</span>],</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;вес&quot;</span>: [<span class="fl">3.0</span>, <span class="fl">4.2</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="fl">4.8</span>, <span class="fl">6.0</span>, <span class="fl">3.4</span>, <span class="fl">6.6</span>],</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>cats.to_csv(out_dir <span class="op">/</span> <span class="st">&quot;cats.csv&quot;</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;сохранено в output/:&quot;</span>, <span class="op">*</span>[f.name <span class="cf">for</span> f <span class="kw">in</span> <span class="bu">sorted</span>(out_dir.iterdir())])</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>display(cats)</span></code></pre></div>
 </div>
-<div id="cell051" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell069" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>

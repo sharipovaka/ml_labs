@@ -231,7 +231,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="домашняя-работа-4-классификация-изнутри">Домашняя работа 4.
 Классификация изнутри</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -264,10 +264,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 логистическую регрессию с градиентом и гессианом из лекции 3 (и сравним
 градиентный спуск с методом Ньютона), ROC-кривую с проверкой её
 вероятностной интерпретации и, наконец, двойственную задачу SVM — ту
-самую, из которой берутся опорные векторы.\n\nПервые две задачи
-выполняются на <strong>вашей</strong> выборке; для двойственной задачи
-нужна маленькая и наглядная выборка, поэтому там берётся синтетика —
-зато решение проверяется точно.</p>
+самую, из которой берутся опорные векторы.</p>
+<p>Первые две задачи выполняются на <strong>вашей</strong> выборке; для
+двойственной задачи нужна маленькая и наглядная выборка, поэтому там
+берётся синтетика — зато решение проверяется точно.</p>
 <blockquote>
 <p><strong>Чем это отличается от занятия.</strong> На семинаре данные
 были учебные и общие — так удобно разбирать. Дома данные ваши: таблица
@@ -302,7 +302,7 @@ Run All);</li>
 методов.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell001" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -355,7 +355,7 @@ Run All);</li>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
 <p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
 вариант вычисляется детерминированно, при повторном запуске он тот же
@@ -363,13 +363,13 @@ Run All);</li>
 <p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
 вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
 </div>
-<div id="cell003" class="cell code">
+<div id="cell003" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">4</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell code">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ваша выборка. Занятие про классификацию, поэтому регрессионный вариант</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># бинаризуем по медиане обучающей части («дороже медианы» / «дешевле»).</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_personal(variant)</span>
@@ -384,7 +384,7 @@ Run All);</li>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>data[<span class="st">&#39;domain&#39;</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>Xd<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> объектов, </span><span class="sc">{</span>Xd<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> признаков, &quot;</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;доля класса 1 = </span><span class="sc">{</span>yd<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell markdown">
+<div id="cell005" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-1-логистическая-регрессия-своими-руками">Задача 1.
 Логистическая регрессия своими руками</h1>
@@ -403,7 +403,7 @@ Run All);</li>
 \theta^{(t+1)} = \theta^{(t)} - \bigl(X^{\mathsf T}SX\bigr)^{-1}X^{\mathsf T}(h-y).
 </annotation></semantics></math></p>
 </div>
-<div id="cell006" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell006" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(z):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Численно устойчивая сигмоида (как на занятии).&quot;&quot;&quot;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
@@ -426,14 +426,14 @@ Run All);</li>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Гессиан X^T S X по утв. 3.6, S = diag(h_i (1 - h_i)).&quot;&quot;&quot;</span></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell007" class="cell markdown">
+<div id="cell007" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-11-обязательная-проверка-формул">Задание 1.1.
 Обязательная проверка формул</h3>
 <p>Приёмом из домашней работы 2 проверьте и градиент, и гессиан
 конечными разностями. Гессиан — это якобиан градиента, так что
 проверяется так же.</p>
 </div>
-<div id="cell008" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell008" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> np.column_stack([np.ones(<span class="dv">80</span>), rng.normal(size<span class="op">=</span>(<span class="dv">80</span>, <span class="dv">4</span>))])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>yc <span class="op">=</span> (rng.random(<span class="dv">80</span>) <span class="op">&lt;</span> sigmoid(Xc <span class="op">@</span> np.array([<span class="fl">0.3</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">1.0</span>, <span class="fl">0.5</span>, <span class="fl">0.0</span>]))).astype(<span class="bu">float</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>th0 <span class="op">=</span> rng.normal(size<span class="op">=</span><span class="dv">5</span>) <span class="op">*</span> <span class="fl">0.3</span></span>
@@ -441,11 +441,11 @@ Run All);</li>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: проверьте градиент и гессиан центральными разностями (h = 1e-6).</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       Гессиан -- якобиан градиента, считается так же, только от logloss_grad.</span></span></code></pre></div>
 </div>
-<div id="cell009" class="cell markdown">
+<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-12-градиентный-спуск-против-метода-ньютона">Задание 1.2.
 Градиентный спуск против метода Ньютона</h3>
 </div>
-<div id="cell010" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell010" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_gd(X, y, n_iter<span class="op">=</span><span class="dv">3000</span>, l2<span class="op">=</span><span class="fl">1.0</span>):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Градиентный спуск с шагом eta = 4/||X||_2^2 (константа Липшица).&quot;&quot;&quot;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
@@ -460,11 +460,11 @@ Run All);</li>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       обучите обоими методами (l2=1.0) и сравните с</span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       LogisticRegression(C=1.0): значение Q, коэффициенты, число итераций.</span></span></code></pre></div>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте график сходимости обоих методов (Q - Q* в лог. масштабе,</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       по оси итераций достаточно первых 60).</span></span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown">
+<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Сколько итераций потребовалось каждому
 методу? Почему разница такая большая и почему тогда метод Ньютона не
@@ -472,7 +472,7 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-2-roc-кривая-своими-руками">Задача 2. ROC-кривая своими
 руками</h1>
@@ -486,7 +486,7 @@ Run All);</li>
 вероятности того, что случайный объект класса 1 получит больший балл,
 чем случайный объект класса 0.</strong></p>
 </div>
-<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell014" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> roc_curve_manual(y_true, score):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Точки ROC-кривой без перебора порогов.</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -505,20 +505,20 @@ Run All);</li>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: посчитайте баллы на контрольной выборке своей моделью из задачи 1</span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#       и сверьте свой AUC со sklearn.metrics.roc_auc_score.</span></span></code></pre></div>
 </div>
-<div id="cell015" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: проверьте интерпретацию AUC методом Монте-Карло: возьмите 200000 пар</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (случайный объект класса 1, случайный объект класса 0) и посчитайте</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       долю пар, где балл положительного больше. Сравните с AUC.</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте свою ROC-кривую.</span></span></code></pre></div>
 </div>
-<div id="cell016" class="cell markdown">
+<div id="cell016" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпала ли доля пар с AUC? Почему ROC не
 зависит от доли классов, а PR-кривая — зависит?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -550,7 +550,7 @@ SVM</h1>
 и
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>α</mi><mi>𝖳</mi></msup><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha^{\mathsf T}y=0</annotation></semantics></math>.</p>
 </div>
-<div id="cell018" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_dual(K, y, C<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Двойственная задача через scipy.optimize.minimize (SLSQP).</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -565,7 +565,7 @@ SVM</h1>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;w = sum a_i y_i x_i; b -- среднее (y_i - w^T x_i) по опорным векторам.&quot;&quot;&quot;</span></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell019" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell019" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Xb, yb <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">60</span>, centers<span class="op">=</span><span class="dv">2</span>, cluster_std<span class="op">=</span><span class="fl">1.0</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
@@ -576,7 +576,7 @@ SVM</h1>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       восстановите (w, b), сравните с SVC(kernel=&quot;linear&quot;, C=1e6),</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#       посчитайте число опорных векторов и выведите наибольшие alpha.</span></span></code></pre></div>
 </div>
-<div id="cell020" class="cell markdown">
+<div id="cell020" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-31-ядровой-трюк">Задание 3.1. Ядровой трюк</h3>
 <p>И двойственная задача, и итоговый классификатор зависят от объектов
 <strong>только через скалярные произведения</strong>. Значит, заменив
@@ -590,7 +590,7 @@ a(x) = \mathrm{sign}\Bigl(\sum_i\alpha_i^*y_i K(x_i,x) + b^*\Bigr).
 <p>Соберите такой классификатор с RBF-ядром и проверьте его на
 <code>make_circles</code>.</p>
 </div>
-<div id="cell021" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell021" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rbf(A, B, gamma<span class="op">=</span><span class="fl">1.0</span>):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;K(x, x&#39;) = exp(-gamma ||x - x&#39;||^2); расстояния -- как в занятии 1.&quot;&quot;&quot;</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
@@ -606,7 +606,7 @@ a(x) = \mathrm{sign}\Bigl(\sum_i\alpha_i^*y_i K(x_i,x) + b^*\Bigr).
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       посчитайте точность и нарисуйте границу решения с отмеченными</span></span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       опорными векторами.</span></span></code></pre></div>
 </div>
-<div id="cell022" class="cell markdown">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Сколько объектов оказалось опорными и почему
 у RBF-ядра их больше, чем у линейного? Почему в формуле классификатора
@@ -615,7 +615,7 @@ a(x) = \mathrm{sign}\Bigl(\sum_i\alpha_i^*y_i K(x_i,x) + b^*\Bigr).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell023" class="cell markdown">
+<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>
