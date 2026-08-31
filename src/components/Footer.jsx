@@ -58,7 +58,11 @@ export default function Footer() {
         <hr className={styles.divider} />
 
         <p className={styles.copyright}>
-          © {year} ML Seminars. Материалы распространяются свободно для учебных целей.
+          © {year} K. A. Sharipova. Материалы распространяются по лицензии{' '}
+          <a href={`${repositoryUrl}/blob/main/LICENSE`} target="_blank" rel="noreferrer noopener">
+            MIT
+          </a>
+          .
         </p>
       </div>
     </footer>

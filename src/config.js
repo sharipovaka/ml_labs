@@ -7,7 +7,7 @@
 
 export const repository = {
   owner: 'sharipovaka',
-  name: 'mltest1',
+  name: 'ml_labs',
   /** Ветка, в которой лежат исходные .ipynb */
   branch: 'main',
 };

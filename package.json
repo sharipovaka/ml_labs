@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "SPA для публикации материалов семинаров по машинному обучению (React + Bootstrap 5 + Webpack)",
-  "homepage": "https://sharipovaka.github.io/mltest1/",
+  "homepage": "https://sharipovaka.github.io/ml_labs/",
   "license": "MIT",
   "scripts": {
     "start": "webpack serve --mode development",
