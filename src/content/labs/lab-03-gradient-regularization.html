@@ -249,8 +249,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <td>Опора на лекции</td>
 <td>лекция 2: градиентный спуск (опр. 2.1) и условие сходимости
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>η</mi><mo>&lt;</mo><mn>1</mn><mi>/</mi><msub><mi>λ</mi><mi>max</mi></msub></mrow><annotation encoding="application/x-tex">0&lt;\eta&lt;1/\lambda_{\max}</annotation></semantics></math>
-(утв. 2.2), мультиколлинеарность и неустойчивость решения (утв. 2.5),
-гребневая регрессия (опр. 2.7, теорема 2.9), LASSO (опр. 2.12)</td>
+(утв. 2.2), мультиколлинеарность (опр. 2.6) и неустойчивость решения
+(утв. 2.8), гребневая регрессия (опр. 2.9, теорема 2.10), LASSO (опр.
+2.15)</td>
 </tr>
 <tr>
 <td>Трудоёмкость</td>
@@ -282,7 +283,7 @@ LASSO и когда они вообще нужны.</p>
 </div>
 <div id="cell001" class="cell markdown">
 <blockquote>
-<p><strong>О нормировке.</strong> В §1 лекции 2 функционал берётся без
+<p><strong>О нормировке.</strong> В §2.1 лекции 2 функционал берётся без
 усреднения:
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi>X</mi><mi>θ</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">Q(\theta) = \|X\theta - y\|^2</annotation></semantics></math>,
 поэтому
@@ -373,7 +374,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grad_Q(theta, X, y):</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Градиент Q(theta) = ||X theta - y||^2.</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Формула выведена в лекции 1, §6: 2 X^T (X theta - y).</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Формула выведена в лекции 1, §1.4: 2 X^T (X theta - y).</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (1 строка)</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
@@ -484,7 +485,7 @@ LASSO и когда они вообще нужны.</p>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
 почти линейно зависимы. Тогда у
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^{\mathsf T}X</annotation></semantics></math>
-есть собственное число, близкое к нулю, и по утверждению 2.5 малое
+есть собственное число, близкое к нулю, и по утверждению 2.8 малое
 возмущение данных даёт большое изменение решения:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mo stretchy="false" form="postfix">∥</mo><mi>δ</mi><mi>θ</mi><mo stretchy="false" form="postfix">∥</mo></mrow><mrow><mo stretchy="false" form="postfix">∥</mo><mi>θ</mi><mo stretchy="false" form="postfix">∥</mo></mrow></mfrac><mo>≤</mo><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi></mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mfrac><mrow><mo stretchy="false" form="postfix">∥</mo><mi>δ</mi><mi>b</mi><mo stretchy="false" form="postfix">∥</mo></mrow><mrow><mo stretchy="false" form="postfix">∥</mo><mi>b</mi><mo stretchy="false" form="postfix">∥</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \frac{\|\delta\theta\|}{\|\theta\|} \le \mathrm{cond}(X^{\mathsf T}X)\,
@@ -560,7 +561,7 @@ LASSO и когда они вообще нужны.</p>
 <hr />
 <h1 id="часть-4-ridge-и-lasso-что-они-делают-с-решением">Часть 4. Ridge
 и LASSO: что они делают с решением</h1>
-<p>Определение 2.7 и теорема 2.9: гребневая регрессия минимизирует
+<p>Определение 2.9 и теорема 2.10: гребневая регрессия минимизирует
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>X</mi><mi>θ</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>+</mo><mi>λ</mi><msub><mo>∑</mo><mrow><mi>j</mi><mo>≥</mo><mn>1</mn></mrow></msub><msubsup><mi>θ</mi><mi>j</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">\|X\theta-y\|^2 + \lambda\sum_{j\ge1}\theta_j^2</annotation></semantics></math>,
 и решение равно
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi><mo>+</mo><mi>λ</mi><mi>D</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>X</mi><mi>𝖳</mi></msup><mi>y</mi></mrow><annotation encoding="application/x-tex">(X^{\mathsf T}X + \lambda D)^{-1}X^{\mathsf T}y</annotation></semantics></math>,
@@ -573,7 +574,7 @@ LASSO и когда они вообще нужны.</p>
 — <strong>даже если
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^{\mathsf T}X</annotation></semantics></math>
 вырождена</strong>.</p>
-<p>LASSO (опр. 2.12) штрафует
+<p>LASSO (опр. 2.15) штрафует
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">\sum|\theta_j|</annotation></semantics></math>.
 Явной формулы нет, но поведение качественно иное: решение становится
 <strong>разреженным</strong>. Посмотрим на регуляризационные пути.</p>
@@ -755,7 +756,7 @@ LASSO и когда они вообще нужны.</p>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mi>ℓ</mi></mfrac><mo stretchy="false" form="postfix">∥</mo><mi>X</mi><mi>θ</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\frac1\ell\|X\theta-y\|^2</annotation></semantics></math>?</li>
 <li>Два признака имеют корреляцию 0.999. Что произойдёт с оценками их
 коэффициентов и с их суммой? Какая величина оценивается устойчиво?</li>
-<li>Почему в определении 2.7 свободный член не штрафуется? Что
+<li>Почему в определении 2.9 свободный член не штрафуется? Что
 произойдёт с решением, если прибавить ко всем
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>i</mi></msub><annotation encoding="application/x-tex">y_i</annotation></semantics></math>
 константу 1000, а

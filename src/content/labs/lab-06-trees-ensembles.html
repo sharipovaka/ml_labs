@@ -249,8 +249,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <td>Опора на лекции</td>
 <td>лекция 5: решающее дерево (опр. 5.1), критерии информативности (опр.
 5.2–5.4), прирост информации (опр. 5.5) и его неотрицательность (утв.
-5.6), стрижка по цене сложности (опр. 5.8), бэггинг (опр. 5.11), разброс
-усреднённого предсказания (утв. 5.12), AdaBoost (теорема 5.15)</td>
+5.6), стрижка по цене сложности (опр. 5.9), бутстреп и бэггинг (опр.
+5.11–5.12), разброс усреднённого предсказания (утв. 5.13), AdaBoost
+(теорема 5.17)</td>
 </tr>
 <tr>
 <td>Трудоёмкость</td>
@@ -445,7 +446,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 </div>
 <div id="cell009" class="cell markdown">
 <h3 id="стрижка-по-цене-сложности">Стрижка по цене сложности</h3>
-<p>Определение 5.8:
+<p>Определение 5.9:
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mi>α</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>,</mo><msup><mi>X</mi><mi>ℓ</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>α</mi><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">l</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">v</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">Q_\alpha(T) = Q(T, X^\ell) + \alpha\,|\mathrm{leaves}(T)|</annotation></semantics></math>.
 Это в точности принцип SRM из лекции 4, применённый к вложенному
 семейству поддеревьев:
@@ -455,7 +456,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <div id="cell010" class="cell markdown">
 <blockquote>
 <p><strong>Напоминание — SRM.</strong> Structural Risk Minimization,
-минимизация структурного риска (опр. 4.14): семейство моделей разбивают
+минимизация структурного риска (опр. 4.17): семейство моделей разбивают
 на вложенную цепочку
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>⊂</mo><msub><mi>A</mi><mn>2</mn></msub><mo>⊂</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">A_1\subset A_2\subset\dots</annotation></semantics></math>
 по возрастанию сложности и минимизируют не эмпирический риск, а его
@@ -509,9 +510,9 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 </div>
 <div id="cell014" class="cell markdown">
 <hr />
-<h1 id="часть-3-бэггинг-проверяем-утверждение-512">Часть 3. Бэггинг:
-проверяем утверждение 5.12</h1>
-<p>Утверждение 5.12: если
+<h1 id="часть-3-бэггинг-проверяем-утверждение-513">Часть 3. Бэггинг:
+проверяем утверждение 5.13</h1>
+<p>Утверждение 5.13: если
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">a_1,\dots,a_B</annotation></semantics></math>
 одинаково распределены, имеют дисперсию
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>σ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\sigma^2</annotation></semantics></math>
@@ -596,7 +597,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ax.plot(Bs, theory, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">r&quot;теория: </span><span class="dv">$</span><span class="ch">\r</span><span class="vs">ho</span><span class="dv">\s</span><span class="vs">igma</span><span class="dv">^</span><span class="vs">2 </span><span class="op">+</span><span class="vs"> </span><span class="ch">\f</span><span class="vs">rac{1-</span><span class="ch">\r</span><span class="vs">ho}{B}</span><span class="dv">\s</span><span class="vs">igma</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">&quot;</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>ax.axhline(rho <span class="op">*</span> sigma2, ls<span class="op">=</span><span class="st">&quot;--&quot;</span>, color<span class="op">=</span><span class="st">&quot;black&quot;</span>, label<span class="op">=</span><span class="vs">r&quot;предел </span><span class="dv">$</span><span class="ch">\r</span><span class="vs">ho</span><span class="dv">\s</span><span class="vs">igma</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">&quot;</span>)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&quot;число деревьев $B$&quot;</span>)<span class="op">;</span> ax.set_ylabel(<span class="vs">r&quot;</span><span class="dv">$\m</span><span class="vs">athrm{Var}</span><span class="kw">(</span><span class="dv">\b</span><span class="vs">ar a</span><span class="kw">(</span><span class="vs">x_0</span><span class="kw">))</span><span class="dv">$</span><span class="vs">&quot;</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Утверждение 5.12 на эксперименте&quot;</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Утверждение 5.13 на эксперименте&quot;</span>)<span class="op">;</span> ax.legend()</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
 <div id="cell019" class="cell code">
@@ -789,7 +790,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <li>В бэггинге деревья намеренно не стригут, а в бустинге берут пни
 глубины 1–3. Объясните оба решения через разложение
 смещение–разброс.</li>
-<li>Из утверждения 5.12 следует, что
+<li>Из утверждения 5.13 следует, что
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">V</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi></mrow><mo stretchy="false" form="prefix">(</mo><mover><mi>a</mi><mo accent="true">‾</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mi>ρ</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathrm{Var}(\bar a)\to\rho\sigma^2</annotation></semantics></math>.
 Какими способами случайный лес уменьшает
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>
@@ -800,7 +801,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <hr />
 <p><strong>Дома:</strong> откройте <code>lab06_homework.ipynb</code> —
 там две задачи: своё решающее дерево и свой AdaBoost по теореме
-5.15.</p>
+5.17.</p>
 </div>
 </body>
 </html>

@@ -250,7 +250,7 @@ SVM</h1>
 <td>Опора на лекции</td>
 <td>лекция 3: сигмоида (опр. 3.1), логистическая потеря (опр. 3.3),
 отступ (опр. 3.8), прямая и двойственная задачи SVM (опр. 3.9, теорема
-3.11), опорные векторы, мягкий зазор (опр. 3.14), ядра (опр. 3.17) и
+3.11), опорные векторы, мягкий зазор (опр. 3.13), ядра (опр. 3.16) и
 критерий Мерсера</td>
 </tr>
 <tr>
@@ -669,7 +669,7 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
 <div id="cell022" class="cell code">
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Мягкий зазор (опр. 3.14): параметр C -- цена нарушения отступа</span></span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Мягкий зазор (опр. 3.13): параметр C -- цена нарушения отступа</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Xm, ym <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">200</span>, noise<span class="op">=</span><span class="fl">0.28</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ym <span class="op">=</span> np.where(ym <span class="op">==</span> <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> StandardScaler().fit_transform(Xm)</span>
@@ -694,7 +694,7 @@ w^* = \sum_i \alpha_i^* y_i x_i .
 <div id="cell024" class="cell markdown">
 <hr />
 <h1 id="часть-5-ядра">Часть 5. Ядра</h1>
-<p>Определение 3.17:
+<p>Определение 3.16:
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msup><mi>x</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">K(x,x&#39;) = \langle\varphi(x),\varphi(x&#39;)\rangle</annotation></semantics></math>
 для некоторого отображения
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>.

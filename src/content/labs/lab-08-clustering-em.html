@@ -249,9 +249,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <td>Опора на лекции</td>
 <td>лекция 7: функционал качества кластеризации и метод
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>-средних
-(опр. 7.1), смеси распределений (опр. 7.4), EM-алгоритм (опр. 7.6) и его
-монотонность (теорема 7.7), ответственности (опр. 7.8), иерархическая
-кластеризация и linkage (опр. 7.11)</td>
+(опр. 7.1), смеси распределений (опр. 7.6), EM-алгоритм (опр. 7.8) и его
+монотонность (теорема 7.9), ответственности (опр. 7.11), иерархическая
+кластеризация и linkage (опр. 7.15)</td>
 </tr>
 <tr>
 <td>Трудоёмкость</td>
@@ -521,16 +521,16 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 <hr />
 <h1 id="часть-3-смеси-распределений-и-em">Часть 3. Смеси распределений и
 EM</h1>
-<p>Определение 7.4: плотность смеси
+<p>Определение 7.6: плотность смеси
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mo>∑</mo><mi>k</mi></msub><msub><mi>w</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><msub><mi>p</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p(x) = \sum_k w_k\,p_k(x)</annotation></semantics></math>.
 Прямая максимизация правдоподобия сложна из-за логарифма суммы; EM (опр.
-7.6) вводит скрытые переменные и чередует:</p>
-<p><strong>E-шаг</strong> — ответственности (опр. 7.8):
+7.8) вводит скрытые переменные и чередует:</p>
+<p><strong>E-шаг</strong> — ответственности (опр. 7.11):
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>γ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><msub><mi>w</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><msub><mi>p</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><msub><mo>∑</mo><mi>s</mi></msub><msub><mi>w</mi><mi>s</mi></msub><mspace width="0.167em"></mspace><msub><mi>p</mi><mi>s</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\gamma_{ik} = \dfrac{w_k\,p_k(x_i)}{\sum_s w_s\,p_s(x_i)}</annotation></semantics></math>;</p>
 <p><strong>M-шаг</strong> — пересчёт параметров как
 <strong>взвешенных</strong> оценок с весами
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><annotation encoding="application/x-tex">\gamma_{ik}</annotation></semantics></math>.</p>
-<p>Теорема 7.7: логарифм правдоподобия <strong>не убывает</strong> на
+<p>Теорема 7.9: логарифм правдоподобия <strong>не убывает</strong> на
 каждой итерации. Проверим — это главный эксперимент занятия.</p>
 </div>
 <div id="cell015" class="cell code">
@@ -555,7 +555,7 @@ EM</h1>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># logL -- массив значений логарифма правдоподобия по итерациям EM</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2-3 строки): посчитайте приросты за шаг (np.diff), выведите минимальный</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   и проверьте, что он неотрицателен -- это и есть теорема 7.7.</span></span></code></pre></div>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   и проверьте, что он неотрицателен -- это и есть теорема 7.9.</span></span></code></pre></div>
 </div>
 <div id="cell017" class="cell code">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gm_full <span class="op">=</span> GaussianMixture(<span class="dv">3</span>, covariance_type<span class="op">=</span>cov_type, n_init<span class="op">=</span><span class="dv">5</span>,</span>
@@ -566,7 +566,7 @@ EM</h1>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">4.6</span>))</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>ax1.plot(logL, <span class="st">&quot;o-&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, ms<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">&quot;итерация EM&quot;</span>)<span class="op">;</span> ax1.set_ylabel(<span class="vs">r&quot;</span><span class="dv">$</span><span class="er">\</span><span class="vs">ln L</span><span class="dv">$</span><span class="vs">&quot;</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">&quot;Теорема 7.7: правдоподобие не убывает&quot;</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">&quot;Теорема 7.9: правдоподобие не убывает&quot;</span>)</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ax2.scatter(<span class="op">*</span>X_g.T, c<span class="op">=</span>labels, s<span class="op">=</span><span class="dv">18</span>, cmap<span class="op">=</span><span class="st">&quot;viridis&quot;</span>, alpha<span class="op">=</span>np.clip(gamma.<span class="bu">max</span>(<span class="dv">1</span>), <span class="fl">.25</span>, <span class="dv">1</span>))</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
@@ -727,7 +727,7 @@ EM</h1>
 <hr />
 <h1 id="часть-5-иерархическая-кластеризация-и-эффект-цепочки">Часть 5.
 Иерархическая кластеризация и эффект цепочки</h1>
-<p>Определение 7.11: агломеративный алгоритм начинает с
+<p>Определение 7.15: агломеративный алгоритм начинает с
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ℓ</mi><annotation encoding="application/x-tex">\ell</annotation></semantics></math>
 одноэлементных кластеров и на каждом шаге объединяет два ближайших.
 Способ измерения расстояния между кластерами (linkage) определяет всё
@@ -846,7 +846,7 @@ EM</h1>
 Означает ли это, что «чем больше кластеров, тем лучше»? Как правильно
 поставить вопрос о выборе
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>?</li>
-<li>Теорема 7.7 гарантирует, что
+<li>Теорема 7.9 гарантирует, что
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>ln</mi><mo>⁡</mo></mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">\ln L</annotation></semantics></math>
 не убывает. Гарантирует ли она сходимость к глобальному максимуму? Что
 делают на практике?</li>

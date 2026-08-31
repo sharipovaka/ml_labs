@@ -248,8 +248,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <tr>
 <td>Опора на лекции</td>
 <td>лекция 8: выборочная ковариационная матрица (опр. 8.1), первая
-главная компонента (теорема 8.2), полная дисперсия (утв. 8.5), доля
-объяснённой дисперсии, численный пример 8.7, сингулярное разложение
+главная компонента (теорема 8.2), полная дисперсия (утв. 8.6), доля
+объяснённой дисперсии, численные примеры 8.7–8.8, сингулярное разложение
 (теорема 8.9), многомерное шкалирование</td>
 </tr>
 <tr>
@@ -373,7 +373,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   Сверьте с конспектом: 4.5 и 0.5, (1,1)/sqrt(2), доля 0.9.</span></span></code></pre></div>
 </div>
 <div id="cell005" class="cell code">
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Утверждение 8.5: сумма собственных чисел = след C = полная дисперсия</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Утверждение 8.6: сумма собственных чисел = след C = полная дисперсия</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;сумма собственных чисел = </span><span class="sc">{</span>lam<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.4f}</span><span class="ss">, Tr C = </span><span class="sc">{</span>np<span class="sc">.</span>trace(C)<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Проекция на первую компоненту и восстановление</span></span>
@@ -586,8 +586,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p>Иногда координат нет вовсе — есть только матрица попарных несходств:
 экспертные оценки, генетические дистанции, время в пути. Многомерное
 шкалирование восстанавливает по ней координаты.</p>
-<p>Классическое MDS (§5 лекции 8): по матрице квадратов расстояний
-двойным центрированием восстанавливается матрица Грама
+<p>Классическое MDS (§8.5): по матрице квадратов расстояний двойным
+центрированием восстанавливается матрица Грама
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>J</mi><msup><mi>D</mi><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></msup><mi>J</mi></mrow><annotation encoding="application/x-tex">B = -\frac12 J D^{(2)} J</annotation></semantics></math>,
 где
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi><mo>=</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>ℓ</mi></mfrac><mn>𝟏</mn><msup><mn>𝟏</mn><mi>𝖳</mi></msup></mrow><annotation encoding="application/x-tex">J = I - \frac1\ell\mathbf1\mathbf1^{\mathsf T}</annotation></semantics></math>,

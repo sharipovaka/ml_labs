@@ -381,7 +381,7 @@ Run All);</li>
 <hr />
 <h1 id="задача-1-матричное-дифференцирование-проверка-конечными-разностями">Задача
 1. Матричное дифференцирование: проверка конечными разностями</h1>
-<p>В §6 лекции 1 выведены два тождества:</p>
+<p>В §1.4 лекции 1 выведены два тождества:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>∇</mi><mi>w</mi></msub><mo stretchy="false" form="prefix">(</mo><msup><mi>a</mi><mi>𝖳</mi></msup><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>∇</mi><mi>w</mi></msub><mo stretchy="false" form="prefix">(</mo><msup><mi>w</mi><mi>𝖳</mi></msup><mi>A</mi><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo>+</mo><msup><mi>A</mi><mi>𝖳</mi></msup><mo stretchy="false" form="postfix">)</mo><mi>w</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \nabla_w (a^{\mathsf T} w) = a,
 \qquad
@@ -446,7 +446,40 @@ Run All);</li>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка считается пройденной при относительной ошибке &lt; 1e-4.</span></span></code></pre></div>
 </div>
 <div id="cell010" class="cell markdown">
-<h3 id="задание-13-выбор-шага-h">Задание 1.3. Выбор шага
+<h3 id="задание-13-воспроизведение-примера-122">Задание 1.3.
+Воспроизведение примера 1.22</h3>
+<p>Единственный численный пример лекции 1 — про градиент
+<strong>определителя</strong> (утв. 1.21). Для
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>d</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">A = \begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}</annotation></semantics></math>
+конспект даёт
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>∇</mi><mi>A</mi></msub><mrow><mi>det</mi><mo>⁡</mo></mrow><mi>A</mi><mo>=</mo><mrow><mi>det</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mi>𝖳</mi></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>d</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>c</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>b</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\nabla_A \det A = \det(A)\,(A^{-1})^{\mathsf T}
+= \begin{pmatrix} d &amp; -c \\ -b &amp; a \end{pmatrix}.</annotation></semantics></math></p>
+<p>Проверьте это тем же численным градиентом. Тонкость:
+<code>numeric_grad</code> работает с вектором, а здесь аргумент —
+матрица; разверните её в вектор из четырёх чисел и сверните результат
+обратно.</p>
+<p>Определитель понадобится дальше по курсу: он входит в плотность
+многомерного нормального распределения, а через неё — в QDA и LDA
+(занятие 7) и в EM (занятие 8).</p>
+</div>
+<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>A0 <span class="op">=</span> np.array([[<span class="fl">3.0</span>, <span class="fl">1.0</span>], [<span class="fl">2.0</span>, <span class="fl">4.0</span>]])          <span class="co"># произвольная невырожденная 2x2</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) определите det_of_vec(v) = определитель матрицы v.reshape(2, 2);</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) посчитайте numeric_grad по вектору из четырёх чисел A0.ravel()</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          и сверните результат обратно в матрицу 2x2;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) сравните с двумя выражениями: det(A) * inv(A).T (утв. 1.21)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          и [[d, -c], [-b, a]] (пример 1.22). Оба должны совпасть.</span></span></code></pre></div>
+</div>
+<div id="cell012" class="cell markdown">
+<blockquote>
+<p><strong>Вывод.</strong> Совпали ли все три матрицы? Почему у
+определителя градиент выражается через обратную матрицу?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell013" class="cell markdown">
+<h3 id="задание-14-выбор-шага-h">Задание 1.4. Выбор шага
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math></h3>
 <p>Постройте зависимость ошибки проверки от
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>
@@ -461,12 +494,12 @@ Run All);</li>
 на ваших данных). У кривой должен быть минимум — найдите его и объясните
 обе ветви.</p>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для h из np.logspace(-1, -12, 40) посчитайте ОТНОСИТЕЛЬНУЮ ошибку</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       численного градиента для f(w) = ||X_tr w - y||^2 и постройте график</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       в двойном логарифмическом масштабе. Отметьте минимум.</span></span></code></pre></div>
+<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для h из np.logspace(-1, -12, 40) посчитайте ОТНОСИТЕЛЬНУЮ ошибку</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       численного градиента для f(w) = ||X_tr w - y||^2 и постройте график</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       в двойном логарифмическом масштабе. Отметьте минимум.</span></span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown">
+<div id="cell015" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Почему ошибка растёт и при слишком большом, и
 при слишком малом
@@ -475,7 +508,7 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell016" class="cell markdown">
 <hr />
 <h1 id="задача-2-пять-способов-решить-мнк">Задача 2. Пять способов
 решить МНК</h1>
@@ -485,7 +518,7 @@ Run All);</li>
 <p>Реализуйте пять решателей одной и той же задачи
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>θ</mi></msub><mo stretchy="false" form="postfix">∥</mo><mi>X</mi><mi>θ</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\min_\theta\|X\theta - y\|^2</annotation></semantics></math>:</p>
 <ol>
-<li><code>fit_inv</code> — буквально по формуле теоремы 1.20, через
+<li><code>fit_inv</code> — буквально по формуле теоремы 1.24, через
 <code>np.linalg.inv</code>;</li>
 <li><code>fit_solve</code> — решение нормальных уравнений без
 обращения;</li>
@@ -499,7 +532,7 @@ Run All);</li>
 с отсечением малых сингулярных чисел.</li>
 </ol>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell017" class="cell markdown">
 <blockquote>
 <p><strong>Напоминание — QR- и сингулярное разложение.</strong>
 <strong>QR:</strong> любую матрицу
@@ -545,55 +578,55 @@ Run All);</li>
 теорема 8.9 лекции 8, там же SVD станет самостоятельным сюжетом.</p>
 </blockquote>
 </div>
-<div id="cell015" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> linalg</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_inv(X, y):</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;(X^T X)^{-1} X^T y -- буквально по формуле теоремы 1.20.&quot;&quot;&quot;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_solve(X, y):</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Решение нормальных уравнений X^T X theta = X^T y без обращения.&quot;&quot;&quot;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_qr(X, y):</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;X = QR (linalg.qr, mode=&#39;economic&#39;), затем solve_triangular(R, Q^T y).&quot;&quot;&quot;</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_lstsq(X, y):</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_svd(X, y, tol<span class="op">=</span><span class="fl">1e-12</span>):</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;theta = V Sigma^+ U^T y; сингулярные числа меньше tol * s.max() обнулить.&quot;&quot;&quot;</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>SOLVERS <span class="op">=</span> {<span class="st">&quot;inv&quot;</span>: fit_inv, <span class="st">&quot;solve&quot;</span>: fit_solve, <span class="st">&quot;QR&quot;</span>: fit_qr,</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>           <span class="st">&quot;lstsq&quot;</span>: fit_lstsq, <span class="st">&quot;SVD вручную&quot;</span>: fit_svd}</span></code></pre></div>
+<div id="cell018" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> linalg</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_inv(X, y):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;(X^T X)^{-1} X^T y -- буквально по формуле теоремы 1.24.&quot;&quot;&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_solve(X, y):</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Решение нормальных уравнений X^T X theta = X^T y без обращения.&quot;&quot;&quot;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_qr(X, y):</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;X = QR (linalg.qr, mode=&#39;economic&#39;), затем solve_triangular(R, Q^T y).&quot;&quot;&quot;</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_lstsq(X, y):</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_svd(X, y, tol<span class="op">=</span><span class="fl">1e-12</span>):</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;theta = V Sigma^+ U^T y; сингулярные числа меньше tol * s.max() обнулить.&quot;&quot;&quot;</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>SOLVERS <span class="op">=</span> {<span class="st">&quot;inv&quot;</span>: fit_inv, <span class="st">&quot;solve&quot;</span>: fit_solve, <span class="st">&quot;QR&quot;</span>: fit_qr,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>           <span class="st">&quot;lstsq&quot;</span>: fit_lstsq, <span class="st">&quot;SVD вручную&quot;</span>: fit_svd}</span></code></pre></div>
 </div>
-<div id="cell016" class="cell markdown">
+<div id="cell019" class="cell markdown">
 <h3 id="задание-21-сверка-на-примере-из-конспекта">Задание 2.1. Сверка
 на примере из конспекта</h3>
 <p>Прежде чем применять решатели к своим данным — проверьте их на
 эталоне. Все пять способов обязаны дать
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>≈</mo><mo stretchy="false" form="prefix">(</mo><mn>2.201</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0.893</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0.114</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\theta^*\approx(2.201,\ 0.893,\ 0.114)</annotation></semantics></math>
-на выборке из восьми кошек (пример 1.21, часть 1 занятия).</p>
+на выборке из восьми кошек — это эталон из части 1 занятия.</p>
 </div>
-<div id="cell017" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">2</span>, <span class="dv">8</span>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>y_cats <span class="op">=</span> np.array([<span class="fl">3.0</span>, <span class="fl">4.2</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="fl">4.8</span>, <span class="fl">6.0</span>, <span class="fl">3.4</span>, <span class="fl">6.6</span>])</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>X_cats <span class="op">=</span> np.column_stack([np.ones(<span class="dv">8</span>), f1, f2])</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: примените все пять решателей и сведите в таблицу вместе с</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       отличием от theta* = (2.201, 0.893, 0.114) из конспекта.</span></span></code></pre></div>
+<div id="cell020" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">2</span>, <span class="dv">8</span>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>y_cats <span class="op">=</span> np.array([<span class="fl">3.0</span>, <span class="fl">4.2</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="fl">4.8</span>, <span class="fl">6.0</span>, <span class="fl">3.4</span>, <span class="fl">6.6</span>])</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>X_cats <span class="op">=</span> np.column_stack([np.ones(<span class="dv">8</span>), f1, f2])</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: примените все пять решателей и сведите в таблицу вместе с</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       отличием от эталона theta* = (2.2009, 0.8931, 0.1136).</span></span></code></pre></div>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell021" class="cell markdown">
 <h3 id="задание-22-где-они-ломаются">Задание 2.2. Где они ломаются</h3>
 <p>Матрица Вандермонда
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msubsup><mi>t</mi><mi>i</mi><mrow><mspace width="0.167em"></mspace><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">X_{ij} = t_i^{\,j-1}</annotation></semantics></math>
@@ -614,19 +647,19 @@ Run All);</li>
 и
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>X</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathrm{cond}(X)^2</annotation></semantics></math>.</p>
 </div>
-<div id="cell019" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">120</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>degrees <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">15</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для каждого числа столбцов p:</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   X_v = np.vander(t, p, increasing=True); theta_true случайный;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   y_v = X_v @ theta_true (БЕЗ шума);</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   решите всеми пятью способами, запомните ||theta_hat - theta_true||</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   и cond(X_v).</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: два графика в логарифмическом масштабе: ошибки методов и</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#       cond(X), cond(X)^2, уровень 1/eps.</span></span></code></pre></div>
+<div id="cell022" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">120</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>degrees <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">15</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для каждого числа столбцов p:</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   X_v = np.vander(t, p, increasing=True); theta_true случайный;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   y_v = X_v @ theta_true (БЕЗ шума);</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   решите всеми пятью способами, запомните ||theta_hat - theta_true||</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   и cond(X_v).</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: два графика в логарифмическом масштабе: ошибки методов и</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#       cond(X), cond(X)^2, уровень 1/eps.</span></span></code></pre></div>
 </div>
-<div id="cell020" class="cell markdown">
+<div id="cell023" class="cell markdown">
 <h3 id="задание-23-а-что-на-ваших-данных">Задание 2.3. А что на ваших
 данных</h3>
 <p>Теперь примените все пять решателей к своей матрице. Но сначала —
@@ -639,18 +672,18 @@ Run All);</li>
 матрицы, добавьте к каждой столбец единиц под свободный член и сравните:
 число обусловленности, ранг, а затем решения всех пяти способов.</p>
 </div>
-<div id="cell021" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) full = load_personal(variant, drop_first=False) -- полный One-Hot;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) к обеим матрицам (data и full) добавьте столбец единиц;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) для каждой напечатайте число столбцов, РАНГ, cond(X) и cond(X^T X);</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) для вырожденной найдите причину: разбейте столбцы cat__* на блоки</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          по исходному признаку и посмотрите на сумму каждого блока по строке;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       5) прогоните все пять решателей на КАЖДОЙ из матриц и сведите в одну</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          таблицу max|theta - theta_SVD| и MSE на контроле.</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># В конце оставьте Xc_tr, Xc_te -- эталонную матрицу со столбцом единиц:</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># она понадобится в задаче 3.</span></span></code></pre></div>
+<div id="cell024" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) full = load_personal(variant, drop_first=False) -- полный One-Hot;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) к обеим матрицам (data и full) добавьте столбец единиц;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) для каждой напечатайте число столбцов, РАНГ, cond(X) и cond(X^T X);</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) для вырожденной найдите причину: разбейте столбцы cat__* на блоки</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          по исходному признаку и посмотрите на сумму каждого блока по строке;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       5) прогоните все пять решателей на КАЖДОЙ из матриц и сведите в одну</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          таблицу max|theta - theta_SVD| и MSE на контроле.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># В конце оставьте Xc_tr, Xc_te -- эталонную матрицу со столбцом единиц:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># она понадобится в задаче 3.</span></span></code></pre></div>
 </div>
-<div id="cell022" class="cell markdown">
+<div id="cell025" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> С какого числа обусловленности
 <code>inv</code> и <code>solve</code> дают бессмысленный ответ? Почему
@@ -658,7 +691,7 @@ QR и SVD держатся дольше? Что показала ваша мат
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell023" class="cell markdown">
+<div id="cell026" class="cell markdown">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -669,10 +702,10 @@ QR и SVD держатся дольше? Что показала ваша мат
 </blockquote>
 <h1 id="задача-3-шум-определяет-функцию-потерь">Задача 3★. Шум
 определяет функцию потерь</h1>
-<p>Утверждение 1.15 связывает ERM и максимум правдоподобия: если
+<p>Утверждение 1.18 связывает ERM и максимум правдоподобия: если
 положить
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℒ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>θ</mi></msub><mo>,</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mrow><mi>ln</mi><mo>⁡</mo></mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathcal L(a_\theta, x, y) = -\ln\varphi(x,y,\theta)</annotation></semantics></math>,
-принципы совпадают. Для гауссовского шума (пример 1.22)</p>
+принципы совпадают. Для гауссовского шума (пример 1.25)</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mrow><mi>ln</mi><mo>⁡</mo></mrow><mi>φ</mi><mo>=</mo><mi>C</mi><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mspace width="0.278em"></mspace><mo>⇒</mo><mspace width="0.278em"></mspace><msub><mi>θ</mi><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">L</mi></mrow></msub><mo>=</mo><mrow><mi>arg</mi><mo>⁡</mo></mrow><munder><mi>min</mi><mi>θ</mi></munder><mo stretchy="false" form="postfix">∥</mo><mi>X</mi><mi>θ</mi><mo>−</mo><mi>y</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">
 -\ln\varphi = C + \frac{1}{2\sigma^2}(g(x,\theta) - y)^2
 \;\Longrightarrow\;
@@ -687,31 +720,31 @@ QR и SVD держатся дольше? Что показала ваша мат
 параметры должны быть известны), а потом посмотрим, что даёт каждая
 потеря на ваших данных.</p>
 </div>
-<div id="cell024" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> optimize</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neg_loglik_gauss(theta, X, y, sigma<span class="op">=</span><span class="fl">1.0</span>):</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;-ln L для модели y = X theta + N(0, sigma^2), без не зависящих от theta слагаемых.&quot;&quot;&quot;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neg_loglik_laplace(theta, X, y, b<span class="op">=</span><span class="fl">1.0</span>):</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;-ln L для модели y = X theta + Laplace(0, b).&quot;&quot;&quot;</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">120</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.sort(rng.uniform(<span class="dv">0</span>, <span class="dv">1</span>, n))</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>X_lin <span class="op">=</span> np.column_stack([np.ones(n), x])</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>THETA_TRUE <span class="op">=</span> np.array([<span class="fl">2.0</span>, <span class="fl">3.0</span>])</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>y_clean <span class="op">=</span> X_lin <span class="op">@</span> THETA_TRUE <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.3</span>, n)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>y_dirty <span class="op">=</span> y_clean.copy()</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>outliers <span class="op">=</span> rng.choice(n, size<span class="op">=</span><span class="dv">6</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>y_dirty[outliers] <span class="op">+=</span> rng.choice([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], <span class="dv">6</span>) <span class="op">*</span> rng.uniform(<span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">6</span>)</span></code></pre></div>
+<div id="cell027" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> optimize</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neg_loglik_gauss(theta, X, y, sigma<span class="op">=</span><span class="fl">1.0</span>):</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;-ln L для модели y = X theta + N(0, sigma^2), без не зависящих от theta слагаемых.&quot;&quot;&quot;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neg_loglik_laplace(theta, X, y, b<span class="op">=</span><span class="fl">1.0</span>):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;-ln L для модели y = X theta + Laplace(0, b).&quot;&quot;&quot;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">120</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.sort(rng.uniform(<span class="dv">0</span>, <span class="dv">1</span>, n))</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>X_lin <span class="op">=</span> np.column_stack([np.ones(n), x])</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>THETA_TRUE <span class="op">=</span> np.array([<span class="fl">2.0</span>, <span class="fl">3.0</span>])</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>y_clean <span class="op">=</span> X_lin <span class="op">@</span> THETA_TRUE <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.3</span>, n)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>y_dirty <span class="op">=</span> y_clean.copy()</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>outliers <span class="op">=</span> rng.choice(n, size<span class="op">=</span><span class="dv">6</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>y_dirty[outliers] <span class="op">+=</span> rng.choice([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], <span class="dv">6</span>) <span class="op">*</span> rng.uniform(<span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">6</span>)</span></code></pre></div>
 </div>
-<div id="cell025" class="cell markdown">
+<div id="cell028" class="cell markdown">
 <h3 id="задание-31-ммп-против-мнк">Задание 3.1. ММП против МНК</h3>
 <p>Для чистых и для испорченных данных найдите
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
@@ -720,16 +753,16 @@ QR и SVD держатся дольше? Что показала ваша мат
 и минимизацией лапласовского. Лапласовская функция негладкая —
 используйте <code>method=&quot;Nelder-Mead&quot;</code>.</p>
 </div>
-<div id="cell026" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для y_clean и y_dirty найдите theta тремя способами</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (lstsq, минимизация neg_loglik_gauss, минимизация neg_loglik_laplace)</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       и сведите в таблицу. Сравните с THETA_TRUE.</span></span></code></pre></div>
+<div id="cell029" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для y_clean и y_dirty найдите theta тремя способами</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (lstsq, минимизация neg_loglik_gauss, минимизация neg_loglik_laplace)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       и сведите в таблицу. Сравните с THETA_TRUE.</span></span></code></pre></div>
 </div>
-<div id="cell027" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: нарисуйте данные с выбросами, обе подогнанные прямые</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (гауссовскую и лапласовскую) и истинную зависимость.</span></span></code></pre></div>
+<div id="cell030" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: нарисуйте данные с выбросами, обе подогнанные прямые</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (гауссовскую и лапласовскую) и истинную зависимость.</span></span></code></pre></div>
 </div>
-<div id="cell028" class="cell markdown">
+<div id="cell031" class="cell markdown">
 <h3 id="задание-32-какая-потеря-подходит-вашим-данным">Задание 3.2.
 Какая потеря подходит вашим данным</h3>
 <p>Обучите на своей выборке две модели — МНК
@@ -742,15 +775,15 @@ QR и SVD держатся дольше? Что показала ваша мат
 — и сравните их на контрольной части по MSE <strong>и</strong> по MAE.
 Постройте гистограмму остатков МНК: похожа ли она на гауссовскую?</p>
 </div>
-<div id="cell029" class="cell code" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) обучите МНК на (Xc_tr, y_tr) и медианную регрессию</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          QuantileRegressor(quantile=0.5, alpha=0.0, solver=&quot;highs&quot;) на (X_tr, y_tr);</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) сравните обе модели на контроле по MSE И по MAE -- в одной таблице;</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) постройте гистограмму остатков МНК и наложите гауссовскую плотность</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          с тем же средним и стандартным отклонением; напечатайте асимметрию</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          и эксцесс остатков.</span></span></code></pre></div>
+<div id="cell032" class="cell code" data-tags="[&quot;task&quot;]">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) обучите МНК на (Xc_tr, y_tr) и медианную регрессию</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          QuantileRegressor(quantile=0.5, alpha=0.0, solver=&quot;highs&quot;) на (X_tr, y_tr);</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) сравните обе модели на контроле по MSE И по MAE -- в одной таблице;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) постройте гистограмму остатков МНК и наложите гауссовскую плотность</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          с тем же средним и стандартным отклонением; напечатайте асимметрию</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          и эксцесс остатков.</span></span></code></pre></div>
 </div>
-<div id="cell030" class="cell markdown">
+<div id="cell033" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Совпали ли ММП при гауссовском шуме и МНК?
 Какая прямая устояла против выбросов и почему? Какая потеря выиграла на
@@ -758,7 +791,7 @@ QR и SVD держатся дольше? Что показала ваша мат
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell031" class="cell markdown">
+<div id="cell034" class="cell markdown">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>

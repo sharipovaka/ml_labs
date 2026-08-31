@@ -388,7 +388,7 @@ Run All);</li>
 <hr />
 <h1 id="задача-1-стохастический-градиентный-спуск">Задача 1.
 Стохастический градиентный спуск</h1>
-<p>Определение 2.4 использует <strong>усреднённый</strong> функционал
+<p>Определение 2.5 использует <strong>усреднённый</strong> функционал
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>ℓ</mi></mfrac><msub><mo>∑</mo><mi>i</mi></msub><msub><mi>Q</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Q(\theta)=\frac1\ell\sum_i Q_i(\theta)</annotation></semantics></math>,
 где
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mi>i</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">⟨</mo><mi>θ</mi><mo>,</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">Q_i = (\langle\theta,x_i\rangle - y_i)^2</annotation></semantics></math>.
@@ -569,7 +569,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 </blockquote>
 <h1 id="задача-3-регуляризация-как-априорное-знание">Задача 3★.
 Регуляризация как априорное знание</h1>
-<p>Утверждение 2.11: при гауссовском шуме
+<p>Утверждение 2.13: при гауссовском шуме
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi><mo>∼</mo><mi>𝒩</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\varepsilon\sim\mathcal N(0,\sigma^2)</annotation></semantics></math>
 и гауссовском априорном распределении весов
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msup><mi>τ</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\theta_j\sim\mathcal N(0,\tau^2)</annotation></semantics></math>
@@ -599,7 +599,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 <p>Первое слагаемое — то самое правдоподобие из занятия 2 (при
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>≡</mo></mrow><annotation encoding="application/x-tex">p(\theta)\equiv</annotation></semantics></math>
 const получается обычный ММП), второе — штраф. Отсюда и смысл
-утверждения 2.11: регуляризация не «математический трюк», а ровно запись
+утверждения 2.13: регуляризация не «математический трюк», а ровно запись
 априорного знания. Гауссовское априорное даёт
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><msubsup><mi>θ</mi><mi>j</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">\sum\theta_j^2</annotation></semantics></math>,
 лапласовское —
@@ -611,7 +611,7 @@ const получается обычный ММП), второе — штраф. 
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ridge_fit(X, y, lam):</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;theta*_lambda по теореме 2.9; первый столбец X -- единицы, не штрафуется.&quot;&quot;&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;theta*_lambda по теореме 2.10; первый столбец X -- единицы, не штрафуется.&quot;&quot;&quot;</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>

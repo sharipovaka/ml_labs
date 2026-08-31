@@ -247,9 +247,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </tr>
 <tr>
 <td>Опора на лекции</td>
-<td>лекция 1: функция потерь (опр. 1.9), эмпирический и истинный риск
-(опр. 1.10–1.11), утв. 1.12 о несмещённости, принцип ERM (опр. 1.13),
-нормальные уравнения МНК (теорема 1.20), примеры 1.5 и 1.21</td>
+<td>лекция 1: функция потерь (опр. 1.11), эмпирический и истинный риск
+(опр. 1.12–1.13), утв. 1.14 о несмещённости, принцип ERM (опр. 1.15),
+§1.4 (матричное дифференцирование), нормальные уравнения МНК (теорема
+1.24), примеры 1.4 и 1.8</td>
 </tr>
 <tr>
 <td>Трудоёмкость</td>
@@ -338,18 +339,25 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 считаются на бумаге, — значит, правильный ответ известен точно, и если
 код его не даёт, дальше идти бессмысленно. Ровно этим мы занимались на
 занятии 1 с матрицей Гильберта.</p>
-<p>Теорема 1.20: если
+<p>Теорема 1.24: если
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^{\mathsf T}X</annotation></semantics></math>
 невырождена, то
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>X</mi><mi>𝖳</mi></msup><mi>y</mi></mrow><annotation encoding="application/x-tex">\theta^* = (X^{\mathsf T}X)^{-1}X^{\mathsf T}y</annotation></semantics></math>.</p>
-<p>В примере 1.21 МНК применён к выборке из восьми кошек
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mn>1</mn></msub><annotation encoding="application/x-tex">f_1</annotation></semantics></math>
+<p>Пример 1.4 конспекта описывает ровно эту задачу — восемь кошек,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mn>1</mn></msub><annotation encoding="application/x-tex">f_1</annotation></semantics></math>
 — банок корма в день,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mn>2</mn></msub><annotation encoding="application/x-tex">f_2</annotation></semantics></math>
 — возраст,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
-— вес; ту же таблицу мы набрали в конце занятия 1) и получено
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>≈</mo><mo stretchy="false" form="prefix">(</mo><mn>2.201</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0.893</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0.114</mn><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\theta^*\approx(2.201,\ 0.893,\ 0.114).</annotation></semantics></math></p>
+— вес, — но <strong>чисел не приводит</strong>: там задана постановка, а
+не расчёт. Числа мы задали сами в конце занятия 1. Посчитав
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>θ</mi><mo>*</mo></msup><annotation encoding="application/x-tex">\theta^*</annotation></semantics></math>
+один раз и убедившись, что все способы решения дают одно и то же, мы
+получаем <strong>собственный эталон</strong>:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>θ</mi><mo>*</mo></msup><mo>≈</mo><mo stretchy="false" form="prefix">(</mo><mn>2.2009</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0.8931</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0.1136</mn><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">\theta^*\approx(2.2009,\ 0.8931,\ 0.1136).</annotation></semantics></math>
+К нему мы вернёмся в домашней работе, где им проверяются пять разных
+решателей МНК, и дальше по курсу — всякий раз, когда нужен ответ,
+известный точно.</p>
 </div>
 <div id="cell003" class="cell code">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>], dtype<span class="op">=</span><span class="bu">float</span>)      <span class="co"># банок корма в день</span></span>
@@ -359,14 +367,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>theta_solve <span class="op">=</span> np.linalg.solve(X_cats.T <span class="op">@</span> X_cats, X_cats.T <span class="op">@</span> y_cats)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>theta_lstsq <span class="op">=</span> np.linalg.lstsq(X_cats, y_cats, rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>theta_ref <span class="op">=</span> np.array([<span class="fl">2.201</span>, <span class="fl">0.893</span>, <span class="fl">0.114</span>])               <span class="co"># конспект, пример 1.21</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>theta_ref <span class="op">=</span> np.array([<span class="fl">2.2009</span>, <span class="fl">0.8931</span>, <span class="fl">0.1136</span>])            <span class="co"># эталон занятия 1</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;нормальные уравнения (solve): </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(theta_solve, <span class="dv">4</span>)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;SVD-решение (lstsq)         : </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(theta_lstsq, <span class="dv">4</span>)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;в конспекте                 : </span><span class="sc">{</span>theta_ref<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;эталон занятия 1            : </span><span class="sc">{</span>theta_ref<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="ch">\n</span><span class="ss">максимальное отличие от конспекта: &quot;</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">abs</span>(theta_solve <span class="op">-</span> theta_ref)<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2e}</span><span class="ss">  &quot;</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span><span class="st">&#39;-- воспроизведено&#39;</span> <span class="cf">if</span> np<span class="sc">.</span><span class="bu">abs</span>(theta_solve <span class="op">-</span> theta_ref)<span class="sc">.</span><span class="bu">max</span>() <span class="op">&lt;</span> <span class="fl">1e-3</span> <span class="cf">else</span> <span class="st">&#39;-- РАСХОЖДЕНИЕ&#39;</span><span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span><span class="st">&#39;-- совпало&#39;</span> <span class="cf">if</span> np<span class="sc">.</span><span class="bu">abs</span>(theta_solve <span class="op">-</span> theta_ref)<span class="sc">.</span><span class="bu">max</span>() <span class="op">&lt;</span> <span class="fl">1e-3</span> <span class="cf">else</span> <span class="st">&#39;-- РАСХОЖДЕНИЕ&#39;</span><span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
 <div id="cell004" class="cell markdown">
 <blockquote>
@@ -402,12 +410,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <hr />
 <h1 id="часть-2-функция-потерь-задаёт-что-мы-восстанавливаем">Часть 2.
 Функция потерь задаёт, что мы восстанавливаем</h1>
-<p>Определение 1.9: потеря
+<p>Определение 1.11: потеря
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℒ</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathcal L(a,x,y)\ge0</annotation></semantics></math>
 измеряет ошибку на одном объекте; в регрессии она зависит только от
 невязки
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">r = a(x) - y</annotation></semantics></math>.
-Эмпирический риск (опр. 1.10) — её среднее по выборке:</p>
+Эмпирический риск (опр. 1.12) — её среднее по выборке:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><msup><mi>X</mi><mi>ℓ</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>ℓ</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>ℓ</mi></munderover><mi>ℒ</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
 Q(a, X^\ell) = \frac1\ell\sum_{i=1}^{\ell}\mathcal L(a, x_i, y_i).
 </annotation></semantics></math></p>
@@ -490,7 +498,7 @@ value of an array is ambiguous».</p>
 риск</h3>
 <p>Простейшая модель алгоритмов — константы
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>≡</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a(x)\equiv c</annotation></semantics></math>.
-Принцип ERM (опр. 1.13) требует найти
+Принцип ERM (опр. 1.15) требует найти
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>c</mi><mo>*</mo></msup><mo>=</mo><mrow><mi>arg</mi><mo>⁡</mo></mrow><msub><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>c</mi></msub><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c^* = \arg\min_c Q(c)</annotation></semantics></math>.
 Начнём с самой функции
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>.</p>
@@ -537,9 +545,9 @@ value of an array is ambiguous».</p>
 </div>
 <div id="cell016" class="cell markdown">
 <hr />
-<h1 id="часть-3-проверяем-утверждение-112">Часть 3. Проверяем
-утверждение 1.12</h1>
-<p>Утверждение 1.12: если
+<h1 id="часть-3-проверяем-утверждение-114">Часть 3. Проверяем
+утверждение 1.14</h1>
+<p>Утверждение 1.14: если
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>X</mi><mi>ℓ</mi></msup><annotation encoding="application/x-tex">X^\ell</annotation></semantics></math>
 — простая выборка, то
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝔼</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">[</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><msup><mi>X</mi><mi>ℓ</mi></msup><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">]</mo><mo>=</mo><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}\bigl[Q(a, X^\ell)\bigr] = R(a)</annotation></semantics></math>.</p>
@@ -573,7 +581,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample(n, generator):</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Простая выборка (опр. 1.7) из распределения p(x, y).&quot;&quot;&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Простая выборка (i.i.d., §1.3) из распределения p(x, y).&quot;&quot;&quot;</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> generator.uniform(<span class="dv">0</span>, <span class="dv">1</span>, n)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.column_stack([np.ones(n), x])</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X, X <span class="op">@</span> THETA_TRUE <span class="op">+</span> generator.normal(<span class="dv">0</span>, np.sqrt(SIGMA2), n)</span>
@@ -639,7 +647,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <p>Ровно то, что предписывает принцип ERM: берём выборку, обучаем на ней
 МНК, и на ней же считаем
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>.
-Формально утверждение 1.12 больше не применимо — посмотрим, что
+Формально утверждение 1.14 больше не применимо — посмотрим, что
 будет.</p>
 </div>
 <div id="cell023" class="cell code">
@@ -672,7 +680,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <div id="cell025" class="cell markdown">
 <blockquote>
 <p><strong>Вывод.</strong> Для фиксированного алгоритма смещения нет,
-для обученного — есть. В каком месте доказательства утверждения 1.12
+для обученного — есть. В каком месте доказательства утверждения 1.14
 ломается рассуждение? Как зазор зависит от
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ℓ</mi><annotation encoding="application/x-tex">\ell</annotation></semantics></math>
 и числа параметров
@@ -684,7 +692,7 @@ x\sim U[0,1],\qquad y = 1 + 2x + \varepsilon,\qquad
 <hr />
 <h1 id="часть-4-полиномы-первое-переобучение">Часть 4. Полиномы: первое
 переобучение</h1>
-<p>Как отмечено в примере 1.4 конспекта, признаками линейной модели
+<p>Как отмечено в примере 1.8 конспекта, признаками линейной модели
 могут служить любые функции исходных данных: при
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mrow><mspace width="0.167em"></mspace><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">f_j(x) = x^{\,j-1}</annotation></semantics></math>
 та же формула задаёт полином. Модель остаётся <strong>линейной по
@@ -862,7 +870,7 @@ R^2 = 1 - \frac{\sum_i (a(x_i) - y_i)^2}{\sum_i (\overline y - y_i)^2}
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>
-<li>Утверждение 1.12 говорит, что
+<li>Утверждение 1.14 говорит, что
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝔼</mi><mo stretchy="false" form="prefix">[</mo><mi>Q</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">\mathbb{E}[Q] = R</annotation></semantics></math>.
 Почему это не противоречит переобучению? Сформулируйте условие, при
 котором равенство верно.</li>

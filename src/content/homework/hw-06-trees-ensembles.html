@@ -261,7 +261,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </table>
 <p>Две классические реализации. Сначала решающее дерево: рекурсивное
 построение с перебором порогов — код короткий, но требует аккуратности.
-Затем AdaBoost строго по теореме 5.15, с проверкой, что формула для
+Затем AdaBoost строго по теореме 5.17, с проверкой, что формула для
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math>
 действительно доставляет минимум.\n\nОтлаживать обе реализации удобно на
 двумерной синтетике — там видно границу; а работать они обязаны на
@@ -470,9 +470,9 @@ Run All);</li>
 Каждый пункт засчитывается отдельно, поэтому имеет смысл сделать хотя бы
 один.</p>
 </blockquote>
-<h1 id="задача-2-adaboost-по-теореме-515">Задача 2★. AdaBoost по теореме
-5.15</h1>
-<p>Теорема 5.15: при весах
+<h1 id="задача-2-adaboost-по-теореме-517">Задача 2★. AdaBoost по теореме
+5.17</h1>
+<p>Теорема 5.17: при весах
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>=</mo><mrow><mi>exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><msub><mi>y</mi><mi>i</mi></msub><msub><mi>F</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w_i = \exp(-y_iF_{t-1}(x_i))</annotation></semantics></math>
 и взвешенной ошибке
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi></mrow><mi>t</mi></msub><annotation encoding="application/x-tex">\mathrm{err}_t</annotation></semantics></math>
@@ -490,7 +490,7 @@ Run All);</li>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">       1) обучить пень DecisionTreeClassifier(max_depth=1) с весами w</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">          (параметр sample_weight);</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">       2) посчитать взвешенную ошибку err_t (долю веса на ошибочных объектах);</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">       3) alpha_t = 0.5 * ln((1 - err_t)/err_t)   -- теорема 5.15;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">       3) alpha_t = 0.5 * ln((1 - err_t)/err_t)   -- теорема 5.17;</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">       4) w_i &lt;- w_i exp(-alpha_t y_i b_t(x_i)), нормировать.</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">       Возвращает (список пней, массив alpha, историю по шагам).</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
@@ -521,7 +521,7 @@ Run All);</li>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) обучите свой AdaBoost и сравните точность с AdaBoostClassifier;</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) для ПЕРВОГО шага (веса равномерные) сравните alpha по формуле</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          теоремы 5.15 с минимумом sum_i w_i exp(-alpha y_i b(x_i)),</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          теоремы 5.17 с минимумом sum_i w_i exp(-alpha y_i b(x_i)),</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#          найденным optimize.minimize_scalar.</span></span></code></pre></div>
 </div>
 <div id="cell017" class="cell code" data-tags="[&quot;task&quot;]">
