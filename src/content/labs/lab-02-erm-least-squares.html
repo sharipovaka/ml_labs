@@ -292,6 +292,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 на экране у преподавателя и у вас совпадают, поэтому можно сверяться с
 соседом и спорить о результате вслух. Индивидуальная таблица,
 порождённая по вашему ФИО, появится в домашней работе.</p>
+<p>Почти все учебные выборки курса берутся из
+<code>sklearn.datasets</code> — это либо готовые наборы, либо
+порождённые генератором: <a href="https://scikit-learn.ru/stable/datasets/toy_dataset.html">7.1.
+Игрушечные наборы</a> · <a href="https://scikit-learn.ru/stable/datasets/real_world.html">7.2.
+Реальные наборы</a> · <a href="https://scikit-learn.ru/stable/datasets/sample_generators.html">7.3.
+Генераторы выборок</a></p>
 </blockquote>
 </div>
 <div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
@@ -363,14 +369,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <strong><code>solve</code> и <code>lstsq</code> вместо
 <code>inv</code>.</strong> Насколько это принципиально, вы измерите в
 домашней работе на матрице Вандермонда.</p>
-<p>Пример 1.4 конспекта описывает ровно эту задачу — восемь кошек,
+<p>Задачу мы поставили сами в конце занятия 1: восемь кошек,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mn>1</mn></msub><annotation encoding="application/x-tex">f_1</annotation></semantics></math>
 — банок корма в день,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mn>2</mn></msub><annotation encoding="application/x-tex">f_2</annotation></semantics></math>
 — возраст,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
-— вес, — но <strong>чисел не приводит</strong>: там задана постановка, а
-не расчёт. Числа мы задали сами в конце занятия 1. Посчитав
+— вес. Восемь строк и три параметра — размер выбран так, чтобы решение
+можно было проверить и руками. Посчитав
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>θ</mi><mo>*</mo></msup><annotation encoding="application/x-tex">\theta^*</annotation></semantics></math>
 один раз и убедившись, что все способы решения дают одно и то же, мы
 получаем <strong>собственный эталон</strong>:
