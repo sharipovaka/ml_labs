@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="лабораторная-работа-7-метрические-и-байесовские-методы-классификации">Лабораторная
 работа 7. Метрические и байесовские методы классификации</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -282,7 +294,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 порождённая по вашему ФИО, появится в домашней работе.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -337,7 +349,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-1-метрический-метод-целиком-зависит-от-расстояния">Часть
 1. Метрический метод целиком зависит от расстояния</h1>
@@ -361,7 +373,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 признак в рублях подавит признак в долях единицы просто потому, что его
 числа больше. Это не тонкость реализации, а свойство самого метода.</p>
 </div>
-<div id="cell003" class="cell markdown">
+<div id="cell004" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — осторожно: «ядро» здесь другое.</strong> В
 занятии 4 ядром называлась функция
@@ -390,7 +402,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 ядра сглаживания один.</p>
 </blockquote>
 </div>
-<div id="cell004" class="cell code">
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X_w, y_w <span class="op">=</span> load_wine(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Xa, Xv, ya, yv <span class="op">=</span> train_test_split(X_w, y_w, test_size<span class="op">=</span><span class="fl">0.35</span>, stratify<span class="op">=</span>y_w,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                                  random_state<span class="op">=</span>RANDOM_STATE)</span>
@@ -405,7 +417,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="ch">\n</span><span class="ss">разброс масштабов: от </span><span class="sc">{</span>spread<span class="sc">.</span>iloc[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss"> (</span><span class="sc">{</span>spread<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">) &quot;</span></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;до </span><span class="sc">{</span>spread<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss"> (</span><span class="sc">{</span>spread<span class="sc">.</span>index[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">) -- отношение </span><span class="sc">{</span>spread<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>] <span class="op">/</span> spread<span class="sc">.</span>iloc[<span class="dv">0</span>]<span class="sc">:.0f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell markdown">
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-11-проклятие-размерности">Задание 1.1. Проклятие
 размерности</h3>
 <p>Вторая беда — размерность. В
@@ -418,7 +430,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 как функцию
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>.</p>
 </div>
-<div id="cell006" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pairwise_dist(P):</span>
@@ -435,7 +447,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>cd <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;размерность&quot;</span>)</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>display(cd.<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
 </div>
-<div id="cell007" class="cell code">
+<div id="cell008" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ax1.semilogx(cd.index, cd[<span class="st">&quot;контраст&quot;</span>], <span class="st">&quot;o-&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">&quot;#128C7E&quot;</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">&quot;размерность $n$&quot;</span>)<span class="op">;</span> ax1.set_ylabel(<span class="vs">r&quot;</span><span class="dv">$</span><span class="kw">(</span><span class="dv">\m</span><span class="vs">ax</span><span class="ch">\r</span><span class="vs">ho - </span><span class="dv">\m</span><span class="vs">in</span><span class="ch">\r</span><span class="vs">ho</span><span class="kw">)</span><span class="vs">/</span><span class="er">\</span><span class="vs">overline{</span><span class="ch">\r</span><span class="vs">ho}</span><span class="dv">$</span><span class="vs">&quot;</span>)</span>
@@ -450,7 +462,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">&quot;Все расстояния сходятся к среднему&quot;</span>)<span class="op">;</span> ax2.legend()</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Во сколько раз изменилась точность после
 масштабирования? Как ведёт себя контраст с ростом размерности и почему
@@ -458,7 +470,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell009" class="cell markdown">
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-2-выбор-числа-соседей">Часть 2. Выбор числа соседей</h1>
 <p>Параметр
@@ -470,7 +482,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
 граница сглаживается вплоть до константы.</p>
 </div>
-<div id="cell010" class="cell code">
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Xa_s, Xv_s <span class="op">=</span> sc.transform(Xa), sc.transform(Xv)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ks <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">41</span>))</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cv7 <span class="op">=</span> StratifiedKFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
@@ -489,7 +501,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;k = 1:  обучение </span><span class="sc">{</span>train_scores[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">, контроль </span><span class="sc">{</span>cv_scores[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;k = </span><span class="sc">{</span>k_best<span class="sc">}</span><span class="ss">: обучение </span><span class="sc">{</span>train_scores[k_best <span class="op">-</span> <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">, контроль </span><span class="sc">{</span>cv_scores[k_best <span class="op">-</span> <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell011" class="cell markdown">
+<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Чему равна точность на обучающей выборке при
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k=1</annotation></semantics></math>
@@ -498,7 +510,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell012" class="cell markdown">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-3-байесовский-оптимум-сколько-вообще-можно-выжать">Часть
 3. Байесовский оптимум: сколько вообще можно выжать</h1>
@@ -516,7 +528,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 вычислим точно — и появляется редкая возможность узнать, сколько ещё
 можно выиграть.</p>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — LDA и QDA.</strong> Два способа применить
 правило
@@ -541,7 +553,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 смещение. Тот же компромисс смещение–разброс, что и всегда.</p>
 </blockquote>
 </div>
-<div id="cell014" class="cell code">
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>MU <span class="op">=</span> [np.array([<span class="fl">0.0</span>, <span class="fl">0.0</span>]), np.array([<span class="fl">2.0</span>, <span class="fl">1.4</span>])]</span>
@@ -571,7 +583,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;байесовский оптимум: точность </span><span class="sc">{</span>bayes_acc<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;неустранимая ошибка: </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> bayes_acc<span class="sc">:.4f}</span><span class="ss"> -- ниже неё не опустится никто&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell015" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {<span class="st">&quot;наивный Байес (Gaussian)&quot;</span>: GaussianNB(),</span>
@@ -583,7 +595,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2-3 строки): обучите каждую модель на (X_tr, y_tr), посчитайте точность</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   на большой выборке (X_te, y_te) и зазор до байесовского оптимума.</span></span></code></pre></div>
 </div>
-<div id="cell016" class="cell code">
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g1, g2 <span class="op">=</span> np.meshgrid(np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">300</span>), np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">300</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.c_[g1.ravel(), g2.ravel()]</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>panels <span class="op">=</span> [(<span class="st">&quot;байесовское правило&quot;</span>, bayes_rule),</span>
@@ -603,7 +615,7 @@ a(x) = \arg\max_k \Gamma_k(x), \qquad
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">&quot;пунктир — байесовская граница&quot;</span>)</span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Кто ближе всех к оптимуму и почему? Почему
 LDA даёт прямую, а QDA — кривую? Что означает наличие неустранимой
@@ -611,7 +623,7 @@ LDA даёт прямую, а QDA — кривую? Что означает на
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-4-цена-наивного-предположения">Часть 4. Цена наивного
 предположения</h1>
@@ -632,7 +644,7 @@ a(x) = \arg\max_k\Bigl(\ln P_k + \sum_j \ln p_{kj}(x_j)\Bigr).
 наивное предположение ничего не портит, и эффекта просто не будет
 видно.</p>
 </div>
-<div id="cell019" class="cell code">
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>MU1 <span class="op">=</span> np.array([<span class="fl">1.8</span>, <span class="fl">0.0</span>])</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> corr <span class="kw">in</span> [<span class="fl">0.0</span>, <span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="fl">0.85</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>]:</span>
@@ -650,14 +662,14 @@ a(x) = \arg\max_k\Bigl(\ln P_k + \sum_j \ln p_{kj}(x_j)\Bigr).
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>nb_tab <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;корреляция признаков&quot;</span>)</span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>display(nb_tab.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell020" class="cell code">
+<div id="cell021" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>nb_tab.plot(marker<span class="op">=</span><span class="st">&quot;o&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&quot;корреляция признаков внутри класса&quot;</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">&quot;точность&quot;</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Цена наивного предположения о независимости&quot;</span>)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> При какой корреляции наивный Байес начинает
 заметно проигрывать? Почему на текстах он при этом работает хорошо, хотя
@@ -665,7 +677,7 @@ a(x) = \arg\max_k\Bigl(\ln P_k + \sum_j \ln p_{kj}(x_j)\Bigr).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell022" class="cell markdown">
+<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-5-пять-методов-на-одной-задаче">Часть 5. Пять методов на
 одной задаче</h1>
@@ -675,7 +687,7 @@ a(x) = \arg\max_k\Bigl(\ln P_k + \sum_j \ln p_{kj}(x_j)\Bigr).
 скользящим контролем и сравним все методы занятия — и заодно измерим,
 сколько стоит забытое масштабирование.</p>
 </div>
-<div id="cell023" class="cell code">
+<div id="cell024" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
@@ -695,7 +707,7 @@ a(x) = \arg\max_k\Bigl(\ln P_k + \sum_j \ln p_{kj}(x_j)\Bigr).
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame({<span class="st">&quot;k&quot;</span>: ks_own, <span class="st">&quot;CV accuracy&quot;</span>: np.<span class="bu">round</span>(scores_own, <span class="dv">4</span>)}).set_index(<span class="st">&quot;k&quot;</span>))</span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;лучшее k по скользящему контролю: </span><span class="sc">{</span>k_own<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell024" class="cell code">
+<div id="cell025" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> [(<span class="ss">f&quot;kNN (k=</span><span class="sc">{</span>k_own<span class="sc">}</span><span class="ss">), со шкалированием&quot;</span>, knn_pipe(k_own)),</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                (<span class="ss">f&quot;kNN (k=</span><span class="sc">{</span>k_own<span class="sc">}</span><span class="ss">), БЕЗ шкалирования&quot;</span>, KNeighborsClassifier(k_own)),</span>
@@ -712,7 +724,7 @@ a(x) = \arg\max_k\Bigl(\ln P_k + \sum_j \ln p_{kj}(x_j)\Bigr).
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;accuracy на контроле&quot;</span>: <span class="bu">float</span>((yte <span class="op">==</span> vals[cnts.argmax()]).mean())})</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;модель&quot;</span>).<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell025" class="cell markdown">
+<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Сколько стоило забытое масштабирование?
 Почему наивный Байес не уступил более сложным методам, хотя его
@@ -720,7 +732,7 @@ a(x) = \arg\max_k\Bigl(\ln P_k + \sum_j \ln p_{kj}(x_j)\Bigr).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell026" class="cell markdown">
+<div id="cell027" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>

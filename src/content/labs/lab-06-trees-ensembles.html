@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="лабораторная-работа-6-решающие-деревья-и-композиции-алгоритмов">Лабораторная
 работа 6. Решающие деревья и композиции алгоритмов</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -281,7 +293,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 порождённая по вашему ФИО, появится в домашней работе.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -334,7 +346,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score, train_test_split, StratifiedKFold</span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier, DecisionTreeRegressor</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-1-почему-не-доля-ошибок">Часть 1. Почему не доля
 ошибок</h1>
@@ -357,7 +369,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>min</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\min(p, 1-p)</annotation></semantics></math>
 тоже вогнута, но не строго. Посмотрим, к чему это приводит.</p>
 </div>
-<div id="cell003" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> entropy(y):</span>
@@ -377,7 +389,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell004" class="cell code">
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> np.linspace(<span class="fl">1e-9</span>, <span class="dv">1</span> <span class="op">-</span> <span class="fl">1e-9</span>, <span class="dv">400</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ax.plot(p, <span class="op">-</span>(p <span class="op">*</span> np.log(p) <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> p) <span class="op">*</span> np.log(<span class="dv">1</span> <span class="op">-</span> p)), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">&quot;энтропия&quot;</span>)</span>
@@ -388,7 +400,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;доля ошибок кусочно-линейна: вогнута, но НЕ строго&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell code">
+<div id="cell006" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверяем утверждение 5.6 на 20000 случайных разбиений</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>err_rate <span class="op">=</span> <span class="kw">lambda</span> yy: <span class="dv">1</span> <span class="op">-</span> np.<span class="bu">max</span>(np.bincount(yy, minlength<span class="op">=</span><span class="dv">3</span>)) <span class="op">/</span> <span class="bu">len</span>(yy)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>gen <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
@@ -406,7 +418,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">:14s}</span><span class="ss">: min Gain = </span><span class="sc">{</span>vals<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:+.1e}</span><span class="ss"> | доля отрицательных &quot;</span></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&quot;</span><span class="sc">{</span>np<span class="sc">.</span>mean(vals <span class="op">&lt;</span> <span class="op">-</span><span class="fl">1e-12</span>)<span class="sc">:.4f}</span><span class="ss"> | доля НУЛЕВЫХ </span><span class="sc">{</span>np<span class="sc">.</span>mean(vals <span class="op">&lt;</span> <span class="fl">1e-12</span>)<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell006" class="cell markdown">
+<div id="cell007" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> У какого критерия нулевой прирост встречается
 чаще всего и почему? Что это значит для жадного алгоритма построения
@@ -414,7 +426,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell007" class="cell markdown">
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-2-дерево-ступенчатая-граница-и-стрижка">Часть 2. Дерево:
 ступенчатая граница и стрижка</h1>
@@ -423,7 +435,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><msub><mi>x</mi><mi>j</mi></msub><mo>≤</mo><mi>t</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[x_j \le t]</annotation></semantics></math>
 — отсюда важное следствие для формы границы.</p>
 </div>
-<div id="cell008" class="cell code">
+<div id="cell009" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Xm, ym <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">400</span>, noise<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Xa, Xv, ya, yv <span class="op">=</span> train_test_split(Xm, ym, test_size<span class="op">=</span><span class="fl">0.35</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -444,7 +456,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                                 <span class="ss">f&quot;обучение </span><span class="sc">{</span>m<span class="sc">.</span>score(Xa, ya)<span class="sc">:.2f}</span><span class="ss">, контроль </span><span class="sc">{</span>m<span class="sc">.</span>score(Xv, yv)<span class="sc">:.2f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell009" class="cell markdown">
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="стрижка-по-цене-сложности">Стрижка по цене сложности</h3>
 <p>Определение 5.9:
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mi>α</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>,</mo><msup><mi>X</mi><mi>ℓ</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>α</mi><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">l</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">v</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">Q_\alpha(T) = Q(T, X^\ell) + \alpha\,|\mathrm{leaves}(T)|</annotation></semantics></math>.
@@ -453,7 +465,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
 штрафует сложность и подбирается скользящим контролем.</p>
 </div>
-<div id="cell010" class="cell markdown">
+<div id="cell011" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — SRM.</strong> Structural Risk Minimization,
 минимизация структурного риска (опр. 4.17): семейство моделей разбивают
@@ -469,7 +481,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 сложность», меняется только мера сложности.</p>
 </blockquote>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell012" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>full <span class="op">=</span> DecisionTreeClassifier(random_state<span class="op">=</span>RANDOM_STATE).fit(Xa, ya)</span>
@@ -483,7 +495,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>a_best <span class="op">=</span> ...</span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;alpha* = </span><span class="sc">{</span>a_best<span class="sc">:.5f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell012" class="cell code">
+<div id="cell013" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pruned <span class="op">=</span> DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">0</span>, ccp_alpha<span class="op">=</span>a_best).fit(Xa, ya)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>leaves <span class="op">=</span> [DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">0</span>, ccp_alpha<span class="op">=</span>a).fit(Xa, ya).get_n_leaves()</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> a <span class="kw">in</span> alphas]</span>
@@ -501,14 +513,14 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;без стрижки: листьев </span><span class="sc">{</span>full<span class="sc">.</span>get_n_leaves()<span class="sc">:4d}</span><span class="ss">, контроль </span><span class="sc">{</span>full<span class="sc">.</span>score(Xv, yv)<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;со стрижкой: листьев </span><span class="sc">{</span>pruned<span class="sc">.</span>get_n_leaves()<span class="sc">:4d}</span><span class="ss">, контроль </span><span class="sc">{</span>pruned<span class="sc">.</span>score(Xv, yv)<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Как выглядит граница решения и почему именно
 так? Что даёт стрижка?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell015" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-3-бэггинг-проверяем-утверждение-513">Часть 3. Бэггинг:
 проверяем утверждение 5.13</h1>
@@ -530,7 +542,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 Случайный лес атакует именно
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>.</p>
 </div>
-<div id="cell015" class="cell markdown">
+<div id="cell016" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — бэггинг.</strong> Bagging =
 <strong>b</strong>ootstrap
@@ -557,7 +569,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\rho\sigma^2</annotation></semantics></math>.</p>
 </blockquote>
 </div>
-<div id="cell016" class="cell code">
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>F5 <span class="op">=</span> <span class="kw">lambda</span> X: np.sin(<span class="dv">2</span> <span class="op">*</span> X[:, <span class="dv">0</span>]) <span class="op">+</span> <span class="fl">0.7</span> <span class="op">*</span> X[:, <span class="dv">1</span>] <span class="op">**</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> X[:, <span class="dv">2</span>] <span class="op">*</span> X[:, <span class="dv">3</span>]</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -578,7 +590,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        idx <span class="op">=</span> gb.integers(<span class="dv">0</span>, <span class="bu">len</span>(ys), <span class="bu">len</span>(ys))      <span class="co"># бутстреп внутри выборки</span></span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        per_tree[r, b] <span class="op">=</span> DecisionTreeRegressor(random_state<span class="op">=</span>b).fit(Xs[idx], ys[idx]).predict(x0)[<span class="dv">0</span>]</span></code></pre></div>
 </div>
-<div id="cell017" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># per_tree -- матрица (N_REP, B_MAX): предсказание дерева b в повторении r</span></span>
@@ -591,7 +603,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>emp <span class="op">=</span> ...</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>theory <span class="op">=</span> rho <span class="op">*</span> sigma2 <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> rho) <span class="op">/</span> Bs <span class="op">*</span> sigma2</span></code></pre></div>
 </div>
-<div id="cell018" class="cell code">
+<div id="cell019" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ax.plot(Bs, emp, <span class="st">&quot;o&quot;</span>, ms<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">&quot;измеренный разброс среднего&quot;</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ax.plot(Bs, theory, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">r&quot;теория: </span><span class="dv">$</span><span class="ch">\r</span><span class="vs">ho</span><span class="dv">\s</span><span class="vs">igma</span><span class="dv">^</span><span class="vs">2 </span><span class="op">+</span><span class="vs"> </span><span class="ch">\f</span><span class="vs">rac{1-</span><span class="ch">\r</span><span class="vs">ho}{B}</span><span class="dv">\s</span><span class="vs">igma</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">&quot;</span>)</span>
@@ -600,7 +612,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Утверждение 5.13 на эксперименте&quot;</span>)<span class="op">;</span> ax.legend()</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell019" class="cell code">
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Смещение и разброс: дерево / бэггинг / случайный лес</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>g_eval <span class="op">=</span> np.random.default_rng(<span class="dv">123</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X_eval, _ <span class="op">=</span> sample5(<span class="dv">200</span>, g_eval)</span>
@@ -620,7 +632,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    rows.append({<span class="st">&quot;модель&quot;</span>: lbl, <span class="st">&quot;смещение^2&quot;</span>: b2, <span class="st">&quot;разброс&quot;</span>: v, <span class="st">&quot;сумма&quot;</span>: b2 <span class="op">+</span> v})</span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;модель&quot;</span>).<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell020" class="cell markdown">
+<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Согласуется ли формула с экспериментом? Зачем
 случайный лес ограничивает число признаков при расщеплении, если это
@@ -628,7 +640,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-4-лес-против-бустинга">Часть 4. Лес против бустинга</h1>
 <p>Бэггинг усредняет <strong>независимо обученные</strong> алгоритмы,
@@ -644,7 +656,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 смещение, накапливая его по шагам, а разброс у него и так мал —
 усиливать его глубокими деревьями нельзя.</p>
 </div>
-<div id="cell022" class="cell code">
+<div id="cell023" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>n_grid <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">400</span>]</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, factory <span class="kw">in</span> [</span>
@@ -662,7 +674,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Качество против числа деревьев&quot;</span>)<span class="op">;</span> ax.legend(fontsize<span class="op">=</span><span class="dv">7</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell023" class="cell markdown">
+<div id="cell024" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Какие ансамбли выходят на плато, а какие
 переобучаются с ростом числа деревьев? Как это следует из устройства
@@ -670,7 +682,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell024" class="cell markdown">
+<div id="cell025" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-5-важность-признаков-встроенная-врёт">Часть 5. Важность
 признаков: встроенная врёт</h1>
@@ -685,7 +697,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 </ul>
 <p>Проверим их на данных, где правильный ответ известен заранее.</p>
 </div>
-<div id="cell025" class="cell code">
+<div id="cell026" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> permutation_importance</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>gz <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
@@ -703,7 +715,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>Xia, Xiv, yia, yiv <span class="op">=</span> train_test_split(X_imp, y_imp, test_size<span class="op">=</span><span class="fl">0.35</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>rf <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">300</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit(Xia, yia)</span></code></pre></div>
 </div>
-<div id="cell026" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell027" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2-3 строки): посчитайте важности двумя способами --</span></span>
@@ -711,21 +723,21 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   сведите в таблицу с индексом names и выведите суммарную важность</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   трёх ШУМОВЫХ признаков по каждому способу.</span></span></code></pre></div>
 </div>
-<div id="cell027" class="cell code">
+<div id="cell028" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tab.plot.barh(ax<span class="op">=</span>ax)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&quot;black&quot;</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&quot;важность&quot;</span>)<span class="op">;</span> ax.set_title(<span class="st">&quot;Два способа измерить важность признака&quot;</span>)</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell028" class="cell markdown">
+<div id="cell029" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Какую важность получили заведомо бесполезные
 признаки? Почему шумовой вещественный «важнее» шумового бинарного?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell029" class="cell markdown">
+<div id="cell030" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-6-деревья-против-линейных-моделей">Часть 6. Деревья против
 линейных моделей</h1>
@@ -734,7 +746,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.9977</mn><annotation encoding="application/x-tex">0.9977</annotation></semantics></math>.
 Посмотрим, что на тех же данных покажут дерево и ансамбли.</p>
 </div>
-<div id="cell030" class="cell code">
+<div id="cell031" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -760,7 +772,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>rows.append({<span class="st">&quot;модель&quot;</span>: <span class="st">&quot;логистическая регрессия (занятие 4)&quot;</span>, <span class="st">&quot;AUC на контроле&quot;</span>: <span class="fl">0.9977</span>})</span>
 <span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;модель&quot;</span>).<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell031" class="cell code">
+<div id="cell032" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>best <span class="op">=</span> GradientBoostingClassifier(random_state<span class="op">=</span><span class="dv">0</span>).fit(Xtr, ytr)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>perm_own <span class="op">=</span> permutation_importance(best, Xte, yte, n_repeats<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">0</span>,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                                  scoring<span class="op">=</span><span class="st">&quot;roc_auc&quot;</span>)</span>
@@ -772,7 +784,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Что определяет предсказание&quot;</span>)</span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell032" class="cell markdown">
+<div id="cell033" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Почему одиночное дерево так отстало от
 ансамблей — и от логистической регрессии? Почему дерево без ограничений
@@ -781,7 +793,7 @@ H(R) = -\sum_k p_k\ln p_k, \qquad \mathrm{Gini}(R) = 1 - \sum_k p_k^2 .
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell033" class="cell markdown">
+<div id="cell034" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>

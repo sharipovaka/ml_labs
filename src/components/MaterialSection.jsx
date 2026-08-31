@@ -39,7 +39,10 @@ function MaterialLink({ item, sectionPath, isActive }) {
       </span>
       <span className={styles.listBody}>
         <span className={styles.listTitle}>{item.title}</span>
-        <span className={styles.listDate}>{formatDate(item.date)}</span>
+        <span className={styles.listDate}>
+          {formatDate(item.date)}
+          {item.draft && <span className={styles.draftTag}>черновик</span>}
+        </span>
       </span>
     </Link>
   );
@@ -116,6 +119,20 @@ export default function MaterialSection({ section }) {
 
         {/* --- Просмотрщик --- */}
         <div className="col-lg-8 col-xl-9">
+          {/* Черновик виден до самого материала: иначе студент начинает
+              заниматься по версии, которая ещё будет переписана. */}
+          {material.draft && (
+            <div className={styles.draftBanner} role="alert">
+              <i className="fa-solid fa-triangle-exclamation" aria-hidden="true" />
+              <div>
+                <strong>Черновик — не актуальная версия.</strong> Этот материал ещё в
+                работе и будет переписан: формулировки, данные и порядок заданий
+                изменятся. Заниматься по нему пока не нужно. Актуально только{' '}
+                <Link to={`${section.path}/lab-01-tools-data`}>занятие 1</Link>.
+              </div>
+            </div>
+          )}
+
           <div className={styles.meta}>
             <p className="mb-2">{material.description}</p>
 

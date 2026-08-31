@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="домашняя-работа-6-дерево-и-adaboost-своими-руками">Домашняя
 работа 6. Дерево и AdaBoost своими руками</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -301,7 +313,7 @@ Run All);</li>
 методов.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
+<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -354,7 +366,7 @@ Run All);</li>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier, DecisionTreeRegressor</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
 <p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
 вариант вычисляется детерминированно, при повторном запуске он тот же
@@ -362,13 +374,13 @@ Run All);</li>
 <p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
 вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
 </div>
-<div id="cell003" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">6</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ваша выборка. Занятие про классификацию, поэтому регрессионный вариант</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># бинаризуем по медиане обучающей части.</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_personal(variant)</span>
@@ -382,7 +394,7 @@ Run All);</li>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>data[<span class="st">&#39;domain&#39;</span>]<span class="sc">}</span><span class="ss">: обучающая </span><span class="sc">{</span>Xp_tr<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, контрольная </span><span class="sc">{</span>Xp_te<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, &quot;</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;доля класса 1 = </span><span class="sc">{</span>yp_tr<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-1-решающее-дерево">Задача 1. Решающее дерево</h1>
 <p>Алгоритм: в вершине перебрать все признаки и все пороги, выбрать
@@ -393,7 +405,7 @@ Run All);</li>
 <strong>различными</strong> значениями признака: между одинаковыми
 значениями разбиения не существует.</p>
 </div>
-<div id="cell006" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gini(y):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Gini(R) = 1 - sum p_k^2.&quot;&quot;&quot;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
@@ -417,14 +429,14 @@ Run All);</li>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span></span></code></pre></div>
 </div>
-<div id="cell007" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-11-сверка-со-sklearn">Задание 1.1. Сверка со
 <code>sklearn</code></h3>
 <p>При одинаковых ограничениях ваше дерево обязано давать то же качество
 и то же число листьев. Расхождение на 1–2 листа допустимо: при равных
 приростах порядок перебора признаков может отличаться.</p>
 </div>
-<div id="cell008" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell009" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Xm, ym <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">400</span>, noise<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Xa, Xv, ya, yv <span class="op">=</span> train_test_split(Xm, ym, test_size<span class="op">=</span><span class="fl">0.35</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -432,14 +444,14 @@ Run All);</li>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       и DecisionTreeClassifier(criterion=&quot;gini&quot;): точность на контроле</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       и число листьев.</span></span></code></pre></div>
 </div>
-<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпало ли качество и число листьев? Где ваша
 реализация медленнее <code>sklearn</code> и почему?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell011" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-12-ваше-дерево-на-вашей-выборке">Задание 1.2. Ваше
 дерево на вашей выборке</h3>
 <p><code>make_moons</code> — два признака и гладкая граница, то есть
@@ -448,13 +460,13 @@ Run All);</li>
 против <code>max_depth</code>) на своей выборке и сравните со
 <code>sklearn</code>.</p>
 </div>
-<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell012" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: для max_depth из [1, 2, 3, 5, 8, 12, None] обучите СВОЁ дерево и</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       DecisionTreeClassifier на (Xp_tr, yp_tr); сведите в таблицу качество</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       на обучении и на контроле, число листьев у sklearn.</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте кривую сложности: обе доли правильных ответов против глубины.</span></span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> При какой глубине качество на контроле
 максимально? Что происходит с обучающей кривой и почему это не повод
@@ -462,7 +474,7 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -485,7 +497,7 @@ Run All);</li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>←</mo><msub><mi>w</mi><mi>i</mi></msub><mrow><mi>exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><msub><mi>α</mi><mi>t</mi></msub><msub><mi>y</mi><mi>i</mi></msub><msub><mi>b</mi><mi>t</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w_i \leftarrow w_i\exp(-\alpha_t y_i b_t(x_i))</annotation></semantics></math>
 с последующей нормировкой.</p>
 </div>
-<div id="cell014" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> adaboost_fit(X, y, n_estimators<span class="op">=</span><span class="dv">200</span>, seed<span class="op">=</span><span class="dv">0</span>):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;AdaBoost для y из {-1, +1}. На каждом шаге:</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">       1) обучить пень DecisionTreeClassifier(max_depth=1) с весами w</span></span>
@@ -502,7 +514,7 @@ Run All);</li>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;sign(sum alpha_t b_t(x)).&quot;&quot;&quot;</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell015" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell016" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-21-проверка-формулы-и-сверка-со-sklearn">Задание 2.1.
 Проверка формулы и сверка со <code>sklearn</code></h3>
 <p>Формула для
@@ -515,7 +527,7 @@ Run All);</li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
 и сравните с формулой.</p>
 </div>
-<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Xb, yb <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">400</span>, noise<span class="op">=</span><span class="fl">0.32</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>yb <span class="op">=</span> np.where(yb <span class="op">==</span> <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Xba, Xbv, yba, ybv <span class="op">=</span> train_test_split(Xb, yb, test_size<span class="op">=</span><span class="fl">0.35</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
@@ -525,12 +537,12 @@ Run All);</li>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#          теоремы 5.17 с минимумом sum_i w_i exp(-alpha y_i b(x_i)),</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#          найденным optimize.minimize_scalar.</span></span></code></pre></div>
 </div>
-<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте два графика: (а) ошибка композиции и экспоненциальная потеря</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       от T в логарифмическом масштабе; (б) err_t и alpha_t по шагам</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       с горизонталью на уровне 0.5.</span></span></code></pre></div>
 </div>
-<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпал ли
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math>
@@ -543,7 +555,7 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell020" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>

@@ -18,6 +18,7 @@ function MaterialCard({ item, to, badge }) {
         </span>
 
         <span className={styles.cardBadge}>{badge}</span>
+        {item.draft && <span className={styles.cardDraft}>черновик</span>}
 
         <h3 className={styles.cardTitle}>{item.title}</h3>
         <p className={styles.cardText}>{item.description}</p>

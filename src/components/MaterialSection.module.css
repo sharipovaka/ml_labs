@@ -121,6 +121,60 @@
   color: var(--bs-secondary-color);
 }
 
+/* Пометка чернового материала в списке -- должна читаться раньше названия. */
+.draftTag {
+  display: inline-block;
+  margin-left: 0.45rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.65rem;
+  background: #b42318;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: 0.05rem;
+}
+
+.draftBanner {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding: 0.9rem 1.1rem;
+  border: 2px solid #b42318;
+  border-radius: 0.75rem;
+  background: #fef3f2;
+  color: #7a271a;
+  line-height: 1.45;
+}
+
+.draftBanner i {
+  margin-top: 0.15rem;
+  font-size: 1.25rem;
+  color: #b42318;
+}
+
+.draftBanner a {
+  color: #7a271a;
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .draftBanner {
+    background: rgba(180, 35, 24, 0.16);
+    color: #fdd9d5;
+  }
+
+  .draftBanner i {
+    color: #f9a29b;
+  }
+
+  .draftBanner a {
+    color: #fdd9d5;
+  }
+}
+
 /* --- Описание материала над iframe --- */
 
 .meta {

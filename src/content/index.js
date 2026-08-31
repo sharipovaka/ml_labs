@@ -41,7 +41,7 @@ const LAB_GROUP = 'Лабораторные работы (в аудитории)
 const HOMEWORK_GROUP = 'Домашние работы';
 
 /** Лабораторные работы: рабочий код занятия и задания для заполнения на паре. */
-export const labSessions = [
+const LAB_SESSIONS = [
   {
     slug: 'lab-01-tools-data',
     group: LAB_GROUP,
@@ -164,7 +164,7 @@ export const labSessions = [
 ];
 
 /** Домашние работы: здесь методы пишутся с нуля и сверяются со scikit-learn. */
-export const homework = [
+const HOMEWORK = [
   {
     slug: 'hw-01-tools-data',
     group: HOMEWORK_GROUP,
@@ -301,6 +301,21 @@ export const homework = [
  *
  * Поле `kind` нужно просмотрщику, чтобы показать, что именно открыто.
  */
+/**
+ * Занятия в финальной версии. Всё остальное — черновик: помечается в списке,
+ * на карточке и над самим ноутбуком, а в первой ячейке ноутбука стоит такая же
+ * пометка (её ставит сборка, см. READY_LABS в лабы/tools/nbbuild.py).
+ *
+ * Когда занятие доведено до конца, достаточно добавить сюда его номер.
+ */
+const READY_SESSIONS = new Set([1]);
+
+const withDraftFlag = (items) =>
+  items.map((item, i) => ({ ...item, draft: !READY_SESSIONS.has(i + 1) }));
+
+export const labSessions = withDraftFlag(LAB_SESSIONS);
+export const homework = withDraftFlag(HOMEWORK);
+
 export const materials = labSessions.flatMap((lab, i) => {
   const group = `Занятие ${i + 1}`;
   return [

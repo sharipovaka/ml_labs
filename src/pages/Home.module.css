@@ -170,6 +170,21 @@
   color: var(--bs-secondary-color);
 }
 
+/* Черновой материал: пометка стоит под типом материала, в том же углу. */
+.cardDraft {
+  position: absolute;
+  top: 2.6rem;
+  right: 1.25rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.65rem;
+  background: #b42318;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .cardTitle {
   font-size: 1.05rem;
   font-weight: 700;

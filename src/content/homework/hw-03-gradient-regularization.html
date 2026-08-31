@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="домашняя-работа-3-оптимизация-и-регуляризация-изнутри">Домашняя
 работа 3. Оптимизация и регуляризация изнутри</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -304,7 +316,7 @@ Run All);</li>
 методов.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
+<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -352,7 +364,7 @@ Run All);</li>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> labdata <span class="im">import</span> load_personal</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
 <p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
 вариант вычисляется детерминированно, при повторном запуске он тот же
@@ -360,13 +372,13 @@ Run All);</li>
 <p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
 вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
 </div>
-<div id="cell003" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ваша выборка (эталонная предобработка занятия 1)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_personal(variant)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X_tr, X_te <span class="op">=</span> data[<span class="st">&quot;X_train&quot;</span>], data[<span class="st">&quot;X_test&quot;</span>]</span>
@@ -376,7 +388,7 @@ Run All);</li>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>data[<span class="st">&#39;domain&#39;</span>]<span class="sc">}</span><span class="ss">: обучающая </span><span class="sc">{</span>X_tr<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, контрольная </span><span class="sc">{</span>X_te<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;cond(X^T X) = </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>cond(X_tr.T <span class="op">@</span> X_tr)<span class="sc">:.3e}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell006" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Контролируемая выборка для задач 1 и 3: истинные веса известны</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">200</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)</span>
@@ -385,7 +397,7 @@ Run All);</li>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>theta_star <span class="op">=</span> np.linalg.lstsq(X_gd, y_gd, rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>]</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;theta* (эталон) = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(theta_star, <span class="dv">4</span>)<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell007" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-1-стохастический-градиентный-спуск">Задача 1.
 Стохастический градиентный спуск</h1>
@@ -404,7 +416,7 @@ Run All);</li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>t</mi></msub><msub><mi>η</mi><mi>t</mi></msub><mo>=</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">\sum_t\eta_t=\infty</annotation></semantics></math>,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>t</mi></msub><msubsup><mi>η</mi><mi>t</mi><mn>2</mn></msubsup><mo>&lt;</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">\sum_t\eta_t^2&lt;\infty</annotation></semantics></math>.</p>
 </div>
-<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell008" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sgd(X, y, eta0, n_epochs<span class="op">=</span><span class="dv">40</span>, batch_size<span class="op">=</span><span class="dv">1</span>, schedule<span class="op">=</span><span class="st">&quot;const&quot;</span>, generator<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;SGD для УСРЕДНЁННОГО Q. Возвращает (theta, история Q по эпохам).</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -415,11 +427,11 @@ Run All);</li>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-11-размер-пакета-и-расписание-шага">Задание 1.1. Размер
 пакета и расписание шага</h3>
 </div>
-<div id="cell009" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell010" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lam_avg <span class="op">=</span> np.linalg.eigvalsh(X_gd.T <span class="op">@</span> X_gd <span class="op">/</span> <span class="bu">len</span>(X_gd)).<span class="bu">max</span>()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>eta0 <span class="op">=</span> <span class="fl">0.5</span> <span class="op">/</span> lam_avg</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Q_star <span class="op">=</span> np.mean((X_gd <span class="op">@</span> theta_star <span class="op">-</span> y_gd) <span class="op">**</span> <span class="dv">2</span>)</span>
@@ -428,11 +440,11 @@ Run All);</li>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#           при постоянном шаге (по оси Q откладывайте Q - Q*, масштаб лог.);</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       (б) на втором -- три расписания шага при batch_size = 1.</span></span></code></pre></div>
 </div>
-<div id="cell010" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: проверьте условие Роббинса--Монро численно: для расписаний</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       eta0/sqrt(t) и eta0/t посчитайте суммы eta_t и eta_t^2 на 100000 шагах.</span></span></code></pre></div>
 </div>
-<div id="cell011" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Почему при постоянном шаге SGD не сходится, а
 полный градиент — сходится? Как высота «полки» зависит от размера
@@ -440,7 +452,7 @@ Run All);</li>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-2-lasso-покоординатным-спуском">Задача 2. LASSO
 покоординатным спуском</h1>
@@ -461,7 +473,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 вклад меньше порога. Отсюда и разреженность, которую мы видели на
 занятии.</p>
 </div>
-<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — субградиент.</strong>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|\theta_j|</annotation></semantics></math>
@@ -489,7 +501,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 — так и получается разреженность.</p>
 </blockquote>
 </div>
-<div id="cell014" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> soft_threshold(z, gamma):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;S(z, gamma) = sign(z) * max(|z| - gamma, 0).&quot;&quot;&quot;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
@@ -504,7 +516,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell015" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell016" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-21-сверка-со-sklearn">Задание 2.1. Сверка со
 <code>sklearn</code></h3>
 <p>Внимание на нормировку: <code>sklearn</code> минимизирует
@@ -518,7 +530,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 и добейтесь совпадения до
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>10</mn></mrow></msup><annotation encoding="application/x-tex">10^{-10}</annotation></semantics></math>.</p>
 </div>
-<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Lasso</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>n_obj <span class="op">=</span> <span class="dv">120</span></span>
@@ -531,7 +543,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#       Подберите alpha так, чтобы функционалы совпали (см. текст выше),</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#       и выведите расхождение и число ненулевых коэффициентов у обоих.</span></span></code></pre></div>
 </div>
-<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-22-регуляризационный-путь-на-ваших-данных">Задание 2.2.
 Регуляризационный путь на ваших данных</h3>
 <p>Теперь примените свой <code>lasso_cd</code> к <strong>вашей</strong>
@@ -540,7 +552,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
 — и назовите признаки, которые держатся дольше всех.</p>
 </div>
-<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell019" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) добавьте к X_tr столбец единиц;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) постройте сетку lambda от lam_max = 2*max|X^T (y - mean y)| вниз</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#          на четыре порядка (np.logspace, 40 точек);</span></span>
@@ -549,7 +561,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          (ось lambda -- по убыванию);</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       5) назовите 5 признаков, которые остаются ненулевыми дольше всех.</span></span></code></pre></div>
 </div>
-<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell020" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпало ли с точностью
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mi>−</mi><mn>10</mn></mrow></msup><annotation encoding="application/x-tex">10^{-10}</annotation></semantics></math>?
@@ -559,7 +571,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell020" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -581,7 +593,7 @@ S(z,\gamma) = \mathrm{sign}(z)\max(|z| - \gamma, 0).
 получается LASSO с
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup><mi>/</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">\lambda = 2\sigma^2/b</annotation></semantics></math>.</p>
 </div>
-<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — априорное распределение и MAP.</strong> В
 байесовском подходе параметр
@@ -607,7 +619,7 @@ const получается обычный ММП), второе — штраф. 
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">\sum|\theta_j|</annotation></semantics></math>.</p>
 </blockquote>
 </div>
-<div id="cell022" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell023" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> optimize</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -623,10 +635,10 @@ const получается обычный ММП), второе — штраф. 
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) минимизируйте обе численно (для лапласовской -- method=&quot;Powell&quot;);</span></span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) сравните с ridge_fit(sigma^2/tau^2) и lasso_cd(2 sigma^2/b).</span></span></code></pre></div>
 </div>
-<div id="cell023" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="cell024" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: нарисуйте обе априорные плотности на одном графике.</span></span></code></pre></div>
 </div>
-<div id="cell024" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell025" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпали ли MAP-оценки с формулами? Какая
 плотность сильнее «настаивает» на нулевом весе и как это объясняет
@@ -634,7 +646,7 @@ const получается обычный ММП), второе — штраф. 
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell025" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>

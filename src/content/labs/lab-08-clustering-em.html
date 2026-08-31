@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="лабораторная-работа-8-кластеризация-и-em-алгоритм">Лабораторная
 работа 8. Кластеризация и EM-алгоритм</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -281,7 +293,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 порождённая по вашему ФИО, появится в домашней работе.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell markdown">
+<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <p>Кластеризация — задача <strong>обучения без учителя</strong>: ответов
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>i</mi></msub><annotation encoding="application/x-tex">y_i</annotation></semantics></math>
 нет. Это меняет всё, к чему мы привыкли: нет ни эмпирического риска
@@ -289,7 +301,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 ни однозначного критерия правильности. Поэтому здесь особенно важно
 понимать устройство метода.</p>
 </div>
-<div id="cell002" class="cell code">
+<div id="cell003" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -342,7 +354,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs, make_circles</span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre></div>
 </div>
-<div id="cell003" class="cell markdown">
+<div id="cell004" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-1-k-средних-и-его-функционал">Часть 1.
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>-средних
@@ -359,7 +371,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 не возрастает, и метод сходится за конечное число шагов — но только к
 локальному минимуму.</p>
 </div>
-<div id="cell004" class="cell code">
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X_b, _ <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">500</span>, centers<span class="op">=</span><span class="dv">4</span>, cluster_std<span class="op">=</span><span class="fl">1.1</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>X_b <span class="op">=</span> StandardScaler().fit_transform(X_b)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -368,7 +380,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Q при n_init=10 и k-means++:                              &quot;</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span>KMeans(n_clusters<span class="op">=</span><span class="dv">4</span>, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span>RANDOM_STATE)<span class="sc">.</span>fit(X_b)<span class="sc">.</span>inertia_<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell006" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> {<span class="st">&quot;случайная&quot;</span>: [], <span class="st">&quot;k-means++&quot;</span>: []}</span>
@@ -377,14 +389,14 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   Затем для каждой инициализации выведите лучшее Q, среднее Q и долю</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   запусков, попавших в лучший минимум (в пределах 1 %).</span></span></code></pre></div>
 </div>
-<div id="cell006" class="cell code">
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ax.hist([res[<span class="st">&quot;случайная&quot;</span>], res[<span class="st">&quot;k-means++&quot;</span>]], bins<span class="op">=</span><span class="dv">25</span>, label<span class="op">=</span>[<span class="st">&quot;случайная&quot;</span>, <span class="st">&quot;k-means++&quot;</span>])</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&quot;итоговое $Q$&quot;</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">&quot;число запусков&quot;</span>)<span class="op">;</span> ax.legend()</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;60 запусков: качество локального минимума&quot;</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell007" class="cell markdown">
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Какая инициализация чаще попадает в хороший
 минимум и почему? Зачем в <code>sklearn</code> параметр
@@ -392,7 +404,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-2-чего-k-средних-не-умеет--и-почему">Часть 2. Чего
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>-средних
@@ -407,7 +419,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>-средних
 заведомо бессилен.</p>
 </div>
-<div id="cell009" class="cell markdown">
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — ARI и AMI: как сравнивать разбиения.</strong>
 Кластеризация не знает меток, но здесь мы данные породили сами, поэтому
@@ -436,7 +448,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 из части 4.</p>
 </blockquote>
 </div>
-<div id="cell010" class="cell markdown">
+<div id="cell011" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — три альтернативы
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>-средних.</strong>
@@ -457,7 +469,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 занятии 4.</p>
 </blockquote>
 </div>
-<div id="cell011" class="cell code">
+<div id="cell012" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_hard(case, n<span class="op">=</span><span class="dv">600</span>, seed<span class="op">=</span>RANDOM_STATE):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    g <span class="op">=</span> np.random.default_rng(seed)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> case.startswith(<span class="st">&quot;кластеры разного размера&quot;</span>):</span>
@@ -483,7 +495,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>K_true <span class="op">=</span> <span class="bu">len</span>(np.unique(y_h))</span>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;трудный случай: </span><span class="sc">{</span>case<span class="sc">}</span><span class="ss"> (истинных кластеров </span><span class="sc">{</span>K_true<span class="sc">}</span><span class="ss">)&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell012" class="cell code">
+<div id="cell013" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>methods <span class="op">=</span> {</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;K-средних&quot;</span>: <span class="kw">lambda</span> X: KMeans(K_true, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit_predict(X),</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;иерархическая (ward)&quot;</span>: <span class="kw">lambda</span> X: AgglomerativeClustering(K_true, linkage<span class="op">=</span><span class="st">&quot;ward&quot;</span>).fit_predict(X),</span>
@@ -508,7 +520,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;метод&quot;</span>).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Насколько плохо сработал
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>-средних
@@ -517,7 +529,7 @@ Q(C, \mu) = \sum_{k=1}^{K}\sum_{i \in C_k}\|x_i - \mu_k\|^2 \;\longrightarrow\; 
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell015" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-3-смеси-распределений-и-em">Часть 3. Смеси распределений и
 EM</h1>
@@ -533,7 +545,7 @@ EM</h1>
 <p>Теорема 7.9: логарифм правдоподобия <strong>не убывает</strong> на
 каждой итерации. Проверим — это главный эксперимент занятия.</p>
 </div>
-<div id="cell015" class="cell code">
+<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X_g, _ <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">600</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">1.0</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X_g <span class="op">=</span> X_g <span class="op">@</span> np.array([[<span class="fl">0.6</span>, <span class="op">-</span><span class="fl">0.6</span>], [<span class="op">-</span><span class="fl">0.4</span>, <span class="fl">0.8</span>]])      <span class="co"># делаем кластеры вытянутыми</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X_g <span class="op">=</span> StandardScaler().fit_transform(X_g)</span>
@@ -550,14 +562,14 @@ EM</h1>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    logL.append(gm.score(X_g) <span class="op">*</span> <span class="bu">len</span>(X_g))</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>logL <span class="op">=</span> np.array(logL)</span></code></pre></div>
 </div>
-<div id="cell016" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># logL -- массив значений логарифма правдоподобия по итерациям EM</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2-3 строки): посчитайте приросты за шаг (np.diff), выведите минимальный</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   и проверьте, что он неотрицателен -- это и есть теорема 7.9.</span></span></code></pre></div>
 </div>
-<div id="cell017" class="cell code">
+<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gm_full <span class="op">=</span> GaussianMixture(<span class="dv">3</span>, covariance_type<span class="op">=</span>cov_type, n_init<span class="op">=</span><span class="dv">5</span>,</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                          random_state<span class="op">=</span>RANDOM_STATE).fit(X_g)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> gm_full.predict_proba(X_g)</span>
@@ -582,7 +594,7 @@ EM</h1>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">&quot;Компоненты смеси (прозрачность = неуверенность)&quot;</span>)</span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="k-средних-как-предельный-случай-em"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>-средних
 как предельный случай EM</h3>
 <p>Возьмём сферические ковариации
@@ -597,7 +609,7 @@ EM</h1>
 — это EM для сферической смеси при
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\sigma\to0</annotation></semantics></math></strong>.</p>
 </div>
-<div id="cell019" class="cell code">
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>km3 <span class="op">=</span> KMeans(<span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span>RANDOM_STATE).fit(X_g)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>d2 <span class="op">=</span> ((X_g[:, <span class="va">None</span>, :] <span class="op">-</span> km3.cluster_centers_[<span class="va">None</span>, :, :]) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>(<span class="op">-</span><span class="dv">1</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -611,7 +623,7 @@ EM</h1>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;ARI с K-средних&quot;</span>: adjusted_rand_score(gam.argmax(<span class="dv">1</span>), km3.labels_)})</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;sigma&quot;</span>).<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell020" class="cell markdown">
+<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Подтвердилась ли монотонность? Что происходит
 с ответственностями при
@@ -620,7 +632,7 @@ EM</h1>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-4-сколько-кластеров">Часть 4. Сколько кластеров</h1>
 <p>Меток нет, поэтому «правильное»
@@ -643,7 +655,7 @@ EM</h1>
 </ul>
 <p>Сравним все четыре на данных с известным ответом.</p>
 </div>
-<div id="cell022" class="cell markdown">
+<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — силуэт, AIC и BIC.</strong>
 <strong>Силуэт</strong> объекта
@@ -675,7 +687,7 @@ EM</h1>
 параметров смеси.</p>
 </blockquote>
 </div>
-<div id="cell023" class="cell code">
+<div id="cell024" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>X_k, y_k <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">600</span>, centers<span class="op">=</span><span class="dv">4</span>, cluster_std<span class="op">=</span><span class="fl">1.15</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>X_k <span class="op">=</span> StandardScaler().fit_transform(X_k)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -691,7 +703,7 @@ EM</h1>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>sel <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;K&quot;</span>)</span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>display(sel.<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
 </div>
-<div id="cell024" class="cell code">
+<div id="cell025" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>choices <span class="op">=</span> {</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;локоть (макс. вторая разность Q)&quot;</span>: <span class="bu">int</span>(sel.index[<span class="dv">1</span> <span class="op">+</span> np.argmax(np.diff(sel[<span class="st">&quot;Q (инерция)&quot;</span>], <span class="dv">2</span>))]),</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;силуэт&quot;</span>: <span class="bu">int</span>(sel[<span class="st">&quot;силуэт&quot;</span>].idxmax()),</span>
@@ -713,7 +725,7 @@ EM</h1>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xlabel(<span class="st">&quot;$K$&quot;</span>)<span class="op">;</span> axes[<span class="dv">2</span>].set_title(<span class="st">&quot;Информационные критерии&quot;</span>)<span class="op">;</span> axes[<span class="dv">2</span>].legend()</span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell025" class="cell markdown">
+<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпали ли ответы разных критериев с истинным
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">K=4</annotation></semantics></math>?
@@ -723,7 +735,7 @@ EM</h1>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell026" class="cell markdown">
+<div id="cell027" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-5-иерархическая-кластеризация-и-эффект-цепочки">Часть 5.
 Иерархическая кластеризация и эффект цепочки</h1>
@@ -737,7 +749,7 @@ EM</h1>
 при слиянии.</p>
 <p>Сравним все четыре способа между собой.</p>
 </div>
-<div id="cell027" class="cell code">
+<div id="cell028" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.cluster.hierarchy <span class="im">import</span> dendrogram, fcluster, linkage <span class="im">as</span> scipy_linkage</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>X_d, y_d <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">160</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">1.0</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
@@ -756,7 +768,7 @@ EM</h1>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].set_ylabel(<span class="st">&quot;расстояние слияния&quot;</span>)</span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell028" class="cell code">
+<div id="cell029" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Эффект цепочки: две вытянутые полосы и десяток точек-мостика между ними</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>X_ch <span class="op">=</span> np.vstack([np.column_stack([g.uniform(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">90</span>), g.normal(<span class="fl">1.6</span>, <span class="fl">0.12</span>, <span class="dv">90</span>)]),</span>
@@ -772,14 +784,14 @@ EM</h1>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">&quot;Эффект цепочки: 12 точек-мостика склеивают две полосы&quot;</span>)</span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell029" class="cell markdown">
+<div id="cell030" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Какой linkage пострадал от эффекта цепочки и
 почему? Когда это свойство оказывается полезным?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell030" class="cell markdown">
+<div id="cell031" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-6-кластеризация-без-меток">Часть 6. Кластеризация без
 меток</h1>
@@ -788,7 +800,7 @@ EM</h1>
 химическим признакам. А потом достаём метки и смотрим, что нашёл
 алгоритм.</p>
 </div>
-<div id="cell031" class="cell code">
+<div id="cell032" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>wine <span class="op">=</span> load_wine()</span>
@@ -806,7 +818,7 @@ EM</h1>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>own <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;K&quot;</span>)</span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>display(own.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell032" class="cell code">
+<div id="cell033" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>K_best <span class="op">=</span> <span class="bu">int</span>(own[<span class="st">&quot;силуэт&quot;</span>].idxmax())</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>km_best <span class="op">=</span> KMeans(K_best, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span>RANDOM_STATE).fit(X_true)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;выбрано K = </span><span class="sc">{</span>K_best<span class="sc">}</span><span class="ss"> (по силуэту), истинных сортов </span><span class="sc">{</span><span class="bu">len</span>(np.unique(y_true))<span class="sc">}</span><span class="ss">&quot;</span>)</span>
@@ -821,7 +833,7 @@ EM</h1>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;</span><span class="sc">{</span>adjusted_rand_score(y_true, KMeans(<span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span>RANDOM_STATE).fit(X_true).labels_)<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;ARI без стандартизации : </span><span class="sc">{</span>adjusted_rand_score(y_true, km_raw.labels_)<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell033" class="cell markdown">
+<div id="cell034" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпало ли число кластеров по силуэту с
 числом сортов? Насколько разбиение похоже на истинное — и означает ли
@@ -829,7 +841,7 @@ EM</h1>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell034" class="cell markdown">
+<div id="cell035" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>

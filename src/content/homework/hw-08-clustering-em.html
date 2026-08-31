@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="домашняя-работа-8-k-средних-и-em-своими-руками">Домашняя работа
 8. K-средних и EM своими руками</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -293,7 +305,7 @@ Run All);</li>
 методов.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -347,7 +359,7 @@ Run All);</li>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> GaussianMixture</span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
 <p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
 вариант вычисляется детерминированно, при повторном запуске он тот же
@@ -355,18 +367,18 @@ Run All);</li>
 <p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
 вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
 </div>
-<div id="cell003" class="cell code">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell code">
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X_b, y_b <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">500</span>, centers<span class="op">=</span><span class="dv">4</span>, cluster_std<span class="op">=</span><span class="fl">1.1</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X_b <span class="op">=</span> StandardScaler().fit_transform(X_b)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;выборка: </span><span class="sc">{</span>X_b<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, истинных кластеров: </span><span class="sc">{</span><span class="bu">len</span>(np.unique(y_b))<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell005" class="cell markdown">
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-1-алгоритм-ллойда-и-k-means">Задача 1. Алгоритм Ллойда и
 k-means++</h1>
@@ -380,7 +392,7 @@ k-means++</h1>
 следующий выбирается с вероятностью, пропорциональной
 <strong>квадрату</strong> расстояния до ближайшего из уже выбранных.</p>
 </div>
-<div id="cell006" class="cell markdown">
+<div id="cell007" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — ARI.</strong> Разбиения сравнивают не по
 номерам кластеров (они произвольны), а по парам объектов: согласны ли
@@ -401,7 +413,7 @@ k-means++</h1>
 переставлены.</p>
 </blockquote>
 </div>
-<div id="cell007" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell008" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kmeans_pp_init(X, K, generator):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;k-means++: первый центр случаен; каждый следующий выбирается</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">    с вероятностью, пропорциональной КВАДРАТУ расстояния до ближайшего</span></span>
@@ -419,12 +431,12 @@ k-means++</h1>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell008" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell009" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) сверьте своё Q и разбиение со sklearn.cluster.KMeans (ARI ~ 1.0);</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) проверьте, что история Q убывает монотонно;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) постройте график Q по итерациям.</span></span></code></pre></div>
 </div>
-<div id="cell009" class="cell markdown">
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Убывает ли
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>
@@ -433,7 +445,7 @@ k-means++</h1>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell010" class="cell markdown">
+<div id="cell011" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-2-кластеризация-вашей-выборки">Задача 2. Кластеризация
 вашей выборки</h1>
@@ -442,7 +454,7 @@ k-means++</h1>
 там нет ни истинных кластеров, ни возможности посмотреть глазами, и
 работать приходится только с внутренними критериями.</p>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell012" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) загрузите свою выборку (обучающую и контрольную части вместе --</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          кластеризация обучается без разбиения, меток она не использует);</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) для K от 2 до 8 запустите свой kmeans(...) и sklearn KMeans;</span></span>
@@ -450,7 +462,7 @@ k-means++</h1>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#          силуэт и AMI с (бинаризованной) целевой переменной;</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       4) назовите K, максимизирующее силуэт.</span></span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпали ли ваша реализация и
 <code>sklearn</code>? Что показывает силуэт на реальных данных и говорит
@@ -458,7 +470,7 @@ k-means++</h1>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -483,7 +495,7 @@ k-means++</h1>
 <code>nan</code>. Приём тот же, что с сигмоидой в занятии 4: вычесть
 максимум перед экспонированием.</p>
 </div>
-<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gmm_em(X, K, cov_type<span class="op">=</span><span class="st">&quot;full&quot;</span>, n_iter<span class="op">=</span><span class="dv">200</span>, tol<span class="op">=</span><span class="fl">1e-8</span>, seed<span class="op">=</span><span class="dv">0</span>, reg<span class="op">=</span><span class="fl">1e-6</span>):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;EM для смеси гауссиан. Возвращает (w, mu, Sigma, gamma, история logL).</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -499,7 +511,7 @@ k-means++</h1>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell015" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X_g, _ <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">600</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">1.0</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>X_g <span class="op">=</span> X_g <span class="op">@</span> np.array([[<span class="fl">0.6</span>, <span class="op">-</span><span class="fl">0.6</span>], [<span class="op">-</span><span class="fl">0.4</span>, <span class="fl">0.8</span>]])</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>X_g <span class="op">=</span> StandardScaler().fit_transform(X_g)</span>
@@ -508,11 +520,11 @@ k-means++</h1>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   проверьте монотонность logL (теорема 7.9) и сверьтесь</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   с GaussianMixture по logL на объект и по ARI разбиений.</span></span></code></pre></div>
 </div>
-<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте два графика: (а) logL по итерациям; (б) кластеры с эллипсами</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       уровня ковариаций, прозрачность точки = max_k gamma_ik.</span></span></code></pre></div>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпало ли с <code>sklearn</code>? Что даёт
 мягкое отнесение по сравнению с
@@ -521,7 +533,7 @@ k-means++</h1>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>

@@ -87,6 +87,16 @@ check('девять лабораторных и девять домашних р
   if (content.materials.length !== 18) throw new Error(`всего ${content.materials.length}`);
 });
 
+check('черновиками помечено всё, кроме занятия 1', () => {
+  const drafts = content.materials.filter((m) => m.draft).map((m) => m.group);
+  const ready = content.materials.filter((m) => !m.draft).map((m) => m.slug);
+  if (ready.length !== 2) throw new Error(`не черновиков ${ready.length}, ожидалось 2`);
+  if (!ready.every((slug) => slug.endsWith('-01-tools-data'))) {
+    throw new Error(`не черновики: ${ready.join(', ')}`);
+  }
+  if (drafts.length !== 16) throw new Error(`черновиков ${drafts.length}, ожидалось 16`);
+});
+
 check('у каждого материала заполнены обязательные поля', () => {
   const required = [
     'slug', 'title', 'description', 'date', 'tags', 'icon', 'group', 'source', 'load',
@@ -210,6 +220,12 @@ content.materials.forEach((lab) => {
     );
     if (!html.includes(lab.title)) throw new Error('в разметке нет заголовка работы');
     if (!html.includes('Открыть в Colab')) throw new Error('нет кнопок действий');
+
+    // Пометка черновика должна быть видна до самого материала -- и не должна
+    // появляться у готовых занятий.
+    const warned = html.includes('Черновик — не актуальная версия');
+    if (lab.draft && !warned) throw new Error('черновик без предупреждения');
+    if (!lab.draft && warned) throw new Error('готовый материал помечен черновиком');
     if (lab.coversLabel && !html.includes(lab.coversLabel.slice(0, 24))) {
       throw new Error('нет связи с лекцией');
     }

@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="лабораторная-работа-3-градиентный-спуск-обусловленность-и-регуляризация">Лабораторная
 работа 3. Градиентный спуск, обусловленность и регуляризация</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -281,7 +293,7 @@ LASSO и когда они вообще нужны.</p>
 порождённая по вашему ФИО, появится в домашней работе.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell markdown">
+<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>О нормировке.</strong> В §2.1 лекции 2 функционал берётся без
 усреднения:
@@ -300,7 +312,7 @@ LASSO и когда они вообще нужны.</p>
 разошёлся».</p>
 </blockquote>
 </div>
-<div id="cell002" class="cell code">
+<div id="cell003" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -348,7 +360,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Lasso, LinearRegression, Ridge</span></code></pre></div>
 </div>
-<div id="cell003" class="cell markdown">
+<div id="cell004" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-1-граница-шага--точная">Часть 1. Граница шага —
 точная</h1>
@@ -368,7 +380,7 @@ LASSO и когда они вообще нужны.</p>
 множитель равен ровно единице — то есть граница должна быть
 <strong>точной</strong>, а не с запасом.</p>
 </div>
-<div id="cell004" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grad_Q(theta, X, y):</span>
@@ -379,7 +391,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (1 строка)</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell005" class="cell code">
+<div id="cell006" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gradient_descent(X, y, eta, n_iter<span class="op">=</span><span class="dv">120</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Траектория метода из определения 2.1.&quot;&quot;&quot;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> np.zeros(X.shape[<span class="dv">1</span>])</span>
@@ -400,7 +412,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;theta* = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(theta_star, <span class="dv">4</span>)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;lambda_max = </span><span class="sc">{</span>lam_max<span class="sc">:.1f}</span><span class="ss">, граница шага 1/lambda_max = </span><span class="sc">{</span><span class="dv">1</span> <span class="op">/</span> lam_max<span class="sc">:.2e}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell006" class="cell code">
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> <span class="kw">lambda</span> th: np.<span class="bu">sum</span>((X_gd <span class="op">@</span> th <span class="op">-</span> y_gd) <span class="op">**</span> <span class="dv">2</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Q_star <span class="op">=</span> Q(theta_star)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -413,7 +425,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Сходимость и граница утверждения 2.2&quot;</span>)<span class="op">;</span> ax.legend()</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell007" class="cell markdown">
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> При каком множителе спуск перестал сходиться?
 Совпало ли это с границей утверждения 2.2? Как выглядит траектория при
@@ -421,7 +433,7 @@ LASSO и когда они вообще нужны.</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-2-цена-плохой-обусловленности">Часть 2. Цена плохой
 обусловленности</h1>
@@ -432,7 +444,7 @@ LASSO и когда они вообще нужны.</p>
 Значит, число итераций до заданной точности растёт <strong>линейно по
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>κ</mi><annotation encoding="application/x-tex">\kappa</annotation></semantics></math></strong>.</p>
 </div>
-<div id="cell009" class="cell code">
+<div id="cell010" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> design_with_cond(n_obj, p, kappa, generator):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Матрица X с заданным cond(X^T X) = kappa.&quot;&quot;&quot;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    A <span class="op">=</span> generator.normal(size<span class="op">=</span>(n_obj, p))</span>
@@ -451,7 +463,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> t</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.nan</span></code></pre></div>
 </div>
-<div id="cell010" class="cell code">
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gen <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> kappa <span class="kw">in</span> np.logspace(<span class="dv">1</span>, <span class="fl">4.5</span>, <span class="dv">8</span>):</span>
@@ -469,7 +481,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>display(tab.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div>
 </div>
-<div id="cell011" class="cell markdown">
+<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Как число итераций зависит от
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>κ</mi><annotation encoding="application/x-tex">\kappa</annotation></semantics></math>?
@@ -477,7 +489,7 @@ LASSO и когда они вообще нужны.</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell012" class="cell markdown">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-3-мультиколлинеарность-решение-перестаёт-быть-определённым">Часть
 3. Мультиколлинеарность: решение перестаёт быть определённым</h1>
@@ -494,7 +506,7 @@ LASSO и когда они вообще нужны.</p>
 <p>Посмотрим на это не через оценку, а напрямую: обучим модель на 300
 бутстреп-выборках и нарисуем облако полученных решений.</p>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — бутстреп.</strong> Мы хотим знать, как сильно
 решение
@@ -524,7 +536,7 @@ LASSO и когда они вообще нужны.</p>
 нет.</p>
 </blockquote>
 </div>
-<div id="cell014" class="cell code">
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rho <span class="op">=</span> <span class="fl">0.992</span>                                   <span class="co"># корреляция признаков</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> rng.normal(size<span class="op">=</span><span class="dv">200</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X_col <span class="op">=</span> np.column_stack([z, rho <span class="op">*</span> z <span class="op">+</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> rho <span class="op">**</span> <span class="dv">2</span>) <span class="op">*</span> rng.normal(size<span class="op">=</span><span class="dv">200</span>)])</span>
@@ -535,7 +547,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;МНК-решение = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(np.linalg.lstsq(X_col, y_col, rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>], <span class="dv">3</span>)<span class="sc">}</span><span class="ss">&quot;</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;   (истина [1. 1.])&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell015" class="cell code">
+<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>boots <span class="op">=</span> np.array([np.linalg.lstsq(X_col[idx], y_col[idx], rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                  <span class="cf">for</span> idx <span class="kw">in</span> (rng.integers(<span class="dv">0</span>, <span class="dv">200</span>, <span class="dv">200</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">300</span>))])</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -550,14 +562,14 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;ст. отклонение суммы theta_1+theta_2: </span><span class="sc">{</span>boots<span class="sc">.</span><span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)<span class="sc">.</span>std()<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;корреляция оценок:                   </span><span class="sc">{</span>np<span class="sc">.</span>corrcoef(boots.T)[<span class="dv">0</span>, <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell016" class="cell markdown">
+<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Вдоль какого направления вытянуто облако и
 почему? Какая величина оценивается устойчиво, а какая — нет?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-4-ridge-и-lasso-что-они-делают-с-решением">Часть 4. Ridge
 и LASSO: что они делают с решением</h1>
@@ -579,7 +591,7 @@ LASSO и когда они вообще нужны.</p>
 Явной формулы нет, но поведение качественно иное: решение становится
 <strong>разреженным</strong>. Посмотрим на регуляризационные пути.</p>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — регуляризационный путь.</strong> Это график
 всех коэффициентов
@@ -598,7 +610,7 @@ LASSO и когда они вообще нужны.</p>
 мультиколлинеарность из части 3.</p>
 </blockquote>
 </div>
-<div id="cell019" class="cell code">
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Разреженная задача: из 12 признаков полезны ровно три</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>n_obj <span class="op">=</span> <span class="dv">120</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>X_sp <span class="op">=</span> rng.normal(size<span class="op">=</span>(n_obj, <span class="dv">12</span>))</span>
@@ -610,7 +622,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>path_lasso <span class="op">=</span> np.array([Lasso(alpha<span class="op">=</span>a, max_iter<span class="op">=</span><span class="dv">500_000</span>).fit(X_sp, y_sp).coef_</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                       <span class="cf">for</span> a <span class="kw">in</span> alphas])</span></code></pre></div>
 </div>
-<div id="cell020" class="cell code">
+<div id="cell021" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">4</span>))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, path, name <span class="kw">in</span> [(axes[<span class="dv">0</span>], path_ridge, <span class="st">&quot;Ridge ($L_2$)&quot;</span>),</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                       (axes[<span class="dv">1</span>], path_lasso, <span class="st">&quot;LASSO ($L_1$)&quot;</span>)]:</span>
@@ -629,7 +641,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;серым — признаки, истинный коэффициент которых равен нулю&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-41-геометрия-почему-l_1-обнуляет">Задание 4.1.
 Геометрия: почему
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mn>1</mn></msub><annotation encoding="application/x-tex">L_1</annotation></semantics></math>
@@ -647,7 +659,7 @@ LASSO и когда они вообще нужны.</p>
 (круг). Найдите этот минимум перебором точек границы и посмотрите, куда
 он попадает.</p>
 </div>
-<div id="cell022" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell023" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Xg <span class="op">=</span> np.array([[<span class="fl">1.0</span>, <span class="fl">0.35</span>], [<span class="fl">0.35</span>, <span class="fl">1.0</span>], [<span class="fl">0.5</span>, <span class="fl">0.7</span>]])</span>
@@ -666,7 +678,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2-3 строки): для каждой границы найдите точку с минимальным Qg</span></span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                    и напечатайте её координаты.</span></span></code></pre></div>
 </div>
-<div id="cell023" class="cell markdown">
+<div id="cell024" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Куда попал минимум для ромба и куда — для
 круга? Почему
@@ -677,7 +689,7 @@ LASSO и когда они вообще нужны.</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell024" class="cell markdown">
+<div id="cell025" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-5-когда-регуляризация-вообще-нужна">Часть 5. Когда
 регуляризация вообще нужна</h1>
@@ -688,7 +700,7 @@ LASSO и когда они вообще нужны.</p>
 и после расширения признакового пространства до
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>&gt;</mo><mi>ℓ</mi></mrow><annotation encoding="application/x-tex">p &gt; \ell</annotation></semantics></math>.</p>
 </div>
-<div id="cell025" class="cell code">
+<div id="cell026" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures, StandardScaler</span>
@@ -703,7 +715,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Ridge(1):  MSE = </span><span class="sc">{</span>mse(Ridge(alpha<span class="op">=</span><span class="fl">1.0</span>).fit(Xtr_full, ytr_full).predict(Xte))<span class="sc">:.4g}</span><span class="ss">&quot;</span>)</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;константа: MSE = </span><span class="sc">{</span>mse(ytr_full.mean())<span class="sc">:.4g}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell026" class="cell code">
+<div id="cell027" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Теперь p &gt; l: полиномиальное расширение и урезанная обучающая выборка</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>poly, scaler <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span><span class="dv">2</span>, include_bias<span class="op">=</span><span class="va">False</span>), StandardScaler()</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Xs_tr <span class="op">=</span> scaler.fit_transform(poly.fit_transform(Xtr_full[:<span class="dv">60</span>]))</span>
@@ -715,7 +727,7 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>alpha_max <span class="op">=</span> np.<span class="bu">abs</span>(Xa.T <span class="op">@</span> (ya <span class="op">-</span> ya.mean())).<span class="bu">max</span>() <span class="op">/</span> <span class="bu">len</span>(ya)</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.logspace(np.log10(alpha_max) <span class="op">-</span> <span class="dv">4</span>, np.log10(alpha_max), <span class="dv">30</span>)</span></code></pre></div>
 </div>
-<div id="cell027" class="cell markdown">
+<div id="cell028" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-51-подбор-alpha-по-отложенной-части">Задание 5.1. Подбор
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
 по отложенной части</h3>
@@ -725,7 +737,7 @@ LASSO и когда они вообще нужны.</p>
 подбираем по отложенной части обучающей. Полноценный скользящий контроль
 будет на занятии 5.</p>
 </div>
-<div id="cell028" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell029" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
@@ -739,14 +751,14 @@ LASSO и когда они вообще нужны.</p>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;МНК:       MSE = </span><span class="sc">{</span>mse(Xs_te <span class="op">@</span> theta_ols <span class="op">+</span> ys_tr.mean())<span class="sc">:.4g}</span><span class="ss">&quot;</span>)</span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;константа: MSE = </span><span class="sc">{</span>mse(ys_tr.mean())<span class="sc">:.4g}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell029" class="cell markdown">
+<div id="cell030" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> В каком из двух режимов регуляризация дала
 выигрыш и почему? Сформулируйте правило, когда она нужна.</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell030" class="cell markdown">
+<div id="cell031" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>

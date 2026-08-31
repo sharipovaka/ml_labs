@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="домашняя-работа-7-обобщённый-метрический-классификатор-и-stolp">Домашняя
 работа 7. Обобщённый метрический классификатор и STOLP</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -299,7 +311,7 @@ Run All);</li>
 методов.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -351,7 +363,7 @@ Run All);</li>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
 <p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
 вариант вычисляется детерминированно, при повторном запуске он тот же
@@ -359,13 +371,13 @@ Run All);</li>
 <p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
 вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
 </div>
-<div id="cell003" class="cell code">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">7</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell markdown">
+<div id="cell005" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="задача-1-пять-методов--одна-формула">Задача 1. Пять методов —
 одна формула</h1>
@@ -416,7 +428,7 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <code>variant[&quot;distance&quot;]</code>. Реализуйте <strong>один</strong> класс
 с параметром-методом.</p>
 </div>
-<div id="cell005" class="cell markdown">
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — NumPy: <code>argsort</code> и ранг
 соседа.</strong> <code>np.argsort(a)</code> возвращает не
@@ -442,7 +454,7 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 сортировок в цикле.</p>
 </blockquote>
 </div>
-<div id="cell006" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>KERNELS <span class="op">=</span> {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;прямоугольное&quot;</span>: <span class="kw">lambda</span> r: (np.<span class="bu">abs</span>(r) <span class="op">&lt;=</span> <span class="dv">1</span>) <span class="op">*</span> <span class="fl">0.5</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;треугольное&quot;</span>: <span class="kw">lambda</span> r: np.maximum(<span class="fl">0.0</span>, <span class="dv">1</span> <span class="op">-</span> np.<span class="bu">abs</span>(r)),</span>
@@ -480,14 +492,14 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>my_method <span class="op">=</span> METHOD_KEY[variant[<span class="st">&quot;metric_method&quot;</span>]]</span></code></pre></div>
 </div>
-<div id="cell007" class="cell markdown">
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-11-все-пять-на-одной-картинке">Задание 1.1. Все пять на
 одной картинке</h3>
 <p>Сверьте свой <code>knn</code> со <code>sklearn</code> (предсказания
 обязаны совпасть полностью) и покажите границы решения всех пяти методов
 при одном и том же ядре.</p>
 </div>
-<div id="cell008" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell009" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Xm, ym <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">220</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">1.6</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Xm <span class="op">=</span> StandardScaler().fit_transform(Xm)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Xa, Xv, ya, yv <span class="op">=</span> train_test_split(Xm, ym, test_size<span class="op">=</span><span class="fl">0.35</span>, stratify<span class="op">=</span>ym,</span>
@@ -499,7 +511,7 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#          (knn k=5; knn_weighted k=15, q=0.75; parzen_fixed h=0.6;</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#           parzen_variable k=10; potential h=0.6).</span></span></code></pre></div>
 </div>
-<div id="cell009" class="cell markdown">
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Чем отличаются границы разных весовых
 функций? Что происходит с парзеновским окном фиксированной ширины в
@@ -507,7 +519,7 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell010" class="cell markdown">
+<div id="cell011" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-12-ваша-реализация-на-вашей-выборке">Задание 1.2. Ваша
 реализация на вашей выборке</h3>
 <p>Двумерная синтетика удобна тем, что видно границу. Но работать
@@ -516,7 +528,7 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 со <code>sklearn</code> <strong>на всех объектах</strong> — это проверка
 корректности, а не «примерно похоже».</p>
 </div>
-<div id="cell011" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell012" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) загрузите свою выборку через load_personal(variant); если вариант</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#          регрессионный -- бинаризуйте цель по медиане обучающей части;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) обучите свой MetricClassifier(method=&quot;knn&quot;, k=5) и</span></span>
@@ -524,14 +536,14 @@ a(x) = \arg\max_k\sum_{i}\bigl[y_{(i)} = k\bigr]\,w(i, x).
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) напечатайте долю совпадающих предсказаний (обязана быть 1.0)</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#          и accuracy обеих реализаций.</span></span></code></pre></div>
 </div>
-<div id="cell012" class="cell markdown">
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпали ли предсказания полностью? Если нет —
 где искать ошибку?</p>
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <hr />
 <blockquote>
 <h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
@@ -557,7 +569,7 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 Алгоритм STOLP отбирает небольшое подмножество эталонов, выбрасывая шум
 и «неинформативную массовку».</p>
 </div>
-<div id="cell014" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> margins(clf, X, y):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;M(x_i) = Gamma_{y_i}(x_i) - max_{k != y_i} Gamma_k(x_i).</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -580,7 +592,7 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
 </div>
-<div id="cell015" class="cell markdown">
+<div id="cell016" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-21-сколько-объектов-на-самом-деле-нужно">Задание 2.1.
 Сколько объектов на самом деле нужно</h3>
 <p>Возьмите выборку, испортите метки у части объектов (так бывает в
@@ -589,7 +601,7 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 распределения — порождайте одну выборку и делите её, а не вызывайте
 генератор дважды с разными <code>random_state</code>.</p>
 </div>
-<div id="cell016" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X_all, y_all <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">900</span>, centers<span class="op">=</span><span class="dv">3</span>, cluster_std<span class="op">=</span><span class="fl">2.2</span>,</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                          random_state<span class="op">=</span>RANDOM_STATE)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X_all <span class="op">=</span> StandardScaler().fit_transform(X_all)</span>
@@ -604,12 +616,12 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) сравните точность на ОТЛОЖЕННЫХ данных (Xq, yq): вся выборка</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#          с kNN(5) против правила ближайшего эталона.</span></span></code></pre></div>
 </div>
-<div id="cell017" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell018" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте профиль отступов (столбики, упорядоченные по возрастанию M,</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       отрицательные другим цветом) и картинку выборки с отмеченными</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       эталонами и испорченными метками.</span></span></code></pre></div>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Сколько объектов оставил STOLP и как
 изменилась точность? Попали ли испорченные метки в эталоны? Зачем вообще
@@ -617,21 +629,21 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell019" class="cell markdown">
+<div id="cell020" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="задание-22-stolp-на-вашей-выборке">Задание 2.2★. STOLP на вашей
 выборке</h3>
 <p>Сожмите свою обучающую выборку алгоритмом STOLP (данные уже загружены
 в задании 1.2) и посмотрите, сколько объектов осталось и что стало с
 качеством.</p>
 </div>
-<div id="cell020" class="cell code" data-tags="[&quot;task&quot;]">
+<div id="cell021" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1) примените stolp(...) к своей обучающей выборке (Xp_tr, yp_tr);</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       2) обучите kNN ТОЛЬКО на эталонах и сведите в таблицу три строки:</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#          своя реализация на всей выборке, sklearn на всей выборке, своя</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#          на эталонах -- вместе с числом объектов, которые модель хранит;</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       3) напечатайте степень сжатия и число объектов с отрицательным отступом.</span></span></code></pre></div>
 </div>
-<div id="cell021" class="cell markdown">
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Насколько сжалась выборка и что стало с
 качеством? Почему сжатая модель может оказаться <strong>лучше</strong>
@@ -639,7 +651,7 @@ M(x_i) = \Gamma_{y_i}(x_i) - \max_{k \ne y_i}\Gamma_k(x_i).
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell022" class="cell markdown">
+<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
 <p>Кратко ответьте на вопросы:</p>
 <ol>

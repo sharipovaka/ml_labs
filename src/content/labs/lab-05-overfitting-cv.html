@@ -231,7 +231,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown">
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h1 id="лабораторная-работа-5-переобучение-смещениеразброс-и-скользящий-контроль">Лабораторная
 работа 5. Переобучение, смещение–разброс и скользящий контроль</h1>
 <p><strong>Курс «Машинное обучение», 4 курс</strong></p>
@@ -282,7 +294,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 порождённая по вашему ФИО, появится в домашней работе.</p>
 </blockquote>
 </div>
-<div id="cell001" class="cell code">
+<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -338,7 +350,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co"># ожидаемо и забивает вывод.</span></span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">&quot;ignore&quot;</span>, message<span class="op">=</span><span class="st">&quot;.*Ill-conditioned matrix.*&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell002" class="cell markdown">
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-1-две-кривые-которые-надо-уметь-читать">Часть 1. Две
 кривые, которые надо уметь читать</h1>
@@ -355,7 +367,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ℓ</mi><annotation encoding="application/x-tex">\ell</annotation></semantics></math>.</li>
 </ul>
 </div>
-<div id="cell003" class="cell code">
+<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>F_TRUE <span class="op">=</span> <span class="kw">lambda</span> x: np.sin(<span class="dv">3</span> <span class="op">*</span> x) <span class="op">+</span> <span class="fl">0.4</span> <span class="op">*</span> x <span class="op">**</span> <span class="dv">2</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>SIGMA <span class="op">=</span> <span class="fl">0.35</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -372,7 +384,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>X_te, y_te <span class="op">=</span> make_sample(<span class="dv">3000</span>, gen)</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;неустранимый шум: sigma^2 = </span><span class="sc">{</span>SIGMA <span class="op">**</span> <span class="dv">2</span><span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell004" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>degrees <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>]</span>
@@ -384,7 +396,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>curve <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;степень&quot;</span>)</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>display(curve.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell005" class="cell code">
+<div id="cell006" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> [<span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">45</span>, <span class="dv">70</span>, <span class="dv">110</span>, <span class="dv">180</span>, <span class="dv">300</span>, <span class="dv">500</span>]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tr_err, te_err <span class="op">=</span> [], []</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> sizes:</span>
@@ -397,7 +409,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        e2.append(np.mean((m.predict(X_te) <span class="op">-</span> y_te) <span class="op">**</span> <span class="dv">2</span>))</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    tr_err.append(np.mean(e1))<span class="op">;</span> te_err.append(np.mean(e2))</span></code></pre></div>
 </div>
-<div id="cell006" class="cell code">
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ax1.plot(curve.index, curve[<span class="st">&quot;Q обучающая&quot;</span>], <span class="st">&quot;o-&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">&quot;обучение&quot;</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ax1.plot(curve.index, curve[<span class="st">&quot;Q контрольная&quot;</span>], <span class="st">&quot;s-&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">&quot;контроль&quot;</span>)</span>
@@ -413,7 +425,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">&quot;Кривая обучения (степень 9)&quot;</span>)<span class="op">;</span> ax2.legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell007" class="cell markdown">
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> К какому уровню сходятся обе кривые обучения
 и почему именно к нему? Что означает большой зазор между кривыми и что —
@@ -421,7 +433,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell008" class="cell markdown">
+<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-2-разложение-смещениеразброс-считаем-всё-три-слагаемых">Часть
 2. Разложение смещение–разброс: считаем всё три слагаемых</h1>
@@ -437,7 +449,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 и распределение выборки неизвестны. Но здесь <strong>мы сами породили
 данные</strong>, поэтому можем посчитать всё и проверить равенство.</p>
 </div>
-<div id="cell009" class="cell code">
+<div id="cell010" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>N_REP, N_TRAIN <span class="op">=</span> <span class="dv">300</span>, <span class="dv">60</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x_eval <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">200</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>f_eval <span class="op">=</span> F_TRUE(x_eval)</span>
@@ -452,7 +464,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    preds_by_degree[d] <span class="op">=</span> preds</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;обучено моделей: </span><span class="sc">{</span><span class="bu">len</span>(preds_by_degree)<span class="sc">}</span><span class="ss"> степеней x </span><span class="sc">{</span>N_REP<span class="sc">}</span><span class="ss"> повторений&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell010" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
@@ -467,7 +479,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>bv <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;степень&quot;</span>)</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>display(bv.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell011" class="cell code">
+<div id="cell012" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Сверка: измеряем E[(y - a(x))^2] напрямую и сравниваем с суммой трёх слагаемых</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gen_check <span class="op">=</span> np.random.default_rng(<span class="dv">777</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>bv[<span class="st">&quot;измеренная ошибка&quot;</span>] <span class="op">=</span> [</span>
@@ -476,7 +488,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>bv[<span class="st">&quot;расхождение, %&quot;</span>] <span class="op">=</span> (bv[<span class="st">&quot;измеренная ошибка&quot;</span>] <span class="op">/</span> bv[<span class="st">&quot;сумма&quot;</span>] <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>display(bv[[<span class="st">&quot;сумма&quot;</span>, <span class="st">&quot;измеренная ошибка&quot;</span>, <span class="st">&quot;расхождение, %&quot;</span>]].<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell012" class="cell code">
+<div id="cell013" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, d <span class="kw">in</span> <span class="bu">zip</span>(axes, [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">15</span>]):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    preds <span class="op">=</span> preds_by_degree[d]</span>
@@ -490,7 +502,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">&quot;$y$&quot;</span>)<span class="op">;</span> axes[<span class="dv">0</span>].legend()</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
 </div>
-<div id="cell013" class="cell markdown">
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Совпала ли сумма трёх слагаемых с измеренной
 ошибкой? Опишите словами, что видно на «облаке» предсказаний в каждом из
@@ -498,7 +510,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell014" class="cell markdown">
+<div id="cell015" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-3-утечка-при-валидации-сколько-она-стоит">Часть 3. Утечка
 при валидации: сколько она стоит</h1>
@@ -511,7 +523,7 @@ AUC
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≈</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">\approx 0.5</annotation></semantics></math>.
 Всё, что выше, — артефакт протокола, а не свойство данных.</p>
 </div>
-<div id="cell015" class="cell code">
+<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> SelectKBest, f_classif</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -521,7 +533,7 @@ AUC
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;в этих данных связи нет по построению: истинное AUC = 0.5&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell016" class="cell code" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: посчитайте две оценки AUC по 5-кратному стратифицированному контролю.</span></span>
@@ -531,7 +543,7 @@ AUC
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       внутри каждого блока (используйте cross_val_score).</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Истинное значение для этих данных: AUC = 0.5.</span></span></code></pre></div>
 </div>
-<div id="cell017" class="cell markdown">
+<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Какое AUC дала утечка на чистом шуме и откуда
 оно взялось? Почему масштабирование «протекает» слабее, чем отбор
@@ -539,7 +551,7 @@ AUC
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell018" class="cell markdown">
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-4-какую-схему-контроля-выбрать">Часть 4. Какую схему
 контроля выбрать</h1>
@@ -550,7 +562,7 @@ AUC
 случайна, и у неё есть смещение относительно истинного риска и
 дисперсия.</p>
 </div>
-<div id="cell019" class="cell markdown">
+<div id="cell020" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Напоминание — осторожно: «смещение» здесь другое.</strong> В
 части 2 смещение и разброс были свойствами <strong>модели</strong>:
@@ -574,7 +586,7 @@ AUC
 каждый объект по очереди остаётся единственным контрольным.</p>
 </blockquote>
 </div>
-<div id="cell020" class="cell code">
+<div id="cell021" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> LeaveOneOut</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -588,7 +600,7 @@ AUC
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;LOO&quot;</span>: <span class="kw">lambda</span> n: <span class="bu">list</span>(LeaveOneOut().split(np.zeros(n))),</span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="cell021" class="cell code">
+<div id="cell022" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>records, cost <span class="op">=</span> [], {nm: <span class="fl">0.0</span> <span class="cf">for</span> nm <span class="kw">in</span> schemes}</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> <span class="bu">range</span>(N_EXP):</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    g <span class="op">=</span> np.random.default_rng(<span class="dv">50_000</span> <span class="op">+</span> e)</span>
@@ -614,7 +626,7 @@ AUC
 <span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>display(summary.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell022" class="cell markdown">
+<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> У каких схем смещение значимо отличается от
 нуля и в какую сторону? Почему на практике берут
@@ -623,7 +635,7 @@ AUC
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell023" class="cell markdown">
+<div id="cell024" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h1 id="часть-5-честный-протокол-целиком">Часть 5. Честный протокол
 целиком</h1>
@@ -634,7 +646,7 @@ AUC
 по обучающей выборке, а контрольная не участвует ни в чём до самого
 конца.</p>
 </div>
-<div id="cell024" class="cell code">
+<div id="cell025" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
@@ -657,7 +669,7 @@ AUC
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;AUC на контроле (честно)        : </span><span class="sc">{</span>auc_test<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;разрыв CV - контроль            : </span><span class="sc">{</span>gs<span class="sc">.</span>best_score_ <span class="op">-</span> auc_test<span class="sc">:+.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell025" class="cell markdown">
+<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <h3 id="смещение-есть-но-по-одному-разбиению-его-не-увидеть">Смещение
 есть, но по одному разбиению его не увидеть</h3>
 <p>Разрыв получился почти нулевым, а то и отрицательным. Значит ли это,
@@ -666,7 +678,7 @@ AUC
 Повторим эксперимент по 20 разбиениям при разных объёмах обучающей
 выборки.</p>
 </div>
-<div id="cell026" class="cell code">
+<div id="cell027" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_minus_test(n_train, seed):</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    Xa, Xb, ya, yb <span class="op">=</span> train_test_split(Xc, yc, test_size<span class="op">=</span><span class="fl">0.25</span>,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                      random_state<span class="op">=</span>seed, stratify<span class="op">=</span>yc)</span>
@@ -684,7 +696,7 @@ AUC
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;ст. ошибка&quot;</span>: gaps.std(ddof<span class="op">=</span><span class="dv">1</span>) <span class="op">/</span> np.sqrt(<span class="bu">len</span>(gaps))})</span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;обучающих&quot;</span>).<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell027" class="cell markdown">
+<div id="cell028" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <blockquote>
 <p><strong>Вывод.</strong> Почему «лучшее значение по сетке» — уже не
 честная оценка качества? Почему на полной выборке разрыв оказался
@@ -692,7 +704,7 @@ AUC
 <p><em>(ваш ответ здесь)</em></p>
 </blockquote>
 </div>
-<div id="cell028" class="cell markdown">
+<div id="cell029" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <h2 id="итоги-занятия">Итоги занятия</h2>
 <p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
 <ol>
