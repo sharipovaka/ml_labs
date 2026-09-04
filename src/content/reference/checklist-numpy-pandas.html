@@ -265,6 +265,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <li><label><input type="checkbox"></input><strong>Broadcasting.</strong>
 <code>X - X.mean(axis=0)</code> — вычитание вектора из каждой строки без
 цикла.</label></li>
+<li><label><input type="checkbox"></input><strong>Новая ось.</strong>
+<code>a[:, None]</code> превращает вектор <code>(m,)</code> в столбец
+<code>(m, 1)</code>. Нужно, чтобы сложить столбец со строкой и получить
+матрицу: на этом построена вся часть 1 занятия.</label></li>
 <li><label><input type="checkbox"></input><strong><code>@</code> и
 <code>.T</code>.</strong> <code>X.T @ X</code> — матричное умножение;
 <code>*</code> умножает поэлементно.</label></li>
@@ -354,7 +358,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 
 </details>
 </div>
-<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T12:33:40.403327Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T12:33:40.403124Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T12:33:41.118997Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T12:33:41.118499Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T12:53:10.990953Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T12:53:10.990670Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T12:53:11.630613Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T12:53:11.630324Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверяйте здесь.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div>
@@ -374,7 +378,13 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <code>linspace</code>, <code>arange</code>, <code>zeros</code>,
 <code>ones</code>, <code>eye</code>, <code>column_stack</code>,
 <code>argsort</code>, <code>argmax</code>, <code>where</code>,
-<code>unique</code>, <code>cumsum</code>, <code>diag</code>.</p>
+<code>unique</code>, <code>cumsum</code>, <code>diag</code>,
+<code>reshape</code> и <code>ravel</code>.</p>
+<p><strong>NumPy, отбор по индексам.</strong> <code>X[idx]</code>, где
+<code>idx</code> — массив номеров, а не одно число: так берут случайный
+пакет объектов в градиентном спуске и переставляют столбцы после
+<code>argsort</code>. Отличается от булевой маски тем, что порядок
+задаёте вы.</p>
 <p><strong>NumPy, линейная алгебра</strong> — <code>np.linalg</code>:
 <code>solve</code>, <code>lstsq</code>, <code>norm</code>,
 <code>cond</code>, <code>eigh</code>, <code>svd</code>. Сами матричные
@@ -396,9 +406,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <code>MultiIndex</code>, <code>stack</code>, <code>pivot</code>;
 временные ряды; <code>apply</code> со своей функцией по строкам (почти
 всегда признак того, что задача решается векторно); <code>numba</code> и
-ускорение кода; SQL. Курс обходится базовым стеком: <code>numpy</code>,
-<code>pandas</code>, <code>matplotlib</code>, <code>seaborn</code>,
-<code>scipy</code>, <code>scikit-learn</code>.</p>
+ускорение кода; SQL. Чтение файлов тоже не понадобится: данные выдаёт
+модуль курса — <code>load_titanic()</code> на занятии и
+<code>load_personal(variant)</code> дома, — а не <code>read_csv</code>.
+Курс обходится базовым стеком: <code>numpy</code>, <code>pandas</code>,
+<code>matplotlib</code>, <code>seaborn</code>, <code>scipy</code>,
+<code>scikit-learn</code>.</p>
 <h2 id="где-восполнить-пробелы">Где восполнить пробелы</h2>
 <ul>
 <li><strong>NumPy</strong> — <a href="https://numpy.org/doc/stable/user/absolute_beginners.html">the
