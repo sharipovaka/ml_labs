@@ -334,7 +334,7 @@ Run All);</li>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, _course_modules_dir())</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> get_variant, describe_variant  <span class="co"># noqa: E402</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> get_variant, describe_variant, submission_name  <span class="co"># noqa: E402</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>RANDOM_STATE <span class="op">=</span> <span class="dv">42</span>          <span class="co"># единый seed на всю работу: результаты воспроизводимы</span></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
@@ -371,7 +371,9 @@ Run All);</li>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span></code></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Сдавать под именем:&quot;</span>, submission_name(STUDENT, lab<span class="op">=</span><span class="dv">8</span>))</span></code></pre></div>
 </div>
 <div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X_b, y_b <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">500</span>, centers<span class="op">=</span><span class="dv">4</span>, cluster_std<span class="op">=</span><span class="fl">1.1</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
@@ -572,6 +574,10 @@ k-means++</h1>
 <p>Проверьте перед сдачей: Kernel → Restart &amp; Run All проходит без
 ошибок, все ячейки <strong>Вывод</strong> заполнены, графики
 подписаны.</p>
+<p>Имя файла — то, что напечатала ячейка с вариантом:
+<code>hw01_Ivanov_I_I.ipynb</code>. Номер работы впереди, фамилия и
+инициалы латиницей. Если сдаёте исправленную версию, допишите
+<code>_v2</code>.</p>
 </div>
 </body>
 </html>

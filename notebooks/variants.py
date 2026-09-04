@@ -26,6 +26,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 import textwrap
 
 import numpy as np
@@ -36,12 +37,65 @@ __all__ = [
     "get_variant",
     "make_table",
     "describe_variant",
+    "submission_name",
     "DOMAINS",
 ]
 
 # Соль курса. Меняется раз в год -- тогда варианты прошлого года становятся
 # бесполезными, и отчёты старших курсов не переиспользуются.
 SALT = "ml-fn1-2026"
+
+
+# ---------------------------------------------------------------------------
+#                            имя файла для сдачи
+# ---------------------------------------------------------------------------
+
+# Практическая транслитерация: важна не обратимость, а то, чтобы имя файла
+# состояло из латиницы. Кириллица в именах ломается предсказуемо -- в zip-архиве,
+# собранном на Windows и открытом на macOS, в почтовых вложениях, в git.
+_TRANSLIT = {
+    "а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "е": "e", "ё": "e",
+    "ж": "zh", "з": "z", "и": "i", "й": "i", "к": "k", "л": "l", "м": "m",
+    "н": "n", "о": "o", "п": "p", "р": "r", "с": "s", "т": "t", "у": "u",
+    "ф": "f", "х": "kh", "ц": "ts", "ч": "ch", "ш": "sh", "щ": "shch",
+    "ъ": "", "ы": "y", "ь": "", "э": "e", "ю": "yu", "я": "ya",
+}
+
+
+def _translit(word: str) -> str:
+    """Слово латиницей, с заглавной буквы."""
+    out = "".join(_TRANSLIT.get(ch, _TRANSLIT.get(ch.lower(), ch).upper()
+                                if ch.isupper() else ch)
+                  for ch in word.lower())
+    out = re.sub(r"[^A-Za-z0-9]", "", out)
+    return out[:1].upper() + out[1:]
+
+
+def submission_name(identity: str, lab: int, ext: str = "ipynb") -> str:
+    """Имя файла, под которым сдаётся домашняя работа.
+
+        >>> submission_name("Иванов Иван Иванович", lab=1)
+        'hw01_Ivanov_I_I.ipynb'
+
+    Номер работы идёт первым и с ведущим нулём: тогда работы одного задания
+    держатся вместе, а сортировка по имени совпадает с порядком занятий.
+    Дальше фамилия и инициалы латиницей.
+
+    Если вместо ФИО указана почта, берётся часть до ``@``.
+    """
+    identity = str(identity).strip()
+    if "@" in identity:
+        # Почта: точки внутри логина -- не разделители ФИО, берём его целиком.
+        login = _translit(identity.split("@", 1)[0])
+        return f"hw{lab:02d}_{login}.{ext}" if login else f"hw{lab:02d}.{ext}"
+
+    parts = [_translit(w) for w in re.split(r"[\s.,_-]+", identity) if w]
+    parts = [p for p in parts if p]
+    if not parts:
+        return f"hw{lab:02d}.{ext}"
+
+    surname, initials = parts[0], [p[0] for p in parts[1:3]]
+    return "_".join([f"hw{lab:02d}", surname, *initials]) + f".{ext}"
 
 
 # ---------------------------------------------------------------------------
