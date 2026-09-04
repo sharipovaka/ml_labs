@@ -108,16 +108,18 @@ export function feedbackUrl(material) {
  * Форма «Нашёл ошибку» — канал не про впечатления, а про дефекты: опечатка,
  * ячейка не запускается, число в выводе не сходится с текстом.
  *
- * Если в форме появится вопрос «по какому материалу», допишите к адресу
- * `?usp=pp_url&entry.<id>=` — название подставится само. Пока адрес не
- * заканчивается на `=`, форма открывается как есть.
+ * Адрес заканчивается на `entry.<id>=` — идентификатор вопроса «На какой
+ * странице возникла проблема?». Он текстовый, поэтому туда подставляется
+ * полное название материала, а не короткий вариант из списка. Пока адрес не
+ * заканчивается на `=`, форма открывается без предзаполнения.
  */
 export const errorFormUrl =
-  'https://docs.google.com/forms/d/e/1FAIpQLSc_M5rLnPjQPpE8LphB_vQCQ_r7kPeg_YveipTB_gGi80fQBQ/viewform';
+  'https://docs.google.com/forms/d/e/1FAIpQLSc_M5rLnPjQPpE8LphB_vQCQ_r7kPeg_YveipTB_gGi80fQBQ/viewform'
+  + '?usp=pp_url&entry.373708352=';
 
-/** Ссылка на форму ошибок, при возможности — с выбранным материалом. */
+/** Ссылка на форму ошибок с уже указанной страницей. */
 export function errorUrl(material) {
   if (!errorFormUrl) return null;
   if (!errorFormUrl.endsWith('=')) return errorFormUrl;
-  return `${errorFormUrl}${encodeURIComponent(formOption(material) || material.title)}`;
+  return `${errorFormUrl}${encodeURIComponent(material.title)}`;
 }
