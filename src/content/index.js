@@ -349,6 +349,25 @@ export const reference = REFERENCE;
 /** Номера опубликованных занятий — по возрастанию. */
 export const readySessions = [...READY_SESSIONS].sort((a, b) => a - b);
 
+/**
+ * Дедлайн домашней работы — накануне следующего занятия. Занятия идут раз в
+ * две недели, поэтому на работу есть тринадцать дней.
+ *
+ * Дата считается от расписания, а не пишется руками: сдвинется занятие —
+ * сдвинутся все дедлайны после него. У последней работы следующего занятия
+ * нет, поэтому берётся тот же интервал.
+ */
+function shiftDays(iso, days) {
+  const date = new Date(`${iso}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function deadlineFor(index) {
+  const next = LAB_SESSIONS[index + 1];
+  return next ? shiftDays(next.date, -1) : shiftDays(LAB_SESSIONS[index].date, 13);
+}
+
 export const materials = [
   ...REFERENCE.map((item) => ({ ...item, kind: 'reference' })),
   ...LAB_SESSIONS.flatMap((lab, i) => {
@@ -356,7 +375,7 @@ export const materials = [
     const group = `Занятие ${i + 1}`;
     return [
       { ...lab, group, kind: 'lab' },
-      { ...HOMEWORK[i], group, kind: 'homework' },
+      { ...HOMEWORK[i], group, kind: 'homework', deadline: deadlineFor(i) },
     ];
   }),
 ];

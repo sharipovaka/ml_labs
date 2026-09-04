@@ -13,7 +13,7 @@ import { Link, useParams } from 'react-router-dom';
 import ColabIcon from './ColabIcon';
 import NotebookFrame from './NotebookFrame';
 import { findMaterial, formatDate, groupMaterials } from '../content';
-import { colabUrl, errorUrl, feedbackUrl, githubFileUrl } from '../config';
+import { colabUrl, errorUrl, feedbackUrl, githubFileUrl, submitUrl } from '../config';
 import { publicUrl } from '../utils/publicUrl';
 import styles from './MaterialSection.module.css';
 
@@ -129,6 +129,18 @@ export default function MaterialSection({ section }) {
           <div className={styles.meta}>
             <p className="mb-2">{material.description}</p>
 
+            {/* Единственная дата, которая требует действия, поэтому она вынесена
+                из общего ряда и стоит перед описанием. */}
+            {material.deadline && (
+              <p className={styles.deadline}>
+                <i className="fa-regular fa-clock" aria-hidden="true" />
+                <span>
+                  Сдать до <strong>{formatDate(material.deadline)}</strong> — это день
+                  перед следующим занятием
+                </span>
+              </p>
+            )}
+
             {/* Связка практикума с лекциями: работа k+1 закрепляет лекцию k.
                 Сами лекционные материалы на сайте не публикуются. */}
             {material.coversLabel && (
@@ -181,6 +193,19 @@ export default function MaterialSection({ section }) {
                     <i className="fa-solid fa-download me-2" aria-hidden="true" />
                     .ipynb
                   </a>
+
+                  {submitUrl(material) && (
+                    <a
+                      className="btn btn-sm btn-primary"
+                      href={submitUrl(material)}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      title="Форма сдачи домашней работы"
+                    >
+                      <i className="fa-solid fa-paper-plane me-2" aria-hidden="true" />
+                      Сдать работу
+                    </a>
+                  )}
 
                   {/* Два разных канала: дефект в материале и впечатление о нём. */}
                   {errorUrl(material) && (

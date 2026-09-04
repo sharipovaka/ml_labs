@@ -128,6 +128,22 @@
   margin-bottom: 1rem;
 }
 
+.deadline {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  margin: 0 0 0.75rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.5rem;
+  background: rgba(6, 182, 212, 0.1);
+  color: var(--bs-emphasis-color);
+  font-size: 0.92rem;
+}
+
+:global([data-bs-theme='dark']) .deadline {
+  background: rgba(6, 182, 212, 0.16);
+}
+
 .metaRow {
   display: flex;
   flex-wrap: wrap;

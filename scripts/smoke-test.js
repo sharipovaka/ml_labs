@@ -172,6 +172,18 @@ check('решения не попали в опубликованные мате
   });
 });
 
+check('у домашних работ есть дедлайн накануне следующего занятия', () => {
+  const homework = content.materials.filter((item) => item.kind === 'homework');
+  homework.forEach((item) => {
+    if (!item.deadline) throw new Error(`${item.slug}: нет дедлайна`);
+    const days = (new Date(item.deadline) - new Date(item.date)) / 86400000;
+    if (days !== 13) throw new Error(`${item.slug}: до дедлайна ${days} дней вместо 13`);
+  });
+  content.materials.filter((item) => item.kind !== 'homework').forEach((item) => {
+    if (item.deadline) throw new Error(`${item.slug}: дедлайн у не-домашней работы`);
+  });
+});
+
 check('у каждого материала есть вариант в форме обратной связи', () => {
   // Google подставляет значение в выпадающий список, только если оно точно
   // совпадает с вариантом; иначе отзыв приходит без пометки о материале.

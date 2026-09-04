@@ -123,3 +123,19 @@ export function errorUrl(material) {
   if (!errorFormUrl.endsWith('=')) return errorFormUrl;
   return `${errorFormUrl}${encodeURIComponent(material.title)}`;
 }
+
+/**
+ * Форма сдачи домашних работ.
+ *
+ * Если в форму добавить вопрос «какая работа», допишите к адресу
+ * `?usp=pp_url&entry.<id>=` — название подставится само.
+ */
+export const submitFormUrl =
+  'https://docs.google.com/forms/d/e/1FAIpQLSfyPzlMcCdIT3lztbSlgJ_zTgcT0AFimNc7CVtNTXKsDjuPDw/viewform';
+
+/** Ссылка на форму сдачи; при возможности — с уже указанной работой. */
+export function submitUrl(material) {
+  if (!submitFormUrl || material.kind !== 'homework') return null;
+  if (!submitFormUrl.endsWith('=')) return submitFormUrl;
+  return `${submitFormUrl}${encodeURIComponent(formOption(material) || material.title)}`;
+}
