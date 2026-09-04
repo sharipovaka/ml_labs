@@ -232,21 +232,56 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </head>
 <body>
 <div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
-<h1 id="чеклист-что-нужно-знать-про-numpy-и-pandas">Чеклист: что нужно
-знать про NumPy и pandas</h1>
-<p><strong>Курс «Машинное обучение», 4 курс. К занятию 1.</strong></p>
-<p>Занятие 1 не требует теории машинного обучения — оно требует умения
-обращаться с таблицей и массивом. Опыт у всех разный, и выяснять это на
-паре поздно.</p>
-<p>Списки закрытые: они собраны по коду самих занятий, поэтому короткие.
+<h1 id="чеклист-python-numpy-и-pandas">Чеклист: Python, NumPy и
+pandas</h1>
+<p><strong>Курс «Машинное обучение», 4 курс. Дополнительно к занятию
+1.</strong></p>
+<p>Занятие 1 прошло, и стало видно, что опыт у всех разный: кто-то писал
+на <code>pandas</code> курсовую, кто-то открыл его на паре впервые. Этот
+список — чтобы свериться: вот что из <code>numpy</code> и
+<code>pandas</code> курс действительно требует.</p>
+<p>Списки закрытые, собраны по коду самих занятий, поэтому короткие.
 Пункт засчитывается, если вы можете написать строчку кода, а не «где-то
 видели». Если незнакомо больше трети — потратьте вечер на источники в
-конце, это окупится: дальше всё написано на этих же приёмах.</p>
+конце. Это окупится: домашняя работа и все следующие занятия написаны на
+этих же приёмах.</p>
 <p>Не знать <code>numpy</code> и <code>pandas</code> — нормально. Плохо
 — не знать, чего именно не знаешь.</p>
 </div>
 <div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
+<h2 id="python--база">Python — база</h2>
+<p>Курс написан на обычном Python, без хитростей. Но если шатается это,
+всё остальное будет даваться втрое тяжелее — начните отсюда.</p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input><strong>Списки и словари.</strong>
+Создание, <code>len</code>, обращение по индексу и по ключу, перебор в
+<code>for</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Срезы.</strong>
+<code>a[1:5]</code>, <code>a[:3]</code>, <code>a[::-1]</code> — те же
+правила потом работают в NumPy.</label></li>
+<li><label><input type="checkbox"></input><strong>Ветвление и циклы.</strong>
+<code>if / elif / else</code>, <code>for x in range(n)</code>,
+<code>enumerate</code> (индекс и значение сразу), <code>zip</code> (два
+списка параллельно).</label></li>
+<li><label><input type="checkbox"></input><strong>Свои функции.</strong>
+<code>def f(x, alpha=1.0): ... return ...</code> — в заданиях вы
+дописываете именно такие.</label></li>
+<li><label><input type="checkbox"></input><strong>f-строки с
+форматом.</strong> <code>f&quot;ошибка {err:.3f}&quot;</code>,
+<code>f&quot;{p:.1%}&quot;</code>. В курсе их больше трёхсот: без этого не
+прочитать почти ни одну ячейку.</label></li>
+<li><label><input type="checkbox"></input><strong>Списковые
+включения.</strong> <code>[f(x) for x in xs if x &gt; 0]</code> вместо
+цикла с <code>append</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Импорты.</strong>
+<code>import numpy as np</code>,
+<code>from sklearn.linear_model import Ridge</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Чтение ошибок.</strong>
+<code>NameError</code>, <code>KeyError</code>, <code>ValueError</code>,
+<code>IndexError</code> — и умение найти в traceback
+<strong>свою</strong> строку: она обычно последняя.</label></li>
+</ul>
 <h2 id="numpy--к-занятию-1">NumPy — к занятию 1</h2>
 <ul class="task-list">
 <li><label><input type="checkbox"></input><strong>Массив и форма.</strong>
@@ -278,8 +313,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <li><label><input type="checkbox"></input><strong>Воспроизводимость.</strong>
 <code>rng = np.random.default_rng(42)</code>.</label></li>
 <li><label><input type="checkbox"></input><strong>Векторизация вместо
-цикла.</strong> Единственный пункт, который занятие разбирает
-специально, — здесь пробел не страшен.</label></li>
+цикла.</strong> Этому занятие 1 учит специально — если помните часть 1,
+пункт закрыт.</label></li>
 </ul>
 <h2 id="pandas--к-занятию-1">pandas — к занятию 1</h2>
 <ul class="task-list">
@@ -363,7 +398,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 
 </details>
 </div>
-<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T12:55:47.660995Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T12:55:47.660705Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T12:55:48.300559Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T12:55:48.300307Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T13:00:35.213452Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T13:00:35.213171Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T13:00:35.791336Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T13:00:35.791090Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверяйте здесь.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div>
@@ -372,13 +407,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <hr />
 <h2 id="понадобится-дальше--но-разбирать-не-будем">Понадобится дальше —
 но разбирать не будем</h2>
-<p>К занятию 1 это не нужно. Появится начиная со второго, и отдельного
+<p>В занятии 1 этого не было. Появится начиная со второго, и отдельного
 разговора об этом не будет: вызовы простые, разбираются по документации
 за вечер.</p>
-<p><strong>Python.</strong> f-строки с форматом —
-<code>f&quot;{x:.3f}&quot;</code>, их в курсе больше трёхсот; свои функции
-<code>def</code>; списковые включения; <code>enumerate</code> и
-<code>zip</code> в цикле.</p>
 <p><strong>NumPy, создание и перестановка.</strong>
 <code>linspace</code>, <code>arange</code>, <code>zeros</code>,
 <code>ones</code>, <code>eye</code>, <code>column_stack</code>,
@@ -414,18 +445,27 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 ускорение кода; SQL. Курс обходится базовым стеком: <code>numpy</code>,
 <code>pandas</code>, <code>matplotlib</code>, <code>seaborn</code>,
 <code>scipy</code>, <code>scikit-learn</code>.</p>
-<h2 id="где-восполнить-пробелы">Где восполнить пробелы</h2>
-<ul>
+<h2 id="как-закрыть-пробелы">Как закрыть пробелы</h2>
+<p>По порядку — следующий шаг имеет смысл, только когда закрыт
+предыдущий.</p>
+<ol>
+<li><strong>Сам Python</strong>, если шатается база из первого списка:
+<a href="https://stepik.org/course/67/promo">«Программирование на
+Python» на Stepik</a> — на русском, бесплатно, с задачами, которые
+проверяются автоматически. Нужны первые модули: типы, ветвления, циклы,
+списки, функции.</li>
 <li><strong>NumPy</strong> — <a href="https://numpy.org/doc/stable/user/absolute_beginners.html">the
-absolute basics for beginners</a>: читать до broadcasting
-включительно.</li>
+absolute basics for beginners</a>: читать до broadcasting включительно,
+дальше по желанию. Вечер.</li>
 <li><strong>pandas</strong> — <a href="https://pandas.pydata.org/docs/user_guide/10min.html">10 minutes
-to pandas</a>: нужны Selection, Missing data, Operations, Grouping;
-остальное можно пропустить.</li>
-</ul>
-<p>Оба на английском, но текста там мало, а кода много. Копируйте
-примеры к себе и меняйте числа — так быстрее, чем читать подряд.</p>
-<p>Дальше открывайте <code>lab01_seminar.ipynb</code>.</p>
+to pandas</a>: нужны разделы Selection, Missing data, Operations,
+Grouping; Merge, Reshaping и Time series пропускайте. Вечер.</li>
+</ol>
+<p>Пункты 2 и 3 на английском, но текста там мало, а кода много. Читать
+подряд бесполезно: копируйте примеры в свой ноутбук и меняйте числа,
+пока не станет понятно, что именно поменялось в ответе.</p>
+<p>Ближайшее применение — домашняя работа 1: там та же разведка данных,
+что была на паре, только на вашей собственной таблице.</p>
 </div>
 </body>
 </html>

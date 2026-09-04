@@ -44,19 +44,19 @@ const HOMEWORK_GROUP = 'Домашние работы';
 /**
  * Справочные материалы — не занятия: их не проходят на паре, к ним
  * обращаются. Каждый привязан к занятию полем `session` и встаёт в его группу
- * первым, до лабораторной: чеклист читают перед парой, а не после.
+ * последним: это дополнение к разобранному, а не условие допуска.
  */
 const REFERENCE = [
   {
     slug: 'checklist-numpy-pandas',
     session: 1,
-    title: 'Чеклист. Что нужно знать про NumPy и pandas',
+    title: 'Чеклист. Python, NumPy и pandas',
     description:
-      'Закрытый список того, что нужно уметь к первому занятию, собранный по коду самого занятия. Восемь вопросов на проверку себя — ответы спрятаны. Отдельно: что понадобится дальше по курсу, но разбираться не будет (линейная алгебра в np.linalg, единый интерфейс sklearn, f-строки), и чего знать не нужно вовсе.',
+      'Что нужно уметь, чтобы занятия шли легко: база Python, затем NumPy и pandas — списки собраны по коду самих занятий, поэтому короткие. Восемь вопросов на проверку себя с ответами под спойлером, путь из трёх шагов для тех, у кого пробелы, и отдельно — что понадобится дальше по курсу, но разбираться не будет.',
     date: '2026-09-03',
     tags: ['NumPy', 'pandas', 'подготовка'],
     icon: 'fa-list-check',
-    coversLabel: 'Прочитать до занятия 1',
+    coversLabel: 'Дополнительно к занятию 1 — если Python пока даётся тяжело',
     source: 'notebooks/reference/checklist-numpy-pandas.ipynb',
     load: () => import(/* webpackChunkName: "ref-checklist" */ './reference/checklist-numpy-pandas.html'),
   },
@@ -353,10 +353,10 @@ export const materials = LAB_SESSIONS.flatMap((lab, i) => {
   const number = i + 1;
   const group = `Занятие ${number}`;
   return [
-    ...REFERENCE.filter((item) => item.session === number)
-      .map((item) => ({ ...item, group, kind: 'reference' })),
     { ...lab, group, kind: 'lab' },
     { ...HOMEWORK[i], group, kind: 'homework' },
+    ...REFERENCE.filter((item) => item.session === number)
+      .map((item) => ({ ...item, group, kind: 'reference' })),
   ];
 });
 

@@ -133,13 +133,14 @@ check('материалы сгруппированы парами по заня�
   const sessions = groups.filter((g) => /^Занятие \d+$/.test(g.name));
   if (sessions.length !== content.labSessions.length) throw new Error(`групп занятий ${sessions.length}`);
   sessions.forEach((group) => {
-    // Порядок внутри занятия: сначала справочные материалы (их читают до пары),
-    // потом лабораторная, потом домашняя.
+    // Порядок внутри занятия: лабораторная, домашняя, затем справочные
+    // материалы — они дополняют разобранное, а не предшествуют ему.
     const kinds = group.items.map((item) => item.kind);
-    const tail = kinds.slice(-2).join(',');
-    if (tail !== 'lab,homework') throw new Error(`${group.name}: в конце ${tail}`);
-    if (kinds.slice(0, -2).some((kind) => kind !== 'reference')) {
-      throw new Error(`${group.name}: перед лабораторной не только справочные материалы`);
+    if (kinds.slice(0, 2).join(',') !== 'lab,homework') {
+      throw new Error(`${group.name}: начинается не с «лабораторная, домашняя»`);
+    }
+    if (kinds.slice(2).some((kind) => kind !== 'reference')) {
+      throw new Error(`${group.name}: после домашней не только справочные материалы`);
     }
   });
 });
