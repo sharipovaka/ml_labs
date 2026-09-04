@@ -10,9 +10,7 @@
     "build": "webpack --mode production",
     "convert": "bash scripts/convert-notebooks.sh",
     "test": "node scripts/smoke-test.js",
-    "icons": "python3 scripts/make-icons.py",
-    "predeploy": "npm test && npm run build",
-    "deploy": "gh-pages -d dist -b gh-pages -t"
+    "icons": "python3 scripts/make-icons.py"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
@@ -29,7 +27,6 @@
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.0",
-    "gh-pages": "^6.2.0",
     "html-webpack-plugin": "^5.6.3",
     "mini-css-extract-plugin": "^2.9.2",
     "style-loader": "^4.0.0",
