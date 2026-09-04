@@ -236,23 +236,13 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 pandas</h1>
 <p><strong>Курс «Машинное обучение», 4 курс. Дополнительно к занятию
 1.</strong></p>
-<p>Занятие 1 прошло, и стало видно, что опыт у всех разный: кто-то писал
-на <code>pandas</code> курсовую, кто-то открыл его на паре впервые. Этот
-список — чтобы свериться: вот что из <code>numpy</code> и
-<code>pandas</code> курс действительно требует.</p>
-<p>Списки закрытые, собраны по коду самих занятий, поэтому короткие.
-Пункт засчитывается, если вы можете написать строчку кода, а не «где-то
-видели». Если незнакомо больше трети — потратьте вечер на источники в
-конце. Это окупится: домашняя работа и все следующие занятия написаны на
-этих же приёмах.</p>
-<p>Не знать <code>numpy</code> и <code>pandas</code> — нормально. Плохо
-— не знать, чего именно не знаешь.</p>
+<p>Пункт засчитывается, если вы можете написать строчку кода, а не
+«где-то видели». Списки собраны по коду занятий, поэтому закрытые: чего
+здесь нет — не понадобится.</p>
 </div>
 <div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
 <h2 id="python--база">Python — база</h2>
-<p>Курс написан на обычном Python, без хитростей. Но если шатается это,
-всё остальное будет даваться втрое тяжелее — начните отсюда.</p>
 <ul class="task-list">
 <li><label><input type="checkbox"></input><strong>Списки и словари.</strong>
 Создание, <code>len</code>, обращение по индексу и по ключу, перебор в
@@ -398,45 +388,46 @@ pandas</h1>
 
 </details>
 </div>
-<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T13:00:35.213452Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T13:00:35.213171Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T13:00:35.791336Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T13:00:35.791090Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T13:07:06.975794Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T13:07:06.975655Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T13:07:07.678213Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T13:07:07.677937Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверяйте здесь.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div>
 </div>
 <div id="cell004" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
-<h2 id="понадобится-дальше--но-разбирать-не-будем">Понадобится дальше —
-но разбирать не будем</h2>
-<p>В занятии 1 этого не было. Появится начиная со второго, и отдельного
-разговора об этом не будет: вызовы простые, разбираются по документации
-за вечер.</p>
-<p><strong>NumPy, создание и перестановка.</strong>
+<h2 id="понадобится-дальше">Понадобится дальше</h2>
+<p>Появится начиная с занятия 2. Вызовы простые, разбираются по
+документации.</p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input><strong>Создание массивов.</strong>
 <code>linspace</code>, <code>arange</code>, <code>zeros</code>,
 <code>ones</code>, <code>eye</code>, <code>column_stack</code>,
+<code>reshape</code>, <code>ravel</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Отбор по индексам.</strong>
+<code>X[idx]</code>, где <code>idx</code> — массив номеров, а не одно
+число: так берут пакет объектов в градиентном спуске. От булевой маски
+отличается тем, что порядок задаёте вы.</label></li>
+<li><label><input type="checkbox"></input><strong>Сортировка и поиск.</strong>
 <code>argsort</code>, <code>argmax</code>, <code>where</code>,
-<code>unique</code>, <code>cumsum</code>, <code>diag</code>,
-<code>reshape</code> и <code>ravel</code>.</p>
-<p><strong>NumPy, отбор по индексам.</strong> <code>X[idx]</code>, где
-<code>idx</code> — массив номеров, а не одно число: так берут случайный
-пакет объектов в градиентном спуске и переставляют столбцы после
-<code>argsort</code>. Отличается от булевой маски тем, что порядок
-задаёте вы.</p>
-<p><strong>NumPy, линейная алгебра</strong> — <code>np.linalg</code>:
-<code>solve</code>, <code>lstsq</code>, <code>norm</code>,
-<code>cond</code>, <code>eigh</code>, <code>svd</code>. Сами матричные
-факты разбираются на лекциях и занятиях, а вот то, что решение системы
-пишется как <code>solve(A, b)</code>, считается известным.</p>
-<p><strong>matplotlib.</strong> <code>fig, ax = plt.subplots()</code>,
-<code>ax.plot</code>, <code>ax.scatter</code>,
-<code>ax.set_xlabel</code>, <code>plt.show()</code>. Больше не нужно: на
-занятии 1 показывается <code>seaborn</code>, где график строится одной
-строкой.</p>
-<p><strong>scikit-learn — единый интерфейс.</strong> У всех моделей и
-преобразований он один: <code>fit</code> учит, <code>predict</code>
-предсказывает, <code>transform</code> преобразует, <code>score</code>
-считает качество. Плюс <code>train_test_split</code> и
-<code>Pipeline</code>. Это соглашение объясняется на занятии 1 на живом
-примере, а дальше просто используется.</p>
+<code>unique</code>, <code>cumsum</code>,
+<code>diag</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Линейная алгебра,
+<code>np.linalg</code>.</strong> <code>solve</code>, <code>lstsq</code>,
+<code>norm</code>, <code>cond</code>, <code>eigh</code>,
+<code>svd</code>. Матричные факты разбираются на лекциях, а то, что
+система решается как <code>solve(A, b)</code>, считается
+известным.</label></li>
+<li><label><input type="checkbox"></input><strong>matplotlib.</strong>
+<code>fig, ax = plt.subplots()</code>, <code>ax.plot</code>,
+<code>ax.scatter</code>, <code>ax.set_xlabel</code>,
+<code>plt.show()</code>. Больше не нужно: дальше графики строит
+<code>seaborn</code> одной строкой.</label></li>
+<li><label><input type="checkbox"></input><strong>Единый интерфейс
+<code>scikit-learn</code>.</strong> <code>fit</code> учит,
+<code>predict</code> предсказывает, <code>transform</code> преобразует,
+<code>score</code> считает качество; плюс <code>train_test_split</code>
+и <code>Pipeline</code>.</label></li>
+</ul>
 <h2 id="чего-знать-не-нужно">Чего знать не нужно</h2>
 <p><code>merge</code>, <code>join</code>, <code>concat</code>;
 <code>MultiIndex</code>, <code>stack</code>, <code>pivot</code>;
@@ -461,11 +452,8 @@ absolute basics for beginners</a>: читать до broadcasting включит
 to pandas</a>: нужны разделы Selection, Missing data, Operations,
 Grouping; Merge, Reshaping и Time series пропускайте. Вечер.</li>
 </ol>
-<p>Пункты 2 и 3 на английском, но текста там мало, а кода много. Читать
-подряд бесполезно: копируйте примеры в свой ноутбук и меняйте числа,
-пока не станет понятно, что именно поменялось в ответе.</p>
-<p>Ближайшее применение — домашняя работа 1: там та же разведка данных,
-что была на паре, только на вашей собственной таблице.</p>
+<p>Читать подряд бесполезно: копируйте примеры к себе и меняйте числа.
+Ближайшее применение — домашняя работа 1.</p>
 </div>
 </body>
 </html>
