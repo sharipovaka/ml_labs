@@ -41,6 +41,26 @@ const LAB_GROUP = 'Лабораторные работы (в аудитории)
 const HOMEWORK_GROUP = 'Домашние работы';
 
 /** Лабораторные работы: рабочий код занятия и задания для заполнения на паре. */
+/**
+ * Справочные материалы — не занятия: их не проходят на паре, к ним
+ * обращаются. Идут в списке первыми, до занятия 1.
+ */
+const REFERENCE = [
+  {
+    slug: 'checklist-numpy-pandas',
+    group: 'Перед началом',
+    title: 'Чеклист. Что нужно знать про NumPy и pandas',
+    description:
+      'Закрытый список того, что нужно уметь к первому занятию: по девять пунктов на NumPy и pandas, собранных по коду самого занятия. Восемь задач на проверку себя с разбором ответов, раздел «чего знать не нужно» и ссылки на короткие официальные руководства.',
+    date: '2026-09-03',
+    tags: ['NumPy', 'pandas', 'подготовка'],
+    icon: 'fa-list-check',
+    coversLabel: 'Прочитать до занятия 1',
+    source: 'notebooks/reference/checklist-numpy-pandas.ipynb',
+    load: () => import(/* webpackChunkName: "ref-checklist" */ './reference/checklist-numpy-pandas.html'),
+  },
+];
+
 const LAB_SESSIONS = [
   {
     slug: 'lab-01-tools-data',
@@ -322,14 +342,19 @@ export const plannedSessions = LAB_SESSIONS.length;
 export const labSessions = LAB_SESSIONS.filter((_, i) => isReady(i));
 export const homework = HOMEWORK.filter((_, i) => isReady(i));
 
-export const materials = LAB_SESSIONS.flatMap((lab, i) => {
-  if (!isReady(i)) return [];
-  const group = `Занятие ${i + 1}`;
-  return [
-    { ...lab, group, kind: 'lab' },
-    { ...HOMEWORK[i], group, kind: 'homework' },
-  ];
-});
+export const reference = REFERENCE;
+
+export const materials = [
+  ...REFERENCE.map((item) => ({ ...item, kind: 'reference' })),
+  ...LAB_SESSIONS.flatMap((lab, i) => {
+    if (!isReady(i)) return [];
+    const group = `Занятие ${i + 1}`;
+    return [
+      { ...lab, group, kind: 'lab' },
+      { ...HOMEWORK[i], group, kind: 'homework' },
+    ];
+  }),
+];
 
 /** Раздел «Notebooks» содержит только материалы практикума. */
 export const notebooks = materials;

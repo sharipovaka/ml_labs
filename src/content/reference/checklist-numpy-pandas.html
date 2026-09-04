@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>checklist-numpy-pandas</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
+</style>
+</head>
+<body>
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<h1 id="чеклист-что-нужно-знать-про-numpy-и-pandas">Чеклист: что нужно
+знать про NumPy и pandas</h1>
+<p><strong>Курс «Машинное обучение», 4 курс. К занятию 1.</strong></p>
+<p>Занятие 1 не требует теории машинного обучения — оно требует умения
+обращаться с таблицей и массивом. Опыт у всех разный: кто-то писал на
+<code>pandas</code> курсовую, кто-то видел его впервые. Этот файл нужен,
+чтобы <strong>до</strong> занятия стало понятно, чего именно от вас
+ждут.</p>
+<p>Список закрытый. Он собран по тому, что реально встречается в занятии
+1 и в домашней работе к нему, — поэтому короткий. Всего, чего здесь нет,
+на первом занятии не понадобится: см. раздел «Чего знать не нужно» в
+конце.</p>
+<h2 id="как-этим-пользоваться">Как этим пользоваться</h2>
+<ol>
+<li>Пройдите оба списка и честно отметьте, что не знаете. Пункт
+засчитывается, если вы можете <strong>написать строчку кода</strong>, а
+не «где-то видели».</li>
+<li>Дойдите до раздела «Проверьте себя» и решите задачи, не запуская
+код: сначала ответ в голове, потом <code>Shift+Enter</code>.</li>
+<li>Если незнакомо больше трети пунктов — потратьте вечер на источники
+из последнего раздела. Это окупится: дальше все девять занятий написаны
+на этих же приёмах.</li>
+</ol>
+<p>Незнание <code>numpy</code> и <code>pandas</code> — не проблема и не
+повод переживать. Проблема — узнать об этом на паре.</p>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h2 id="numpy">NumPy</h2>
+<p>Массив — это таблица чисел фиксированного типа. Всё, что нужно на
+занятии 1:</p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input><strong>Массив и его форма.</strong>
+<code>np.array([1, 2, 3])</code>, <code>X.shape</code>,
+<code>X.dtype</code>. Понимать, что <code>shape == (100, 5)</code> — это
+100 объектов по 5 признаков.</label></li>
+<li><label><input type="checkbox"></input><strong>Индексация и срезы по двум
+осям.</strong> <code>X[0]</code> — первая строка, <code>X[:, 1]</code> —
+второй столбец целиком, <code>X[2:5, :2]</code> — кусок
+таблицы.</label></li>
+<li><label><input type="checkbox"></input><strong>Булева маска.</strong>
+<code>x[x &gt; 0]</code> — отбор; <code>(x &gt; 0).sum()</code> —
+сколько таких; <code>(x &gt; 0).mean()</code> — <strong>доля</strong>
+таких. Последнее используется постоянно.</label></li>
+<li><label><input type="checkbox"></input><strong>Аргумент
+<code>axis</code>.</strong> <code>X.mean(axis=0)</code> — среднее по
+каждому столбцу (схлопываем строки), <code>axis=1</code> — по каждой
+строке. Путаница здесь — самая частая ошибка новичков.</label></li>
+<li><label><input type="checkbox"></input><strong>Broadcasting.</strong>
+<code>X - X.mean(axis=0)</code> вычитает из каждой строки вектор
+средних, без единого цикла. Понимать, почему формы <code>(100, 5)</code>
+и <code>(5,)</code> совместимы, а <code>(100, 5)</code> и
+<code>(100,)</code> — нет.</label></li>
+<li><label><input type="checkbox"></input><strong>Матричное умножение и
+транспонирование.</strong> <code>X.T @ X</code>, <code>X @ theta</code>.
+Знать, что <code>@</code> — это не <code>*</code>: <code>*</code>
+умножает поэлементно.</label></li>
+<li><label><input type="checkbox"></input><strong><code>np.nan</code>.</strong>
+<code>np.nan != np.nan</code> — правда, поэтому пропуски ищут через
+<code>np.isnan(x)</code>, а не сравнением. Отсюда же <code>nan</code>
+заражает суммы и средние.</label></li>
+<li><label><input type="checkbox"></input><strong>Воспроизводимость.</strong>
+<code>rng = np.random.default_rng(42)</code>, потом
+<code>rng.normal(size=10)</code>. Один и тот же seed — один и тот же
+результат.</label></li>
+<li><label><input type="checkbox"></input><strong>Векторизация вместо
+цикла.</strong> Если вы пишете <code>for i in range(len(X))</code>,
+почти наверняка есть запись без цикла — короче и в десятки раз быстрее.
+Это единственный пункт, который занятие 1 разбирает специально: если он
+незнаком, ничего страшного.</label></li>
+</ul>
+</div>
+<div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h2 id="pandas">pandas</h2>
+<p>Таблица со столбцами разных типов и с именами. Нужно вот это:</p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input><strong><code>DataFrame</code> и
+<code>Series</code>.</strong> Таблица и один её столбец.
+<code>df.shape</code>, <code>df.head()</code>, <code>df.dtypes</code>,
+<code>df.info()</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Выбор столбца.</strong>
+<code>df[&quot;age&quot;]</code> — это <code>Series</code>, а
+<code>df[[&quot;age&quot;]]</code> — это <code>DataFrame</code> из одного столбца.
+Разница всплывает при передаче в <code>sklearn</code>.</label></li>
+<li><label><input type="checkbox"></input><strong><code>.loc</code> и
+<code>.iloc</code>.</strong> <code>df.loc[5, &quot;age&quot;]</code> — по имени,
+<code>df.iloc[5, 2]</code> — по номеру. Знать, что это разные
+вещи.</label></li>
+<li><label><input type="checkbox"></input><strong>Фильтр по условию.</strong>
+<code>df[df[&quot;age&quot;] &gt; 30]</code>; несколько условий — через
+<code>&amp;</code>, <code>|</code> и <strong>обязательные
+скобки</strong>:
+<code>df[(df[&quot;age&quot;] &gt; 30) &amp; (df[&quot;fare&quot;] &lt; 50)]</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Пропуски.</strong>
+<code>df.isna().sum()</code> — сколько в каждом столбце,
+<code>df.dropna()</code> — выбросить строки,
+<code>df[&quot;age&quot;].fillna(значение)</code> — заполнить.</label></li>
+<li><label><input type="checkbox"></input><strong>Преобразование
+значений.</strong> <code>.astype(int)</code>,
+<code>.map({&quot;yes&quot;: 1, &quot;no&quot;: 0})</code>, <code>.replace(...)</code>, а
+для текста — <code>.str.replace(&quot;,&quot;, &quot;.&quot;)</code> и
+<code>.str.strip()</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Группировка.</strong>
+<code>df.groupby(&quot;pclass&quot;)[&quot;survived&quot;].mean()</code> — среднее по
+группам; <code>.agg([&quot;size&quot;, &quot;mean&quot;])</code> — сразу несколько
+сводок.</label></li>
+<li><label><input type="checkbox"></input><strong>Частоты и
+уникальные.</strong> <code>.value_counts()</code>,
+<code>.nunique()</code>, <code>.unique()</code>, а для пары столбцов —
+<code>pd.crosstab(a, b, normalize=&quot;index&quot;)</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Сводки.</strong>
+<code>.describe()</code>, <code>.median()</code>,
+<code>.corr()</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Дубликаты и типы
+столбцов.</strong> <code>df.duplicated().sum()</code>,
+<code>df.select_dtypes(include=&quot;number&quot;)</code>.</label></li>
+</ul>
+</div>
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h2 id="проверьте-себя">Проверьте себя</h2>
+<p>Восемь вопросов. Сначала ответьте, <strong>не запуская</strong>
+ячейку, потом запустите и сверьтесь. Если сошлось семь-восемь — на
+занятии будет комфортно.</p>
+<p><strong>NumPy.</strong> Дано <code>X</code> формы <code>(4, 3)</code>
+и вектор <code>v</code> формы <code>(3,)</code>:</p>
+<ol>
+<li>Какая форма у <code>X.mean(axis=0)</code>? А у
+<code>X.mean(axis=1)</code>?</li>
+<li>Что делает <code>X - v</code> и почему это не ошибка?</li>
+<li>Чему равно <code>(X &gt; 5).mean()</code> — по смыслу, не по
+числу?</li>
+<li>Какая форма у <code>X.T @ X</code>?</li>
+</ol>
+<p><strong>pandas.</strong> Дана таблица <code>df</code> со столбцами
+<code>группа</code> (A/B) и <code>балл</code>:</p>
+<ol>
+<li>Чем <code>df[&quot;балл&quot;]</code> отличается от
+<code>df[[&quot;балл&quot;]]</code>?</li>
+<li>Что вернёт <code>df[df[&quot;балл&quot;] &gt; 4]</code> и что —
+<code>(df[&quot;балл&quot;] &gt; 4).mean()</code>?</li>
+<li>Что напечатает
+<code>df.groupby(&quot;группа&quot;)[&quot;балл&quot;].mean()</code>?</li>
+<li>Почему <code>df[&quot;балл&quot;].isna().sum()</code> — это не то же самое,
+что <code>df[&quot;балл&quot;].sum()</code>?</li>
+</ol>
+</div>
+<div id="cell004" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T12:16:04.262568Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T12:16:04.262144Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T12:16:05.535571Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T12:16:05.535276Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.arange(<span class="dv">12</span>).reshape(<span class="dv">4</span>, <span class="dv">3</span>)          <span class="co"># 4 объекта, 3 признака</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> np.array([<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>])</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;X =</span><span class="ch">\n</span><span class="st">&quot;</span>, X)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">1) X.mean(axis=0) =&quot;</span>, X.mean(axis<span class="op">=</span><span class="dv">0</span>), <span class="st">&quot;-&gt; форма&quot;</span>, X.mean(axis<span class="op">=</span><span class="dv">0</span>).shape)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;   X.mean(axis=1) =&quot;</span>, X.mean(axis<span class="op">=</span><span class="dv">1</span>), <span class="st">&quot;-&gt; форма&quot;</span>, X.mean(axis<span class="op">=</span><span class="dv">1</span>).shape)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">2) X - v =</span><span class="ch">\n</span><span class="st">&quot;</span>, X <span class="op">-</span> v)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">3) (X &gt; 5).mean() =&quot;</span>, (X <span class="op">&gt;</span> <span class="dv">5</span>).mean())</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">4) X.T @ X -&gt; форма&quot;</span>, (X.T <span class="op">@</span> X).shape)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>X =
+ [[ 0  1  2]
+ [ 3  4  5]
+ [ 6  7  8]
+ [ 9 10 11]]
+
+1) X.mean(axis=0) = [4.5 5.5 6.5] -&gt; форма (3,)
+   X.mean(axis=1) = [ 1.  4.  7. 10.] -&gt; форма (4,)
+
+2) X - v =
+ [[-100 -199 -298]
+ [ -97 -196 -295]
+ [ -94 -193 -292]
+ [ -91 -190 -289]]
+
+3) (X &gt; 5).mean() = 0.5
+
+4) X.T @ X -&gt; форма (3, 3)
+</code></pre>
+</div>
+</div>
+<div id="cell005" class="cell code" data-execution_count="2" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T12:16:05.536854Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T12:16:05.536727Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T12:16:05.548812Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T12:16:05.548590Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">&quot;группа&quot;</span>: [<span class="st">&quot;A&quot;</span>, <span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;B&quot;</span>],</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;балл&quot;</span>:   [<span class="fl">5.0</span>, <span class="fl">3.0</span>, <span class="fl">4.0</span>, np.nan, <span class="fl">2.0</span>]})</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>display(df)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;5) df[&#39;балл&#39;] -- это&quot;</span>, <span class="bu">type</span>(df[<span class="st">&quot;балл&quot;</span>]).<span class="va">__name__</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;| df[[&#39;балл&#39;]] -- это&quot;</span>, <span class="bu">type</span>(df[[<span class="st">&quot;балл&quot;</span>]]).<span class="va">__name__</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">6) строк с баллом &gt; 4:&quot;</span>, <span class="bu">len</span>(df[df[<span class="st">&quot;балл&quot;</span>] <span class="op">&gt;</span> <span class="dv">4</span>]),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;| доля таких:&quot;</span>, (df[<span class="st">&quot;балл&quot;</span>] <span class="op">&gt;</span> <span class="dv">4</span>).mean())</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">7) среднее по группам:&quot;</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&quot;группа&quot;</span>)[<span class="st">&quot;балл&quot;</span>].mean())</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">8) пропусков:&quot;</span>, df[<span class="st">&quot;балл&quot;</span>].isna().<span class="bu">sum</span>(), <span class="st">&quot;| сумма баллов:&quot;</span>, df[<span class="st">&quot;балл&quot;</span>].<span class="bu">sum</span>())</span></code></pre></div>
+<div class="output display_data">
+<div>
+<style scoped>
+.dataframe tbody tr th:only-of-type {
+vertical-align: middle;
+}
+.dataframe tbody tr th {
+vertical-align: top;
+}
+.dataframe thead th {
+text-align: right;
+}
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>группа</th>
+      <th>балл</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>2.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<div class="output stream stdout">
+<pre><code>5) df[&#39;балл&#39;] -- это Series | df[[&#39;балл&#39;]] -- это DataFrame
+
+6) строк с баллом &gt; 4: 1 | доля таких: 0.2
+
+7) среднее по группам:
+группа
+A    4.0
+B    3.0
+Name: балл, dtype: float64
+
+8) пропусков: 1 | сумма баллов: 14.0
+</code></pre>
+</div>
+</div>
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="ответы-и-что-за-ними-стоит">Ответы и что за ними стоит</h3>
+<ol>
+<li><code>(3,)</code> и <code>(4,)</code>. <code>axis</code> — это ось,
+<strong>вдоль которой схлопываем</strong>: <code>axis=0</code> убирает
+строки и оставляет число на каждый столбец (среднее признака),
+<code>axis=1</code> убирает столбцы и даёт число на каждый объект.</li>
+<li>Вычитает <code>v</code> из <strong>каждой строки</strong>. Формы
+<code>(4, 3)</code> и <code>(3,)</code> совместимы: NumPy мысленно
+растягивает вектор на все строки. Это broadcasting, и на нём держится
+вся стандартизация признаков.</li>
+<li>Долю элементов, больших пяти. <code>(X &gt; 5)</code> — массив из
+<code>True</code>/<code>False</code>, а среднее булева массива и есть
+доля истинных значений.</li>
+<li><code>(3, 3)</code>. Матрица
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^{\mathsf T}X</annotation></semantics></math>
+размера «признаки на признаки» — она появится уже на занятии 2 и не
+исчезнет до конца курса.</li>
+<li>Первое — <code>Series</code> (один столбец), второе —
+<code>DataFrame</code> (таблица из одного столбца). Разные типы, и
+<code>sklearn</code> к этому чувствителен.</li>
+<li>Первое — <strong>таблицу</strong> из подходящих строк, второе —
+<strong>число</strong>, долю таких строк. Второе понадобится чаще, чем
+кажется.</li>
+<li>Среднее по каждой группе: <code>A</code> — 4.0, <code>B</code> —
+3.0. Обратите внимание: у <code>B</code> три строки, но одна с
+пропуском, и <code>mean</code> считает по двум. Молча.</li>
+<li><code>isna().sum()</code> считает, сколько значений
+<strong>отсутствует</strong> (здесь 1), а <code>sum()</code> складывает
+сами баллы, пропуск при этом пропуская (здесь 14.0). Разница между «нет
+данных» и «ноль» — то, с чего начинается занятие 1.</li>
+</ol>
+</div>
+<div id="cell007" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h2 id="чего-знать-не-нужно">Чего знать не нужно</h2>
+<p>Чтобы не тратить время на лишнее, вот что на первом занятии (и почти
+во всём курсе) <strong>не понадобится</strong>:</p>
+<ul>
+<li>объединение таблиц — <code>merge</code>, <code>join</code>,
+<code>concat</code>;</li>
+<li>иерархические индексы (<code>MultiIndex</code>), <code>stack</code>,
+<code>unstack</code>, <code>pivot</code>;</li>
+<li>временные ряды, даты, часовые пояса, <code>resample</code>;</li>
+<li><code>apply</code> со своей функцией по строкам — почти всегда это
+признак того, что задача решается векторно;</li>
+<li><code>numba</code>, <code>cython</code>, ускорение кода;</li>
+<li>SQL и базы данных;</li>
+<li>глубокое знание <code>matplotlib</code> — на занятии 1 показывается
+<code>seaborn</code>, где график строится одной строкой.</li>
+</ul>
+<p>Курс сознательно обходится базовым стеком: <code>numpy</code>,
+<code>pandas</code>, <code>matplotlib</code>, <code>seaborn</code>,
+<code>scipy</code>, <code>scikit-learn</code>. Ничего больше
+устанавливать не нужно.</p>
+</div>
+<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h2 id="где-восполнить-пробелы">Где восполнить пробелы</h2>
+<p>Официальные руководства — самые короткие из существующих и написаны
+как раз для тех, кто видит библиотеку впервые. Оба на английском, но
+текста там мало, а кода много.</p>
+<ul>
+<li><strong>NumPy</strong> — <a href="https://numpy.org/doc/stable/user/absolute_beginners.html">NumPy:
+the absolute basics for beginners</a>. Читать до раздела о broadcasting
+включительно; всё, что дальше, — по желанию.</li>
+<li><strong>pandas</strong> — <a href="https://pandas.pydata.org/docs/user_guide/10min.html">10 minutes
+to pandas</a>. Нужны разделы Selection, Missing data, Operations,
+Grouping. Merge, Reshaping, Time series и Categoricals можно
+пропустить.</li>
+</ul>
+<p>Оба руководства открываются как ноутбуки: копируйте примеры к себе и
+меняйте числа — так быстрее, чем читать подряд.</p>
+<p>Библиотеки, которые понадобятся дальше по курсу, описаны на русском:
+<a href="https://scikit-learn.ru/stable/datasets/toy_dataset.html">scikit-learn.ru</a>
+— в том числе готовые учебные наборы данных и генераторы выборок.</p>
+<hr />
+<p>Дальше открывайте <code>lab01_seminar.ipynb</code>.</p>
+</div>
+</body>
+</html>

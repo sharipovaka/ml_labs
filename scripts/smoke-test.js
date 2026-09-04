@@ -79,15 +79,26 @@ function check(name, fn) {
 const content = require(path.join(SRC, 'content/index.js'));
 const { prepareHtml } = require(path.join(SRC, 'utils/notebookHtml.js'));
 
+/** Каталог материала внутри src/content -- берётся из пути к исходному ноутбуку. */
+function contentDir(item) {
+  const match = item.source.match(/notebooks\/([^/]+)\//);
+  if (!match) throw new Error(`${item.slug}: непонятный source ${item.source}`);
+  return match[1];
+}
+
 console.log('Реестр материалов');
 
 check('публикуется столько занятий, сколько отмечено готовыми', () => {
   // На сайт попадают только занятия из READY_SESSIONS: незаконченный материал
-  // рядом с готовым путает. Пара «лабораторная + домашняя» неразрывна.
+  // рядом с готовым путает. Пара «лабораторная + домашняя» неразрывна,
+  // плюс справочные материалы, которые к занятиям не привязаны.
   const n = content.labSessions.length;
+  const expected = 2 * n + content.reference.length;
   if (n === 0) throw new Error('не опубликовано ни одного занятия');
   if (content.homework.length !== n) throw new Error(`домашних ${content.homework.length} при ${n} лабораторных`);
-  if (content.materials.length !== 2 * n) throw new Error(`всего ${content.materials.length}, ожидалось ${2 * n}`);
+  if (content.materials.length !== expected) {
+    throw new Error(`всего ${content.materials.length}, ожидалось ${expected}`);
+  }
 });
 
 check('у каждого материала заполнены обязательные поля', () => {
@@ -111,34 +122,38 @@ check('slug уникальны и совпадают с именами файл�
     if (path.basename(lab.source, '.ipynb') !== lab.slug) {
       throw new Error(`${lab.slug}: имя файла не совпадает со slug`);
     }
-    // семинары лежат в content/labs, домашние — в content/homework
-    const dir = lab.source.includes('/homework/') ? 'homework' : 'labs';
-    const html = path.join(SRC, 'content', dir, `${lab.slug}.html`);
+    const html = path.join(SRC, 'content', contentDir(lab), `${lab.slug}.html`);
     if (!fs.existsSync(html)) throw new Error(`нет HTML для ${lab.slug} (запустите npm run convert)`);
   });
 });
 
 check('материалы сгруппированы парами по занятиям', () => {
   const groups = content.groupMaterials(content.materials);
-  if (groups.length !== content.labSessions.length) throw new Error(`групп ${groups.length}`);
-  groups.forEach((group) => {
+  const sessions = groups.filter((g) => /^Занятие \d+$/.test(g.name));
+  if (sessions.length !== content.labSessions.length) throw new Error(`групп занятий ${sessions.length}`);
+  sessions.forEach((group) => {
     if (group.items.length !== 2) throw new Error(`${group.name}: ${group.items.length} материала`);
     if (group.items[0].kind !== 'lab' || group.items[1].kind !== 'homework') {
       throw new Error(`${group.name}: порядок не «лабораторная, затем домашняя»`);
     }
-    if (!/^Занятие \d+$/.test(group.name)) throw new Error(`неожиданная группа ${group.name}`);
   });
+  // Справочные материалы идут до занятий: их читают заранее.
+  if (content.reference.length && groups[0].items[0].kind !== 'reference') {
+    throw new Error('справочный материал не первый в списке');
+  }
 });
 
 check('опубликованный HTML — настоящий ноутбук, а не заглушка', () => {
   // Файлы в src/content правились вручную и превращались в <h1>lab</h1>;
   // сайт при этом собирался, а страница открывалась пустой.
   content.materials.forEach((item) => {
-    const dir = item.source.includes('/homework/') ? 'homework' : 'labs';
-    const html = fs.readFileSync(path.join(SRC, 'content', dir, `${item.slug}.html`), 'utf8');
+    const html = fs.readFileSync(path.join(SRC, 'content', contentDir(item), `${item.slug}.html`), 'utf8');
     if (html.length < 10000) throw new Error(`${item.slug}.html: ${html.length} байт — похоже на заглушку`);
-    const subject = item.title.slice(item.title.indexOf('. ') + 2);
-    if (!html.includes(subject)) {
+    // Отбрасываем «Лабораторная 1.» / «Чеклист:» и сверяем содержательную часть.
+    // Пробелы схлопываем: pandoc переносит длинный заголовок по строкам.
+    const flat = (t) => t.toLowerCase().replace(/\s+/g, ' ');
+    const subject = flat(item.title.replace(/^[^.:]*[.:]\s*/, ''));
+    if (!flat(html).includes(subject)) {
       throw new Error(`${item.slug}.html: нет названия «${subject}»`);
     }
   });
@@ -148,7 +163,7 @@ check('решения не попали в опубликованные мате
   content.materials.forEach((lab) => {
     if (lab.source.includes('solution')) throw new Error(`${lab.slug}: решение в реестре`);
   });
-  ['labs', 'homework'].forEach((dir) => {
+  ['labs', 'homework', 'reference'].forEach((dir) => {
     const full = path.join(ROOT, 'notebooks', dir);
     if (!fs.existsSync(full)) return;
     fs.readdirSync(full).forEach((name) => {

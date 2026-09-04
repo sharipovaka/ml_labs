@@ -4,6 +4,7 @@
 #
 #   notebooks/labs/*.ipynb     -> src/content/labs/*.html       (семинары)
 #   notebooks/homework/*.ipynb -> src/content/homework/*.html   (домашние работы)
+#   notebooks/reference/*.ipynb -> src/content/reference/*.html (справочные материалы)
 #
 # Лекционные материалы на сайте не публикуются.
 #
@@ -28,6 +29,8 @@ LABS_SRC="notebooks/labs"
 LABS_OUT="src/content/labs"
 HW_SRC="notebooks/homework"
 HW_OUT="src/content/homework"
+REF_SRC="notebooks/reference"
+REF_OUT="src/content/reference"
 
 if ! command -v pandoc >/dev/null 2>&1; then
   echo "Ошибка: pandoc не найден." >&2
@@ -38,7 +41,7 @@ if ! command -v pandoc >/dev/null 2>&1; then
 fi
 
 echo "pandoc: $(pandoc --version | head -1)"
-mkdir -p "$LABS_OUT" "$HW_OUT"
+mkdir -p "$LABS_OUT" "$HW_OUT" "$REF_OUT"
 
 converted=0
 
@@ -65,11 +68,12 @@ convert_dir() {
 
 convert_dir "$LABS_SRC" "$LABS_OUT" "семинар"
 convert_dir "$HW_SRC" "$HW_OUT" "домашняя"
+convert_dir "$REF_SRC" "$REF_OUT" "справочный"
 
 echo
 echo "Готово: сконвертировано файлов — $converted"
 echo "Результат:"
-find "$LABS_OUT" "$HW_OUT" -name '*.html' 2>/dev/null \
+find "$LABS_OUT" "$HW_OUT" "$REF_OUT" -name '*.html' 2>/dev/null \
   | sort | xargs -I{} ls -lh {} | awk '{printf "  %-8s %s\n", $5, $9}'
 echo
 echo "Новый материал не забудьте добавить в src/content/index.js"

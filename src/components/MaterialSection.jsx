@@ -17,6 +17,19 @@ import { colabUrl, githubFileUrl } from '../config';
 import { publicUrl } from '../utils/publicUrl';
 import styles from './MaterialSection.module.css';
 
+/** Как называется и чем обозначается материал каждого вида. */
+const KIND_LABEL = {
+  lab: 'Лабораторная работа',
+  homework: 'Домашняя работа',
+  reference: 'Справочный материал',
+};
+
+const KIND_ICON = {
+  lab: 'fa-flask',
+  homework: 'fa-house-laptop',
+  reference: 'fa-list-check',
+};
+
 /** Одна ссылка в списке материалов. */
 function MaterialLink({ item, sectionPath, isActive }) {
   const ref = useRef(null);
@@ -78,11 +91,8 @@ export default function MaterialSection({ section }) {
       <header className={styles.header}>
         <div>
           <p className={styles.eyebrow}>
-            <i
-              className={`fa-solid ${material.kind === 'homework' ? 'fa-house-laptop' : 'fa-flask'} me-2`}
-              aria-hidden="true"
-            />
-            {material.kind === 'homework' ? 'Домашняя работа' : 'Лабораторная работа'}
+            <i className={`fa-solid ${KIND_ICON[material.kind]} me-2`} aria-hidden="true" />
+            {KIND_LABEL[material.kind]}
             {material.group && ` · ${material.group}`}
           </p>
           <h1 className={styles.title}>{material.title}</h1>

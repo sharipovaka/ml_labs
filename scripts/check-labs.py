@@ -37,6 +37,9 @@ SLUGS = {1: "01-tools-data", 2: "02-erm-least-squares", 3: "03-gradient-regulari
 # Вспомогательные модули, которые лежат на сайте рядом с ноутбуками.
 SUPPORT = ("labdata.py", "variants.py", "requirements.txt")
 
+# Материалы вне занятий: собираются своей спецификацией в один файл.
+STANDALONE = {"checklist/checklist-numpy-pandas.ipynb": "reference/checklist-numpy-pandas.ipynb"}
+
 
 def sources(path: pathlib.Path) -> list[str]:
     """Тексты ячеек. Сравниваем именно их: id и метаданные меняются при каждой сборке."""
@@ -101,6 +104,20 @@ def check_lab(number: int, tmp: pathlib.Path) -> list[str]:
     return todo
 
 
+def check_standalone() -> list[str]:
+    """Справочные материалы: сверяем только «исходник -> сайт»."""
+    todo = []
+    for src, dst in STANDALONE.items():
+        here, there = LABS / src, SITE / "notebooks" / dst
+        if not here.exists():
+            todo.append(f"{src}: нет исходника")
+        elif not there.exists():
+            todo.append(f"notebooks/{dst}: нет на сайте")
+        elif sources(here) != sources(there):
+            todo.append(f"notebooks/{dst}: на сайте старая версия — нужна выкладка")
+    return todo
+
+
 def check_support() -> list[str]:
     todo = []
     for name in SUPPORT:
@@ -130,9 +147,9 @@ def main(argv: list[str]) -> int:
             for line in todo:
                 print(f"    {line}")
 
-    support = check_support()
-    total += support
-    for line in support:
+    extra = check_standalone() + check_support()
+    total += extra
+    for line in extra:
         print(f"    {line}")
 
     print()
