@@ -13,7 +13,7 @@ import { Link, useParams } from 'react-router-dom';
 import ColabIcon from './ColabIcon';
 import NotebookFrame from './NotebookFrame';
 import { findMaterial, formatDate, groupMaterials } from '../content';
-import { colabUrl, githubFileUrl } from '../config';
+import { colabUrl, feedbackUrl, githubFileUrl, issueUrl } from '../config';
 import { publicUrl } from '../utils/publicUrl';
 import styles from './MaterialSection.module.css';
 
@@ -181,6 +181,31 @@ export default function MaterialSection({ section }) {
                     <i className="fa-solid fa-download me-2" aria-hidden="true" />
                     .ipynb
                   </a>
+
+                  {/* Два разных канала: дефект в материале и впечатление о нём. */}
+                  <a
+                    className="btn btn-sm btn-outline-secondary"
+                    href={issueUrl(material)}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    title="Опечатка, ячейка не запускается, число не сходится"
+                  >
+                    <i className="fa-solid fa-bug me-2" aria-hidden="true" />
+                    Нашёл ошибку
+                  </a>
+
+                  {feedbackUrl(material.title) && (
+                    <a
+                      className="btn btn-sm btn-outline-secondary"
+                      href={feedbackUrl(material.title)}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      title="Анонимно: что было понятно, что нет, сколько заняло"
+                    >
+                      <i className="fa-solid fa-comment-dots me-2" aria-hidden="true" />
+                      Оставить отзыв
+                    </a>
+                  )}
                 </div>
               )}
             </div>
