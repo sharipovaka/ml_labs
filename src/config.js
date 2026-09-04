@@ -105,22 +105,19 @@ export function feedbackUrl(material) {
 }
 
 /**
- * Сообщить об ошибке в материале: issue на GitHub с заполненным заголовком.
+ * Форма «Нашёл ошибку» — канал не про впечатления, а про дефекты: опечатка,
+ * ячейка не запускается, число в выводе не сходится с текстом.
  *
- * Это канал не про впечатления, а про дефекты: опечатка, ячейка не
- * запускается, число в выводе не сходится с текстом.
+ * Если в форме появится вопрос «по какому материалу», допишите к адресу
+ * `?usp=pp_url&entry.<id>=` — название подставится само. Пока адрес не
+ * заканчивается на `=`, форма открывается как есть.
  */
-export function issueUrl(material) {
-  const params = new URLSearchParams({
-    title: `[${material.title}] `,
-    labels: 'материалы',
-    body: [
-      `**Материал:** ${material.title}`,
-      `**Файл:** \`${material.source}\``,
-      '',
-      '**В чём проблема** (что ожидали, что получилось):',
-      '',
-    ].join('\n'),
-  });
-  return `${repositoryUrl}/issues/new?${params}`;
+export const errorFormUrl =
+  'https://docs.google.com/forms/d/e/1FAIpQLSc_M5rLnPjQPpE8LphB_vQCQ_r7kPeg_YveipTB_gGi80fQBQ/viewform';
+
+/** Ссылка на форму ошибок, при возможности — с выбранным материалом. */
+export function errorUrl(material) {
+  if (!errorFormUrl) return null;
+  if (!errorFormUrl.endsWith('=')) return errorFormUrl;
+  return `${errorFormUrl}${encodeURIComponent(formOption(material) || material.title)}`;
 }

@@ -13,7 +13,7 @@ import { Link, useParams } from 'react-router-dom';
 import ColabIcon from './ColabIcon';
 import NotebookFrame from './NotebookFrame';
 import { findMaterial, formatDate, groupMaterials } from '../content';
-import { colabUrl, feedbackUrl, githubFileUrl, issueUrl } from '../config';
+import { colabUrl, errorUrl, feedbackUrl, githubFileUrl } from '../config';
 import { publicUrl } from '../utils/publicUrl';
 import styles from './MaterialSection.module.css';
 
@@ -183,16 +183,18 @@ export default function MaterialSection({ section }) {
                   </a>
 
                   {/* Два разных канала: дефект в материале и впечатление о нём. */}
-                  <a
-                    className="btn btn-sm btn-outline-secondary"
-                    href={issueUrl(material)}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    title="Опечатка, ячейка не запускается, число не сходится"
-                  >
-                    <i className="fa-solid fa-bug me-2" aria-hidden="true" />
-                    Нашёл ошибку
-                  </a>
+                  {errorUrl(material) && (
+                    <a
+                      className="btn btn-sm btn-outline-secondary"
+                      href={errorUrl(material)}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      title="Опечатка, ячейка не запускается, число не сходится"
+                    >
+                      <i className="fa-solid fa-bug me-2" aria-hidden="true" />
+                      Нашёл ошибку
+                    </a>
+                  )}
 
                   {feedbackUrl(material) && (
                     <a
