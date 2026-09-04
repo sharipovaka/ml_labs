@@ -194,10 +194,10 @@ export default function MaterialSection({ section }) {
                     Нашёл ошибку
                   </a>
 
-                  {feedbackUrl(material.title) && (
+                  {feedbackUrl(material) && (
                     <a
                       className="btn btn-sm btn-outline-secondary"
-                      href={feedbackUrl(material.title)}
+                      href={feedbackUrl(material)}
                       target="_blank"
                       rel="noreferrer noopener"
                       title="Анонимно: что было понятно, что нет, сколько заняло"

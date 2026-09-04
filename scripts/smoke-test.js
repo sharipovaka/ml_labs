@@ -172,6 +172,14 @@ check('решения не попали в опубликованные мате
   });
 });
 
+check('у каждого материала есть вариант в форме обратной связи', () => {
+  // Google подставляет значение в выпадающий список, только если оно точно
+  // совпадает с вариантом; иначе отзыв приходит без пометки о материале.
+  const { formOption } = require(path.join(SRC, 'config.js'));
+  const missing = content.materials.filter((item) => !formOption(item)).map((item) => item.title);
+  if (missing.length) throw new Error(`нет вариантов в форме: ${missing.join('; ')}`);
+});
+
 check('findMaterial находит по slug и по умолчанию', () => {
   const { findMaterial, materials: labs } = content;
   const last = labs[labs.length - 1];
