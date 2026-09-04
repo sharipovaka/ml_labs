@@ -81,20 +81,13 @@ const { prepareHtml } = require(path.join(SRC, 'utils/notebookHtml.js'));
 
 console.log('Реестр материалов');
 
-check('девять лабораторных и девять домашних работ', () => {
-  if (content.labSessions.length !== 9) throw new Error(`лабораторных ${content.labSessions.length}`);
-  if (content.homework.length !== 9) throw new Error(`домашних ${content.homework.length}`);
-  if (content.materials.length !== 18) throw new Error(`всего ${content.materials.length}`);
-});
-
-check('черновиками помечено всё, кроме занятия 1', () => {
-  const drafts = content.materials.filter((m) => m.draft).map((m) => m.group);
-  const ready = content.materials.filter((m) => !m.draft).map((m) => m.slug);
-  if (ready.length !== 2) throw new Error(`не черновиков ${ready.length}, ожидалось 2`);
-  if (!ready.every((slug) => slug.endsWith('-01-tools-data'))) {
-    throw new Error(`не черновики: ${ready.join(', ')}`);
-  }
-  if (drafts.length !== 16) throw new Error(`черновиков ${drafts.length}, ожидалось 16`);
+check('публикуется столько занятий, сколько отмечено готовыми', () => {
+  // На сайт попадают только занятия из READY_SESSIONS: незаконченный материал
+  // рядом с готовым путает. Пара «лабораторная + домашняя» неразрывна.
+  const n = content.labSessions.length;
+  if (n === 0) throw new Error('не опубликовано ни одного занятия');
+  if (content.homework.length !== n) throw new Error(`домашних ${content.homework.length} при ${n} лабораторных`);
+  if (content.materials.length !== 2 * n) throw new Error(`всего ${content.materials.length}, ожидалось ${2 * n}`);
 });
 
 check('у каждого материала заполнены обязательные поля', () => {
@@ -125,15 +118,29 @@ check('slug уникальны и совпадают с именами файл�
   });
 });
 
-check('материалы разбиваются на девять групп по занятиям', () => {
+check('материалы сгруппированы парами по занятиям', () => {
   const groups = content.groupMaterials(content.materials);
-  if (groups.length !== 9) throw new Error(`групп ${groups.length}`);
-  groups.forEach((group, i) => {
+  if (groups.length !== content.labSessions.length) throw new Error(`групп ${groups.length}`);
+  groups.forEach((group) => {
     if (group.items.length !== 2) throw new Error(`${group.name}: ${group.items.length} материала`);
     if (group.items[0].kind !== 'lab' || group.items[1].kind !== 'homework') {
       throw new Error(`${group.name}: порядок не «лабораторная, затем домашняя»`);
     }
-    if (group.name !== `Занятие ${i + 1}`) throw new Error(`неожиданная группа ${group.name}`);
+    if (!/^Занятие \d+$/.test(group.name)) throw new Error(`неожиданная группа ${group.name}`);
+  });
+});
+
+check('опубликованный HTML — настоящий ноутбук, а не заглушка', () => {
+  // Файлы в src/content правились вручную и превращались в <h1>lab</h1>;
+  // сайт при этом собирался, а страница открывалась пустой.
+  content.materials.forEach((item) => {
+    const dir = item.source.includes('/homework/') ? 'homework' : 'labs';
+    const html = fs.readFileSync(path.join(SRC, 'content', dir, `${item.slug}.html`), 'utf8');
+    if (html.length < 10000) throw new Error(`${item.slug}.html: ${html.length} байт — похоже на заглушку`);
+    const subject = item.title.slice(item.title.indexOf('. ') + 2);
+    if (!html.includes(subject)) {
+      throw new Error(`${item.slug}.html: нет названия «${subject}»`);
+    }
   });
 });
 
@@ -152,7 +159,8 @@ check('решения не попали в опубликованные мате
 
 check('findMaterial находит по slug и по умолчанию', () => {
   const { findMaterial, materials: labs } = content;
-  if (findMaterial(labs, labs[3].slug) !== labs[3]) throw new Error('поиск по slug');
+  const last = labs[labs.length - 1];
+  if (findMaterial(labs, last.slug) !== last) throw new Error('поиск по slug');
   if (findMaterial(labs) !== labs[0]) throw new Error('без slug должен быть первый');
   if (findMaterial(labs, 'нет-такого') !== undefined) throw new Error('несуществующий slug');
 });

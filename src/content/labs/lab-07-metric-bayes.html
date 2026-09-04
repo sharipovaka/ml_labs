@@ -1,10 +1,762 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
 <head>
-  <meta charset="utf-8">
-  <title>lab</title>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lab-07-metric-bayes</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
+</style>
 </head>
 <body>
-  <h1>lab</h1>
+<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
+<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
+⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+</div>
+<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
+Формулировки, данные и порядок заданий изменятся; часть материала может
+опираться на то, что к этому моменту курса ещё не прочитано.</p>
+<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
+окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
+</div>
+</div>
+<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<h1 id="лабораторная-работа-7-метрические-и-байесовские-методы-классификации">Лабораторная
+работа 7. Метрические и байесовские методы классификации</h1>
+<p><strong>Курс «Машинное обучение», 4 курс</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td>Место в курсе</td>
+<td>после лекции 6</td>
+</tr>
+<tr>
+<td>Опора на лекции</td>
+<td>лекция 6: обобщённый метрический классификатор (опр. 6.1), выбор
+параметров скользящим контролем (§6.2), отступ (опр. 6.4) и STOLP (зам.
+6.6), байесовское решающее правило (теорема 6.8), наивный байесовский
+классификатор (опр. 6.10), нормальный дискриминантный анализ и LDA
+(теорема 6.16)</td>
+</tr>
+<tr>
+<td>Трудоёмкость</td>
+<td>2 ч аудиторно + домашняя работа (3–4 ч)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="цель-работы">Цель работы</h2>
+<p>Понять, что метрические методы опираются на расстояние — и потому
+полностью зависят от того, в каких единицах измерены признаки и сколько
+их. Сравнить наши модели с <strong>байесовским оптимумом</strong> там,
+где истинные плотности известны, и увидеть, чего стоит наивное
+предположение о независимости признаков.</p>
+<h2 id="как-устроено-занятие">Как устроено занятие</h2>
+<p>Ноутбук разбирается в аудитории: код запускается и обсуждается по
+ходу. Большая часть ячеек уже написана — их нужно <strong>прочитать и
+запустить</strong>, разобравшись, что происходит и почему.</p>
+<p>Ячейки, помеченные <code># ✍ ЗАДАНИЕ НА СЕМИНАРЕ</code>, заполняются
+самостоятельно прямо на занятии; их немного, и каждая занимает несколько
+строк. Ячейки <strong>Вывод</strong> — тоже ваши: короткий ответ своими
+словами на поставленный вопрос.</p>
+<p>Дома выполняется отдельный ноутбук <code>lab07_homework.ipynb</code>
+— там задания крупнее и делать их нужно самому.</p>
+<blockquote>
+<p><strong>Данные занятия — учебные, одинаковые у всех.</strong> Числа
+на экране у преподавателя и у вас совпадают, поэтому можно сверяться с
+соседом и спорить о результате вслух. Индивидуальная таблица,
+порождённая по вашему ФИО, появится в домашней работе.</p>
+<p>Почти все учебные выборки курса берутся из
+<code>sklearn.datasets</code> — это либо готовые наборы, либо
+порождённые генератором: <a href="https://scikit-learn.ru/stable/datasets/toy_dataset.html">7.1.
+Игрушечные наборы</a> · <a href="https://scikit-learn.ru/stable/datasets/real_world.html">7.2.
+Реальные наборы</a> · <a href="https://scikit-learn.ru/stable/datasets/sample_generators.html">7.3.
+Генераторы выборок</a></p>
+</blockquote>
+</div>
+<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">&quot;ignore&quot;</span>, category<span class="op">=</span><span class="pp">FutureWarning</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Модули практикума (variants.py, labdata.py) ищем рядом с ноутбуком.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Если их нет -- значит, ноутбук открыт в Colab: скачиваем из репозитория курса.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>COURSE_FILES_URL <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/sharipovaka/ml_labs/main/notebooks&quot;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _course_modules_dir():</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    here <span class="op">=</span> pathlib.Path.cwd()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> parent <span class="kw">in</span> [here, <span class="op">*</span>here.parents][:<span class="dv">4</span>]:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (parent <span class="op">/</span> <span class="st">&quot;variants.py&quot;</span>).exists():</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">str</span>(parent)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> urllib.request</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name <span class="kw">in</span> (<span class="st">&quot;variants.py&quot;</span>, <span class="st">&quot;labdata.py&quot;</span>):</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> pathlib.Path(name).exists():</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            urllib.request.urlretrieve(<span class="ss">f&quot;</span><span class="sc">{</span>COURSE_FILES_URL<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">&quot;</span>, name)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;загружен </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> из репозитория курса&quot;</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(here)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, _course_modules_dir())</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> get_variant, describe_variant  <span class="co"># noqa: E402</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>RANDOM_STATE <span class="op">=</span> <span class="dv">42</span>          <span class="co"># единый seed на всю работу: результаты воспроизводимы</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.figsize&quot;</span>: (<span class="fl">7.5</span>, <span class="fl">4.5</span>),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.dpi&quot;</span>: <span class="dv">110</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.grid&quot;</span>: <span class="va">True</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;grid.alpha&quot;</span>: <span class="fl">0.25</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.top&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.right&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;font.size&quot;</span>: <span class="dv">11</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;numpy&quot;</span>, np.__version__, <span class="st">&quot;| pandas&quot;</span>, pd.__version__)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.discriminant_analysis <span class="im">import</span> (LinearDiscriminantAnalysis,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>                                           QuadraticDiscriminantAnalysis)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score, train_test_split, StratifiedKFold</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> GaussianNB</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre></div>
+</div>
+<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h1 id="часть-1-метрический-метод-целиком-зависит-от-расстояния">Часть
+1. Метрический метод целиком зависит от расстояния</h1>
+<p>Определение 6.1: обучающая выборка упорядочивается по расстоянию до
+объекта
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>,
+и ответ определяется взвешенным голосованием соседей:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi>arg</mi><mo>⁡</mo></mrow><munder><mi>max</mi><mi>k</mi></munder><msub><mi mathvariant="normal">Γ</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><msub><mi mathvariant="normal">Γ</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>ℓ</mi></munderover><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">[</mo><msub><mi>y</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow></msub><mo>=</mo><mi>k</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">]</mo><mspace width="0.167em"></mspace><mi>w</mi><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+a(x) = \arg\max_k \Gamma_k(x), \qquad
+\Gamma_k(x) = \sum_{i=1}^{\ell}\bigl[y_{(i)} = k\bigr]\,w(i, x).
+</annotation></semantics></math></p>
+<p>Выбор весовой функции
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math>
+порождает всё семейство:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+ближайших соседей
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>i</mi><mo>≤</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">w = [i\le k]</annotation></semantics></math>),
+парзеновские окна, метод потенциальных функций. Реализуем их в домашней
+работе, а сейчас — о том, от чего результат зависит сильнее всего.</p>
+<p>Расстояние <strong>не инвариантно к единицам измерения</strong>:
+признак в рублях подавит признак в долях единицы просто потому, что его
+числа больше. Это не тонкость реализации, а свойство самого метода.</p>
+</div>
+<div id="cell004" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Напоминание — осторожно: «ядро» здесь другое.</strong> В
+занятии 4 ядром называлась функция
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msup><mi>x</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">K(x,x&#39;) = \langle\varphi(x),\varphi(x&#39;)\rangle</annotation></semantics></math>,
+подходящая под критерий Мерсера, — способ работать в спрямляющем
+пространстве.</p>
+<p>Здесь <strong>ядро сглаживания</strong> — это просто невозрастающая
+функция
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(r)</annotation></semantics></math>
+одного аргумента
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mi>ρ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>h</mi></mrow><annotation encoding="application/x-tex">r = \rho(x, x_i)/h</annotation></semantics></math>,
+задающая, с каким весом учитывается сосед на относительном расстоянии
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>:
+например, прямоугольное
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>r</mi><mo>≤</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">K(r) = [r\le1]</annotation></semantics></math>,
+треугольное
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>r</mi><msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">K(r) = (1-r)_+</annotation></semantics></math>,
+квартическое
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msup><mi>r</mi><mn>2</mn></msup><msubsup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">K(r)=(1-r^2)^2_+</annotation></semantics></math>,
+гауссовское
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mrow><mi>−</mi><msup><mi>r</mi><mn>2</mn></msup><mi>/</mi><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">K(r) = e^{-r^2/2}</annotation></semantics></math>.
+Никакого скалярного произведения и никакого критерия Мерсера от неё не
+требуется.</p>
+<p>Слово одно, смыслы разные — так исторически сложилось. Понять, о
+каком идёт речь, легко по числу аргументов: у ядра Мерсера их два, у
+ядра сглаживания один.</p>
+</blockquote>
+</div>
+<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X_w, y_w <span class="op">=</span> load_wine(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Xa, Xv, ya, yv <span class="op">=</span> train_test_split(X_w, y_w, test_size<span class="op">=</span><span class="fl">0.35</span>, stratify<span class="op">=</span>y_w,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                                  random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> StandardScaler().fit(Xa)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> KNeighborsClassifier(<span class="dv">5</span>).fit(Xa, ya).score(Xv, yv)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>scaled <span class="op">=</span> KNeighborsClassifier(<span class="dv">5</span>).fit(sc.transform(Xa), ya).score(sc.transform(Xv), yv)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;wine, kNN(5) без масштабирования : точность </span><span class="sc">{</span>raw<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;wine, kNN(5) со StandardScaler   : точность </span><span class="sc">{</span>scaled<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>spread <span class="op">=</span> pd.Series(X_w.std(axis<span class="op">=</span><span class="dv">0</span>), index<span class="op">=</span>load_wine().feature_names).sort_values()</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="ch">\n</span><span class="ss">разброс масштабов: от </span><span class="sc">{</span>spread<span class="sc">.</span>iloc[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss"> (</span><span class="sc">{</span>spread<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">) &quot;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;до </span><span class="sc">{</span>spread<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss"> (</span><span class="sc">{</span>spread<span class="sc">.</span>index[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">) -- отношение </span><span class="sc">{</span>spread<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>] <span class="op">/</span> spread<span class="sc">.</span>iloc[<span class="dv">0</span>]<span class="sc">:.0f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<h3 id="задание-11-проклятие-размерности">Задание 1.1. Проклятие
+размерности</h3>
+<p>Вторая беда — размерность. В
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>ℝ</mi><mi>n</mi></msup><annotation encoding="application/x-tex">\mathbb{R}^n</annotation></semantics></math>
+при больших
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+все попарные расстояния становятся почти одинаковыми, и понятие
+«ближайший сосед» теряет смысл. Измерьте относительный контраст
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>ρ</mi><mo>−</mo><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>ρ</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mover><mi>ρ</mi><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">(\max\rho - \min\rho)/\overline{\rho}</annotation></semantics></math>
+как функцию
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>.</p>
+</div>
+<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pairwise_dist(P):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Попарные расстояния (тождество из занятия 1).&quot;&quot;&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>gen <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_dim <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">1000</span>]:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co"> (2-3 строки): 500 точек из U[0,1]^n, попарные расстояния (без диагонали),</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                    относительный контраст (max - min) / mean</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    rows.append({<span class="st">&quot;размерность&quot;</span>: n_dim, <span class="st">&quot;контраст&quot;</span>: ...})</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>cd <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;размерность&quot;</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>display(cd.<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
+</div>
+<div id="cell008" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ax1.semilogx(cd.index, cd[<span class="st">&quot;контраст&quot;</span>], <span class="st">&quot;o-&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">&quot;#128C7E&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">&quot;размерность $n$&quot;</span>)<span class="op">;</span> ax1.set_ylabel(<span class="vs">r&quot;</span><span class="dv">$</span><span class="kw">(</span><span class="dv">\m</span><span class="vs">ax</span><span class="ch">\r</span><span class="vs">ho - </span><span class="dv">\m</span><span class="vs">in</span><span class="ch">\r</span><span class="vs">ho</span><span class="kw">)</span><span class="vs">/</span><span class="er">\</span><span class="vs">overline{</span><span class="ch">\r</span><span class="vs">ho}</span><span class="dv">$</span><span class="vs">&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">&quot;Контраст расстояний исчезает с ростом размерности&quot;</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_dim <span class="kw">in</span> [<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>]:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    D <span class="op">=</span> pairwise_dist(gen.uniform(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">400</span>, n_dim)))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    off <span class="op">=</span> D[<span class="op">~</span>np.eye(<span class="dv">400</span>, dtype<span class="op">=</span><span class="bu">bool</span>)]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ax2.hist(off <span class="op">/</span> off.mean(), bins<span class="op">=</span><span class="dv">60</span>, histtype<span class="op">=</span><span class="st">&quot;step&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, density<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="ss">f&quot;$n = </span><span class="sc">{</span>n_dim<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="vs">r&quot;</span><span class="dv">$</span><span class="ch">\r</span><span class="vs">ho / </span><span class="er">\</span><span class="vs">overline{</span><span class="ch">\r</span><span class="vs">ho}</span><span class="dv">$</span><span class="vs">&quot;</span>)<span class="op">;</span> ax2.set_ylabel(<span class="st">&quot;плотность&quot;</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">&quot;Все расстояния сходятся к среднему&quot;</span>)<span class="op">;</span> ax2.legend()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
+</div>
+<div id="cell009" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Во сколько раз изменилась точность после
+масштабирования? Как ведёт себя контраст с ростом размерности и почему
+это убивает метрические методы?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h1 id="часть-2-выбор-числа-соседей">Часть 2. Выбор числа соседей</h1>
+<p>Параметр
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+— это компромисс смещение–разброс в чистом виде: при
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k=1</annotation></semantics></math>
+классификатор идеально описывает обучающую выборку и сильно от неё
+зависит, при больших
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+граница сглаживается вплоть до константы.</p>
+</div>
+<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Xa_s, Xv_s <span class="op">=</span> sc.transform(Xa), sc.transform(Xv)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ks <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">41</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cv7 <span class="op">=</span> StratifiedKFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>cv_scores <span class="op">=</span> [cross_val_score(KNeighborsClassifier(k), Xa_s, ya, cv<span class="op">=</span>cv7).mean() <span class="cf">for</span> k <span class="kw">in</span> ks]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>train_scores <span class="op">=</span> [KNeighborsClassifier(k).fit(Xa_s, ya).score(Xa_s, ya) <span class="cf">for</span> k <span class="kw">in</span> ks]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>k_best <span class="op">=</span> ks[<span class="bu">int</span>(np.argmax(cv_scores))]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ax.plot(ks, train_scores, <span class="st">&quot;s-&quot;</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ms<span class="op">=</span><span class="dv">4</span>, label<span class="op">=</span><span class="st">&quot;на обучающей выборке&quot;</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ax.plot(ks, cv_scores, <span class="st">&quot;o-&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">&quot;скользящий контроль&quot;</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.axvline(k_best, ls<span class="op">=</span><span class="st">&quot;--&quot;</span>, color<span class="op">=</span><span class="st">&quot;#C97A2B&quot;</span>, label<span class="op">=</span><span class="ss">f&quot;$k^* = </span><span class="sc">{</span>k_best<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&quot;число соседей $k$&quot;</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">&quot;точность&quot;</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Выбор $k$: сложность модели убывает слева направо&quot;</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;k = 1:  обучение </span><span class="sc">{</span>train_scores[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">, контроль </span><span class="sc">{</span>cv_scores[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;k = </span><span class="sc">{</span>k_best<span class="sc">}</span><span class="ss">: обучение </span><span class="sc">{</span>train_scores[k_best <span class="op">-</span> <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">, контроль </span><span class="sc">{</span>cv_scores[k_best <span class="op">-</span> <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell012" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Чему равна точность на обучающей выборке при
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k=1</annotation></semantics></math>
+и почему? В какую сторону растёт сложность модели по оси
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h1 id="часть-3-байесовский-оптимум-сколько-вообще-можно-выжать">Часть
+3. Байесовский оптимум: сколько вообще можно выжать</h1>
+<p>Теорема 6.8: при известных априорных вероятностях
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mi>k</mi></msub><annotation encoding="application/x-tex">P_k</annotation></semantics></math>
+и плотностях
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p_k(x)</annotation></semantics></math>
+минимум среднего риска даёт правило
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi>arg</mi><mo>⁡</mo></mrow><msub><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>k</mi></msub><msub><mi>P</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><msub><mi>p</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(x) = \arg\max_k P_k\,p_k(x)</annotation></semantics></math>.
+Это <strong>оптимальный</strong> классификатор: ни один алгоритм не
+может ошибаться реже.</p>
+<p>Обычно
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>k</mi></msub><annotation encoding="application/x-tex">p_k</annotation></semantics></math>
+неизвестны. Но если мы <strong>сами породили данные</strong>, оптимум
+вычислим точно — и появляется редкая возможность узнать, сколько ещё
+можно выиграть.</p>
+</div>
+<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Напоминание — LDA и QDA.</strong> Два способа применить
+правило
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi>arg</mi><mo>⁡</mo></mrow><msub><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>k</mi></msub><msub><mi>P</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><msub><mi>p</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(x) = \arg\max_k P_k\,p_k(x)</annotation></semantics></math>,
+оценив плотности как гауссовские,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>k</mi></msub><mo>=</mo><mi>𝒩</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>μ</mi><mi>k</mi></msub><mo>,</mo><msub><mi mathvariant="normal">Σ</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p_k = \mathcal N(\mu_k, \Sigma_k)</annotation></semantics></math>.</p>
+<p><strong>QDA</strong> (quadratic discriminant analysis) оценивает свою
+ковариационную матрицу для каждого класса. Логарифм плотности
+квадратичен по
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>,
+разность двух логарифмов тоже — отсюда «quadratic»: граница получается
+кривой второго порядка. Параметров много: по
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">n(n+1)/2</annotation></semantics></math>
+на класс.</p>
+<p><strong>LDA</strong> (linear discriminant analysis) предполагает, что
+ковариация у всех классов <strong>общая</strong>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Σ</mi><mi>k</mi></msub><mo>≡</mo><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma_k \equiv \Sigma</annotation></semantics></math>.
+Тогда квадратичные члены в разности сокращаются, и граница становится
+<strong>линейной</strong> — отсюда название. Параметров втрое-вчетверо
+меньше, и на малых выборках LDA часто выигрывает у QDA даже когда его
+предположение неверно: экономия на дисперсии оценки перевешивает
+смещение. Тот же компромисс смещение–разброс, что и всегда.</p>
+</blockquote>
+</div>
+<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>MU <span class="op">=</span> [np.array([<span class="fl">0.0</span>, <span class="fl">0.0</span>]), np.array([<span class="fl">2.0</span>, <span class="fl">1.4</span>])]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>COV <span class="op">=</span> [np.array([[<span class="fl">1.0</span>, <span class="fl">0.75</span>], [<span class="fl">0.75</span>, <span class="fl">1.0</span>]]),        <span class="co"># РАЗНЫЕ ковариации</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>       np.array([[<span class="fl">1.6</span>, <span class="op">-</span><span class="fl">0.9</span>], [<span class="op">-</span><span class="fl">0.9</span>, <span class="fl">1.0</span>]])]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>PRIOR <span class="op">=</span> [<span class="fl">0.6</span>, <span class="fl">0.4</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_mixture(n, g):</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> g.random(n) <span class="op">&lt;</span> PRIOR[<span class="dv">1</span>]</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.where(z[:, <span class="va">None</span>], g.multivariate_normal(MU[<span class="dv">1</span>], COV[<span class="dv">1</span>], n),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                 g.multivariate_normal(MU[<span class="dv">0</span>], COV[<span class="dv">0</span>], n))</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X, z.astype(<span class="bu">int</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bayes_rule(X):</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Оптимальное правило теоремы 6.8 при ИЗВЕСТНЫХ плотностях.&quot;&quot;&quot;</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    d0 <span class="op">=</span> PRIOR[<span class="dv">0</span>] <span class="op">*</span> multivariate_normal(MU[<span class="dv">0</span>], COV[<span class="dv">0</span>]).pdf(X)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    d1 <span class="op">=</span> PRIOR[<span class="dv">1</span>] <span class="op">*</span> multivariate_normal(MU[<span class="dv">1</span>], COV[<span class="dv">1</span>]).pdf(X)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (d1 <span class="op">&gt;</span> d0).astype(<span class="bu">int</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>X_tr, y_tr <span class="op">=</span> sample_mixture(<span class="dv">400</span>, g)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>X_te, y_te <span class="op">=</span> sample_mixture(<span class="dv">20_000</span>, g)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>bayes_acc <span class="op">=</span> <span class="bu">float</span>(np.mean(bayes_rule(X_te) <span class="op">==</span> y_te))</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;байесовский оптимум: точность </span><span class="sc">{</span>bayes_acc<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;неустранимая ошибка: </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> bayes_acc<span class="sc">:.4f}</span><span class="ss"> -- ниже неё не опустится никто&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;,&quot;exercise&quot;]">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✍ ЗАДАНИЕ НА СЕМИНАРЕ — допишите эту ячейку</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {<span class="st">&quot;наивный Байес (Gaussian)&quot;</span>: GaussianNB(),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;LDA&quot;</span>: LinearDiscriminantAnalysis(),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;QDA&quot;</span>: QuadraticDiscriminantAnalysis(),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;kNN (k=15)&quot;</span>: KNeighborsClassifier(<span class="dv">15</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;логистическая регрессия&quot;</span>: LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>)}</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (2-3 строки): обучите каждую модель на (X_tr, y_tr), посчитайте точность</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   на большой выборке (X_te, y_te) и зазор до байесовского оптимума.</span></span></code></pre></div>
+</div>
+<div id="cell017" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g1, g2 <span class="op">=</span> np.meshgrid(np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">300</span>), np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">300</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.c_[g1.ravel(), g2.ravel()]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>panels <span class="op">=</span> [(<span class="st">&quot;байесовское правило&quot;</span>, bayes_rule),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>          (<span class="st">&quot;наивный Байес&quot;</span>, GaussianNB().fit(X_tr, y_tr).predict),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>          (<span class="st">&quot;LDA&quot;</span>, LinearDiscriminantAnalysis().fit(X_tr, y_tr).predict),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>          (<span class="st">&quot;QDA&quot;</span>, QuadraticDiscriminantAnalysis().fit(X_tr, y_tr).predict)]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">17</span>, <span class="dv">4</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (nm, fn) <span class="kw">in</span> <span class="bu">zip</span>(axes, panels):</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    ax.contourf(g1, g2, fn(grid).reshape(g1.shape), levels<span class="op">=</span>[<span class="op">-</span><span class="fl">.5</span>, <span class="fl">.5</span>, <span class="fl">1.5</span>],</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                colors<span class="op">=</span>[<span class="st">&quot;#cfe8e4&quot;</span>, <span class="st">&quot;#f6ddc4&quot;</span>])</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    ax.contour(g1, g2, bayes_rule(grid).reshape(g1.shape), levels<span class="op">=</span>[<span class="fl">0.5</span>],</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>               colors<span class="op">=</span><span class="st">&quot;black&quot;</span>, linewidths<span class="op">=</span><span class="dv">2</span>, linestyles<span class="op">=</span><span class="st">&quot;--&quot;</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    ax.scatter(<span class="op">*</span>X_tr[y_tr <span class="op">==</span> <span class="dv">0</span>].T, s<span class="op">=</span><span class="dv">8</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    ax.scatter(<span class="op">*</span>X_tr[y_tr <span class="op">==</span> <span class="dv">1</span>].T, s<span class="op">=</span><span class="dv">8</span>, marker<span class="op">=</span><span class="st">&quot;s&quot;</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    ax.set_title(nm, fontsize<span class="op">=</span><span class="dv">10</span>)<span class="op">;</span> ax.set_xticks([])<span class="op">;</span> ax.set_yticks([])</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">&quot;пунктир — байесовская граница&quot;</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
+</div>
+<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Кто ближе всех к оптимуму и почему? Почему
+LDA даёт прямую, а QDA — кривую? Что означает наличие неустранимой
+ошибки?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell019" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h1 id="часть-4-цена-наивного-предположения">Часть 4. Цена наивного
+предположения</h1>
+<p>Определение 6.10: наивный байесовский классификатор считает признаки
+независимыми внутри класса,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>k</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mo>∏</mo><mi>j</mi></msub><msub><mi>p</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p_k(x) = \prod_j p_{kj}(x_j)</annotation></semantics></math>,
+откуда</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi>arg</mi><mo>⁡</mo></mrow><munder><mi>max</mi><mi>k</mi></munder><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">(</mo><mrow><mi>ln</mi><mo>⁡</mo></mrow><msub><mi>P</mi><mi>k</mi></msub><mo>+</mo><munder><mo>∑</mo><mi>j</mi></munder><mrow><mi>ln</mi><mo>⁡</mo></mrow><msub><mi>p</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo minsize="180%" maxsize="180%" stretchy="true" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+a(x) = \arg\max_k\Bigl(\ln P_k + \sum_j \ln p_{kj}(x_j)\Bigr).
+</annotation></semantics></math></p>
+<p>Предположение почти всегда ложно — измерим, во что это обходится.</p>
+<p>Важная деталь эксперимента: разность средних не должна быть
+направлена вдоль собственного вектора ковариационной матрицы. Иначе
+оптимальное направление
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="normal">Σ</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\Sigma^{-1}(\mu_1-\mu_0)</annotation></semantics></math>
+не зависит от
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>,
+наивное предположение ничего не портит, и эффекта просто не будет
+видно.</p>
+</div>
+<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>MU1 <span class="op">=</span> np.array([<span class="fl">1.8</span>, <span class="fl">0.0</span>])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> corr <span class="kw">in</span> [<span class="fl">0.0</span>, <span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="fl">0.85</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>]:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    C <span class="op">=</span> np.array([[<span class="fl">1.0</span>, corr], [corr, <span class="fl">1.0</span>]])</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    gg <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> gg.random(<span class="dv">600</span>) <span class="op">&lt;</span> <span class="fl">0.5</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    Xc <span class="op">=</span> np.where(z[:, <span class="va">None</span>], gg.multivariate_normal(MU1, C, <span class="dv">600</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                  gg.multivariate_normal([<span class="dv">0</span>, <span class="dv">0</span>], C, <span class="dv">600</span>))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    yc <span class="op">=</span> z.astype(<span class="bu">int</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    Xa2, Xv2, ya2, yv2 <span class="op">=</span> train_test_split(Xc, yc, test_size<span class="op">=</span><span class="fl">0.4</span>, random_state<span class="op">=</span><span class="dv">0</span>, stratify<span class="op">=</span>yc)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    rows.append({<span class="st">&quot;корреляция признаков&quot;</span>: corr,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;наивный Байес&quot;</span>: GaussianNB().fit(Xa2, ya2).score(Xv2, yv2),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;LDA (учитывает ковариацию)&quot;</span>: LinearDiscriminantAnalysis()</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                 .fit(Xa2, ya2).score(Xv2, yv2)})</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>nb_tab <span class="op">=</span> pd.DataFrame(rows).set_index(<span class="st">&quot;корреляция признаков&quot;</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>display(nb_tab.<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
+</div>
+<div id="cell021" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>nb_tab.plot(marker<span class="op">=</span><span class="st">&quot;o&quot;</span>, lw<span class="op">=</span><span class="dv">2</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&quot;корреляция признаков внутри класса&quot;</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">&quot;точность&quot;</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&quot;Цена наивного предположения о независимости&quot;</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
+</div>
+<div id="cell022" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> При какой корреляции наивный Байес начинает
+заметно проигрывать? Почему на текстах он при этом работает хорошо, хотя
+слова заведомо зависимы?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<hr />
+<h1 id="часть-5-пять-методов-на-одной-задаче">Часть 5. Пять методов на
+одной задаче</h1>
+<p>Вернёмся к <code>wine</code>, с которого начали часть 1: 178
+объектов, 13 признаков, три сорта вина. Подберём
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+скользящим контролем и сравним все методы занятия — и заодно измерим,
+сколько стоит забытое масштабирование.</p>
+</div>
+<div id="cell024" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Xtr, Xte, ytr, yte <span class="op">=</span> train_test_split(</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    X_w, y_w, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>RANDOM_STATE, stratify<span class="op">=</span>y_w)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Масштабирование внутри Pipeline: на каждом фолде оно считается заново</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># по обучающей части фолда (занятие 5, часть 3).</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>knn_pipe <span class="op">=</span> <span class="kw">lambda</span> k: Pipeline([(<span class="st">&quot;scale&quot;</span>, StandardScaler()),</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                               (<span class="st">&quot;knn&quot;</span>, KNeighborsClassifier(k))])</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>cv_own <span class="op">=</span> StratifiedKFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>ks_own <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">15</span>, <span class="dv">31</span>]</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>scores_own <span class="op">=</span> [cross_val_score(knn_pipe(k), Xtr, ytr, cv<span class="op">=</span>cv_own,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                              scoring<span class="op">=</span><span class="st">&quot;accuracy&quot;</span>).mean() <span class="cf">for</span> k <span class="kw">in</span> ks_own]</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>k_own <span class="op">=</span> ks_own[<span class="bu">int</span>(np.argmax(scores_own))]</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame({<span class="st">&quot;k&quot;</span>: ks_own, <span class="st">&quot;CV accuracy&quot;</span>: np.<span class="bu">round</span>(scores_own, <span class="dv">4</span>)}).set_index(<span class="st">&quot;k&quot;</span>))</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;лучшее k по скользящему контролю: </span><span class="sc">{</span>k_own<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+</div>
+<div id="cell025" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> [(<span class="ss">f&quot;kNN (k=</span><span class="sc">{</span>k_own<span class="sc">}</span><span class="ss">), со шкалированием&quot;</span>, knn_pipe(k_own)),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                (<span class="ss">f&quot;kNN (k=</span><span class="sc">{</span>k_own<span class="sc">}</span><span class="ss">), БЕЗ шкалирования&quot;</span>, KNeighborsClassifier(k_own)),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                (<span class="st">&quot;наивный Байес&quot;</span>, GaussianNB()),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                (<span class="st">&quot;LDA&quot;</span>, LinearDiscriminantAnalysis()),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                (<span class="st">&quot;QDA&quot;</span>, QuadraticDiscriminantAnalysis(reg_param<span class="op">=</span><span class="fl">0.05</span>)),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                (<span class="st">&quot;логистическая регрессия&quot;</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                 Pipeline([(<span class="st">&quot;scale&quot;</span>, StandardScaler()),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                           (<span class="st">&quot;lr&quot;</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">5000</span>))]))]:</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    m.fit(Xtr, ytr)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    rows.append({<span class="st">&quot;модель&quot;</span>: name, <span class="st">&quot;accuracy на контроле&quot;</span>: m.score(Xte, yte)})</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>vals, cnts <span class="op">=</span> np.unique(ytr, return_counts<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>rows.append({<span class="st">&quot;модель&quot;</span>: <span class="st">&quot;константа (частый класс)&quot;</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;accuracy на контроле&quot;</span>: <span class="bu">float</span>((yte <span class="op">==</span> vals[cnts.argmax()]).mean())})</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows).set_index(<span class="st">&quot;модель&quot;</span>).<span class="bu">round</span>(<span class="dv">4</span>))</span></code></pre></div>
+</div>
+<div id="cell026" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<blockquote>
+<p><strong>Вывод.</strong> Сколько стоило забытое масштабирование?
+Почему наивный Байес не уступил более сложным методам, хотя его
+предположение здесь заведомо неверно?</p>
+<p><em>(ваш ответ здесь)</em></p>
+</blockquote>
+</div>
+<div id="cell027" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<h2 id="итоги-занятия">Итоги занятия</h2>
+<p>Ответьте письменно на контрольные вопросы (по 2–4 предложения):</p>
+<ol>
+<li>Почему kNN обязательно требует масштабирования признаков, а решающее
+дерево — нет? Что в устройстве методов даёт это различие?</li>
+<li>Байесовский оптимум на вашей задаче даёт точность 0.87, ваша модель
+— 0.86. Стоит ли продолжать улучшать модель?</li>
+<li>Наивный Байес предполагает независимость признаков. Приведите
+ситуацию, где предположение полностью ложно, но метод всё равно даёт
+верный ответ.</li>
+<li>Чем отличаются LDA и QDA по числу оцениваемых параметров? При каком
+размере выборки вы предпочтёте LDA, зная, что ковариации классов
+различны?</li>
+</ol>
+<hr />
+<p><strong>Дома:</strong> откройте <code>lab07_homework.ipynb</code> —
+там две задачи: обобщённый метрический классификатор (все пять методов
+из одной формулы) и отбор эталонов алгоритмом STOLP.</p>
+</div>
 </body>
 </html>

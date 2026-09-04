@@ -302,25 +302,32 @@ const HOMEWORK = [
  * Поле `kind` нужно просмотрщику, чтобы показать, что именно открыто.
  */
 /**
- * Занятия в финальной версии. Всё остальное — черновик: помечается в списке,
- * на карточке и над самим ноутбуком, а в первой ячейке ноутбука стоит такая же
- * пометка (её ставит сборка, см. READY_LABS в лабы/tools/nbbuild.py).
+ * Занятия, доведённые до финальной версии, — **только они попадают на сайт**.
+ * Остальные лежат в репозитории (и в ноутбуке у них в первой ячейке стоит
+ * пометка «черновик», её ставит сборка — см. READY_LABS в
+ * лабы/tools/nbbuild.py), но нигде не показываются: незаконченный материал в
+ * списке рядом с готовым только путает.
  *
- * Когда занятие доведено до конца, достаточно добавить сюда его номер.
+ * Чтобы опубликовать занятие, достаточно добавить сюда его номер: описания,
+ * даты и адреса файлов для всех девяти уже перечислены выше.
  */
 const READY_SESSIONS = new Set([1]);
 
-const withDraftFlag = (items) =>
-  items.map((item, i) => ({ ...item, draft: !READY_SESSIONS.has(i + 1) }));
+/** Номер занятия по позиции в списке: LAB_SESSIONS[0] — занятие 1. */
+const isReady = (index) => READY_SESSIONS.has(index + 1);
 
-export const labSessions = withDraftFlag(LAB_SESSIONS);
-export const homework = withDraftFlag(HOMEWORK);
+/** Сколько занятий в программе практикума — независимо от того, что выложено. */
+export const plannedSessions = LAB_SESSIONS.length;
 
-export const materials = labSessions.flatMap((lab, i) => {
+export const labSessions = LAB_SESSIONS.filter((_, i) => isReady(i));
+export const homework = HOMEWORK.filter((_, i) => isReady(i));
+
+export const materials = LAB_SESSIONS.flatMap((lab, i) => {
+  if (!isReady(i)) return [];
   const group = `Занятие ${i + 1}`;
   return [
     { ...lab, group, kind: 'lab' },
-    { ...homework[i], group, kind: 'homework' },
+    { ...HOMEWORK[i], group, kind: 'homework' },
   ];
 });
 
@@ -335,7 +342,7 @@ export const sections = {
     label: 'Notebooks',
     title: 'Лабораторный практикум',
     subtitle:
-      'Девять занятий, чередующихся с лекциями: каждое закрепляет уже прочитанный материал. Семинар разбирается в аудитории, домашняя работа делается дома. Всё открывается прямо на странице — устанавливать и запускать ничего не нужно.',
+      'Практикум чередуется с лекциями: каждое занятие закрепляет уже прочитанный материал. Лабораторная разбирается в аудитории, домашняя работа делается дома. Выкладываются занятия по мере готовности — те, что здесь, актуальны. Всё открывается прямо на странице: устанавливать и запускать ничего не нужно.',
     icon: 'fa-flask',
     items: notebooks,
   },
@@ -366,6 +373,19 @@ export function groupMaterials(items) {
 }
 
 /** Дата в человекочитаемом виде: 2026-02-10 -> «10 февраля 2026». */
+/**
+ * Склонение существительного при числе: plural(2, ['ноутбук', 'ноутбука', 'ноутбуков']).
+ * Материалы выкладываются по одному занятию, поэтому числа на главной меняются.
+ */
+export function plural(n, forms) {
+  const mod100 = Math.abs(n) % 100;
+  const mod10 = mod100 % 10;
+  if (mod100 >= 11 && mod100 <= 14) return forms[2];
+  if (mod10 === 1) return forms[0];
+  if (mod10 >= 2 && mod10 <= 4) return forms[1];
+  return forms[2];
+}
+
 export function formatDate(iso) {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;

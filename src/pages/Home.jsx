@@ -4,7 +4,7 @@
 
 import { Link } from 'react-router-dom';
 
-import { labSessions, homework, materials, formatDate } from '../content';
+import { labSessions, homework, materials, plannedSessions, formatDate, plural } from '../content';
 import { repositoryUrl } from '../config';
 import styles from './Home.module.css';
 
@@ -18,7 +18,6 @@ function MaterialCard({ item, to, badge }) {
         </span>
 
         <span className={styles.cardBadge}>{badge}</span>
-        {item.draft && <span className={styles.cardDraft}>черновик</span>}
 
         <h3 className={styles.cardTitle}>{item.title}</h3>
         <p className={styles.cardText}>{item.description}</p>
@@ -75,12 +74,15 @@ export default function Home() {
 
         <dl className={styles.stats}>
           <div className={styles.stat}>
-            <dt>{labSessions.length}</dt>
-            <dd>занятий практикума</dd>
+            <dt>{plannedSessions}</dt>
+            <dd>{plural(plannedSessions, ['занятие', 'занятия', 'занятий'])} в программе практикума</dd>
           </div>
           <div className={styles.stat}>
             <dt>{materials.length}</dt>
-            <dd>ноутбуков: лабораторные и домашние работы</dd>
+            <dd>
+              {plural(materials.length, ['ноутбук', 'ноутбука', 'ноутбуков'])} выложено:
+              лабораторные и домашние работы
+            </dd>
           </div>
           <div className={styles.stat}>
             <dt>17</dt>
