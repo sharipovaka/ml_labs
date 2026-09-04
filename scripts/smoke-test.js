@@ -93,8 +93,7 @@ check('публикуется столько занятий, сколько от
   // рядом с готовым путает. Пара «лабораторная + домашняя» неразрывна,
   // плюс справочные материалы, которые к занятиям не привязаны.
   const n = content.labSessions.length;
-  const refs = content.reference.filter((r) => content.readySessions.includes(r.session)).length;
-  const expected = 2 * n + refs;
+  const expected = 2 * n + content.reference.length;
   if (n === 0) throw new Error('не опубликовано ни одного занятия');
   if (content.homework.length !== n) throw new Error(`домашних ${content.homework.length} при ${n} лабораторных`);
   if (content.materials.length !== expected) {
@@ -133,16 +132,15 @@ check('материалы сгруппированы парами по заня�
   const sessions = groups.filter((g) => /^Занятие \d+$/.test(g.name));
   if (sessions.length !== content.labSessions.length) throw new Error(`групп занятий ${sessions.length}`);
   sessions.forEach((group) => {
-    // Порядок внутри занятия: лабораторная, домашняя, затем справочные
-    // материалы — они дополняют разобранное, а не предшествуют ему.
-    const kinds = group.items.map((item) => item.kind);
-    if (kinds.slice(0, 2).join(',') !== 'lab,homework') {
-      throw new Error(`${group.name}: начинается не с «лабораторная, домашняя»`);
-    }
-    if (kinds.slice(2).some((kind) => kind !== 'reference')) {
-      throw new Error(`${group.name}: после домашней не только справочные материалы`);
-    }
+    const kinds = group.items.map((item) => item.kind).join(',');
+    if (kinds !== 'lab,homework') throw new Error(`${group.name}: ${kinds}`);
   });
+  // Справочные материалы к занятию не привязаны и идут отдельной группой.
+  if (content.reference.length) {
+    const refGroup = groups.find((g) => g.items.every((item) => item.kind === 'reference'));
+    if (!refGroup) throw new Error('справочные материалы не выделены в свою группу');
+    if (groups[0] !== refGroup) throw new Error('справочная группа не первая');
+  }
 });
 
 check('опубликованный HTML — настоящий ноутбук, а не заглушка', () => {

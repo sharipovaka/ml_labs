@@ -39,24 +39,25 @@
 
 const LAB_GROUP = 'Лабораторные работы (в аудитории)';
 const HOMEWORK_GROUP = 'Домашние работы';
+const REFERENCE_GROUP = 'Справочно';
 
 /** Лабораторные работы: рабочий код занятия и задания для заполнения на паре. */
 /**
  * Справочные материалы — не занятия: их не проходят на паре, к ним
- * обращаются. Каждый привязан к занятию полем `session` и встаёт в его группу
- * последним: это дополнение к разобранному, а не условие допуска.
+ * обращаются. К конкретному занятию не привязаны и идут в списке отдельной
+ * группой, до занятий.
  */
 const REFERENCE = [
   {
     slug: 'checklist-numpy-pandas',
-    session: 1,
-    title: 'Чеклист. Python, NumPy и pandas',
+    group: REFERENCE_GROUP,
+    title: 'Чеклист. Что нужно уметь для машинного обучения',
     description:
-      'Что нужно уметь, чтобы занятия шли легко: база Python, затем NumPy и pandas — списки собраны по коду самих занятий, поэтому короткие. Восемь вопросов на проверку себя с ответами под спойлером, путь из трёх шагов для тех, у кого пробелы, и отдельно — что понадобится дальше по курсу, но разбираться не будет.',
+      'Минимум, на котором держится практикум: база Python, NumPy, pandas, графики и единый интерфейс scikit-learn — 37 пунктов, собранных по коду занятий, поэтому список закрытый. Восемь вопросов на проверку себя с ответами под спойлером, раздел «чего знать не нужно» и путь из трёх шагов для тех, у кого пробелы.',
     date: '2026-09-03',
     tags: ['NumPy', 'pandas', 'подготовка'],
     icon: 'fa-list-check',
-    coversLabel: 'Дополнительно к занятию 1 — если Python пока даётся тяжело',
+    coversLabel: 'Пригодится на любом занятии курса',
     source: 'notebooks/reference/checklist-numpy-pandas.ipynb',
     load: () => import(/* webpackChunkName: "ref-checklist" */ './reference/checklist-numpy-pandas.html'),
   },
@@ -348,17 +349,17 @@ export const reference = REFERENCE;
 /** Номера опубликованных занятий — по возрастанию. */
 export const readySessions = [...READY_SESSIONS].sort((a, b) => a - b);
 
-export const materials = LAB_SESSIONS.flatMap((lab, i) => {
-  if (!isReady(i)) return [];
-  const number = i + 1;
-  const group = `Занятие ${number}`;
-  return [
-    { ...lab, group, kind: 'lab' },
-    { ...HOMEWORK[i], group, kind: 'homework' },
-    ...REFERENCE.filter((item) => item.session === number)
-      .map((item) => ({ ...item, group, kind: 'reference' })),
-  ];
-});
+export const materials = [
+  ...REFERENCE.map((item) => ({ ...item, kind: 'reference' })),
+  ...LAB_SESSIONS.flatMap((lab, i) => {
+    if (!isReady(i)) return [];
+    const group = `Занятие ${i + 1}`;
+    return [
+      { ...lab, group, kind: 'lab' },
+      { ...HOMEWORK[i], group, kind: 'homework' },
+    ];
+  }),
+];
 
 /** Раздел «Notebooks» содержит только материалы практикума. */
 export const notebooks = materials;

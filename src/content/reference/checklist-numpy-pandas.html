@@ -232,13 +232,13 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </head>
 <body>
 <div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
-<h1 id="чеклист-python-numpy-и-pandas">Чеклист: Python, NumPy и
-pandas</h1>
-<p><strong>Курс «Машинное обучение», 4 курс. Дополнительно к занятию
-1.</strong></p>
-<p>Пункт засчитывается, если вы можете написать строчку кода, а не
-«где-то видели». Списки собраны по коду занятий, поэтому закрытые: чего
-здесь нет — не понадобится.</p>
+<h1 id="чеклист-что-нужно-уметь-для-машинного-обучения">Чеклист: что
+нужно уметь для машинного обучения</h1>
+<p><strong>Курс «Машинное обучение», 4 курс.</strong></p>
+<p>Минимум, на котором держится весь практикум. Списки собраны по коду
+всех занятий практикума, поэтому закрытые: чего здесь нет — не
+понадобится. Пункт засчитан, если вы можете написать строчку кода, а не
+«где-то видели».</p>
 </div>
 <div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
@@ -272,7 +272,7 @@ pandas</h1>
 <code>IndexError</code> — и умение найти в traceback
 <strong>свою</strong> строку: она обычно последняя.</label></li>
 </ul>
-<h2 id="numpy--к-занятию-1">NumPy — к занятию 1</h2>
+<h2 id="numpy">NumPy</h2>
 <ul class="task-list">
 <li><label><input type="checkbox"></input><strong>Массив и форма.</strong>
 <code>np.array([1, 2, 3])</code>, <code>X.shape</code>;
@@ -292,8 +292,9 @@ pandas</h1>
 цикла.</label></li>
 <li><label><input type="checkbox"></input><strong>Новая ось.</strong>
 <code>a[:, None]</code> превращает вектор <code>(m,)</code> в столбец
-<code>(m, 1)</code>. Нужно, чтобы сложить столбец со строкой и получить
-матрицу: на этом построена вся часть 1 занятия.</label></li>
+<code>(m, 1)</code>. Так складывают столбец со строкой и получают
+матрицу — например, матрицу попарных расстояний без единого
+цикла.</label></li>
 <li><label><input type="checkbox"></input><strong><code>@</code> и
 <code>.T</code>.</strong> <code>X.T @ X</code> — матричное умножение;
 <code>*</code> умножает поэлементно.</label></li>
@@ -303,10 +304,28 @@ pandas</h1>
 <li><label><input type="checkbox"></input><strong>Воспроизводимость.</strong>
 <code>rng = np.random.default_rng(42)</code>.</label></li>
 <li><label><input type="checkbox"></input><strong>Векторизация вместо
-цикла.</strong> Этому занятие 1 учит специально — если помните часть 1,
-пункт закрыт.</label></li>
+цикла.</strong> Если пишете <code>for i in range(len(X))</code> — почти
+наверняка есть запись без цикла, короче и в десятки раз
+быстрее.</label></li>
+<li><label><input type="checkbox"></input><strong>Создание массивов.</strong>
+<code>linspace</code>, <code>arange</code>, <code>zeros</code>,
+<code>ones</code>, <code>eye</code>, <code>column_stack</code>,
+<code>reshape</code>, <code>ravel</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Отбор по индексам.</strong>
+<code>X[idx]</code>, где <code>idx</code> — массив номеров, а не одно
+число: так берут пакет объектов из выборки. От булевой маски отличается
+тем, что порядок задаёте вы.</label></li>
+<li><label><input type="checkbox"></input><strong>Сортировка и поиск.</strong>
+<code>argsort</code>, <code>argmax</code>, <code>where</code>,
+<code>unique</code>, <code>cumsum</code>,
+<code>diag</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Линейная алгебра,
+<code>np.linalg</code>.</strong> <code>solve</code>, <code>lstsq</code>,
+<code>norm</code>, <code>cond</code>, <code>eigh</code>,
+<code>svd</code>. Решение системы пишется как <code>solve(A, b)</code>,
+а не через обратную матрицу — на этом стоит половина курса.</label></li>
 </ul>
-<h2 id="pandas--к-занятию-1">pandas — к занятию 1</h2>
+<h2 id="pandas">pandas</h2>
 <ul class="task-list">
 <li><label><input type="checkbox"></input><strong><code>DataFrame</code> и
 <code>Series</code>.</strong> <code>df.shape</code>,
@@ -339,9 +358,32 @@ pandas</h1>
 <code>.select_dtypes(include=&quot;number&quot;)</code>.</label></li>
 <li><label><input type="checkbox"></input><strong>Чтение файла.</strong>
 <code>pd.read_csv(&quot;table.csv&quot;)</code>, а если файл выгружен из Excel
-по-русски — <code>pd.read_csv(..., sep=&quot;;&quot;, decimal=&quot;,&quot;)</code>. На
-занятиях таблицу выдаёт модуль курса, но свои данные вы будете читать
-сами.</label></li>
+по-русски —
+<code>pd.read_csv(..., sep=&quot;;&quot;, decimal=&quot;,&quot;)</code>.</label></li>
+</ul>
+<h2 id="графики">Графики</h2>
+<ul class="task-list">
+<li><label><input type="checkbox"></input><strong>matplotlib.</strong>
+<code>fig, ax = plt.subplots()</code>, <code>ax.plot</code>,
+<code>ax.scatter</code>, <code>ax.set_xlabel</code>,
+<code>ax.legend()</code>, <code>plt.show()</code>. Больше не
+нужно.</label></li>
+<li><label><input type="checkbox"></input><strong>seaborn.</strong> Рисует
+таблицу, а не массивы:
+<code>sns.histplot(df, x=&quot;age&quot;, hue=&quot;survived&quot;)</code>. Ключевой приём —
+<code>hue</code>: одним словом превращает график в сравнение
+групп.</label></li>
+</ul>
+<h2 id="scikit-learn">scikit-learn</h2>
+<ul class="task-list">
+<li><label><input type="checkbox"></input><strong>Единый интерфейс.</strong> У
+всех моделей и преобразований он один: <code>fit</code> учит,
+<code>predict</code> предсказывает, <code>transform</code> преобразует,
+<code>score</code> считает качество. Выучив его на одной модели, вы
+умеете пользоваться всеми.</label></li>
+<li><label><input type="checkbox"></input><strong>Честное разбиение.</strong>
+<code>train_test_split</code>, <code>Pipeline</code> — чтобы обработка
+данных не подглядывала в контрольную часть.</label></li>
 </ul>
 </div>
 <div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
@@ -375,59 +417,26 @@ pandas</h1>
 2. Вычитает `v` из каждой строки: формы `(4, 3)` и `(3,)` совместимы, NumPy
    растягивает вектор на все строки. На этом держится стандартизация.
 3. Долю элементов, больших пяти: среднее булева массива и есть доля `True`.
-4. `(3, 3)` — «признаки на признаки». Эта матрица появится на занятии 2 и не
-   исчезнет до конца курса.
+4. `(3, 3)` — «признаки на признаки». Эта матрица стоит за методом наименьших
+   квадратов, ridge-регрессией и PCA.
 5. Первое — `Series`, второе — `DataFrame` из одного столбца. `sklearn` к
    этому чувствителен.
 6. Первое — таблицу подходящих строк, второе — число, их долю.
 7. По двум: `mean` пропускает `NaN` молча. Это же делают `sum`, `std` и
    почти всё остальное.
 8. `isna().sum()` считает, сколько значений отсутствует; `sum()` складывает
-   сами баллы, пропуская `NaN`. Разница между «нет данных» и «ноль» — то, с
-   чего начинается занятие 1.
+   сами баллы, пропуская `NaN`. Путать «нет данных» и «ноль» — самая дорогая
+   ошибка при подготовке выборки.
 
 </details>
 </div>
-<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T13:07:06.975794Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T13:07:06.975655Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T13:07:07.678213Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T13:07:07.677937Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T13:20:10.143097Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T13:20:10.142815Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T13:20:10.727291Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T13:20:10.726941Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверяйте здесь.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div>
 </div>
 <div id="cell004" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
 <hr />
-<h2 id="понадобится-дальше">Понадобится дальше</h2>
-<p>Появится начиная с занятия 2. Вызовы простые, разбираются по
-документации.</p>
-<ul class="task-list">
-<li><label><input type="checkbox"></input><strong>Создание массивов.</strong>
-<code>linspace</code>, <code>arange</code>, <code>zeros</code>,
-<code>ones</code>, <code>eye</code>, <code>column_stack</code>,
-<code>reshape</code>, <code>ravel</code>.</label></li>
-<li><label><input type="checkbox"></input><strong>Отбор по индексам.</strong>
-<code>X[idx]</code>, где <code>idx</code> — массив номеров, а не одно
-число: так берут пакет объектов в градиентном спуске. От булевой маски
-отличается тем, что порядок задаёте вы.</label></li>
-<li><label><input type="checkbox"></input><strong>Сортировка и поиск.</strong>
-<code>argsort</code>, <code>argmax</code>, <code>where</code>,
-<code>unique</code>, <code>cumsum</code>,
-<code>diag</code>.</label></li>
-<li><label><input type="checkbox"></input><strong>Линейная алгебра,
-<code>np.linalg</code>.</strong> <code>solve</code>, <code>lstsq</code>,
-<code>norm</code>, <code>cond</code>, <code>eigh</code>,
-<code>svd</code>. Матричные факты разбираются на лекциях, а то, что
-система решается как <code>solve(A, b)</code>, считается
-известным.</label></li>
-<li><label><input type="checkbox"></input><strong>matplotlib.</strong>
-<code>fig, ax = plt.subplots()</code>, <code>ax.plot</code>,
-<code>ax.scatter</code>, <code>ax.set_xlabel</code>,
-<code>plt.show()</code>. Больше не нужно: дальше графики строит
-<code>seaborn</code> одной строкой.</label></li>
-<li><label><input type="checkbox"></input><strong>Единый интерфейс
-<code>scikit-learn</code>.</strong> <code>fit</code> учит,
-<code>predict</code> предсказывает, <code>transform</code> преобразует,
-<code>score</code> считает качество; плюс <code>train_test_split</code>
-и <code>Pipeline</code>.</label></li>
-</ul>
 <h2 id="чего-знать-не-нужно">Чего знать не нужно</h2>
 <p><code>merge</code>, <code>join</code>, <code>concat</code>;
 <code>MultiIndex</code>, <code>stack</code>, <code>pivot</code>;
@@ -452,8 +461,8 @@ absolute basics for beginners</a>: читать до broadcasting включит
 to pandas</a>: нужны разделы Selection, Missing data, Operations,
 Grouping; Merge, Reshaping и Time series пропускайте. Вечер.</li>
 </ol>
-<p>Читать подряд бесполезно: копируйте примеры к себе и меняйте числа.
-Ближайшее применение — домашняя работа 1.</p>
+<p>Читать подряд бесполезно: копируйте примеры к себе и меняйте числа,
+пока не станет понятно, что поменялось в ответе.</p>
 </div>
 </body>
 </html>
