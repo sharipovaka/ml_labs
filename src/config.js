@@ -53,7 +53,8 @@ export function colabUrl(path) {
  * К адресу дописывается название материала, поэтому ответы сразу размечены по
  * занятиям и их не приходится сопоставлять вручную.
  */
-export const feedbackFormUrl = '';
+export const feedbackFormUrl =
+  'https://claude.ai/code/artifact/5d01c21a-5cd8-460a-85a4-8557abca9671?material=';
 
 /** Ссылка на форму с уже подставленным названием материала. */
 export function feedbackUrl(title) {
