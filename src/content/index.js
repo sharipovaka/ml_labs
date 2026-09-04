@@ -43,12 +43,13 @@ const HOMEWORK_GROUP = 'Домашние работы';
 /** Лабораторные работы: рабочий код занятия и задания для заполнения на паре. */
 /**
  * Справочные материалы — не занятия: их не проходят на паре, к ним
- * обращаются. Идут в списке первыми, до занятия 1.
+ * обращаются. Каждый привязан к занятию полем `session` и встаёт в его группу
+ * первым, до лабораторной: чеклист читают перед парой, а не после.
  */
 const REFERENCE = [
   {
     slug: 'checklist-numpy-pandas',
-    group: 'Перед началом',
+    session: 1,
     title: 'Чеклист. Что нужно знать про NumPy и pandas',
     description:
       'Закрытый список того, что нужно уметь к первому занятию, собранный по коду самого занятия. Восемь вопросов на проверку себя — ответы спрятаны. Отдельно: что понадобится дальше по курсу, но разбираться не будет (линейная алгебра в np.linalg, единый интерфейс sklearn, f-строки), и чего знать не нужно вовсе.',
@@ -344,17 +345,20 @@ export const homework = HOMEWORK.filter((_, i) => isReady(i));
 
 export const reference = REFERENCE;
 
-export const materials = [
-  ...REFERENCE.map((item) => ({ ...item, kind: 'reference' })),
-  ...LAB_SESSIONS.flatMap((lab, i) => {
-    if (!isReady(i)) return [];
-    const group = `Занятие ${i + 1}`;
-    return [
-      { ...lab, group, kind: 'lab' },
-      { ...HOMEWORK[i], group, kind: 'homework' },
-    ];
-  }),
-];
+/** Номера опубликованных занятий — по возрастанию. */
+export const readySessions = [...READY_SESSIONS].sort((a, b) => a - b);
+
+export const materials = LAB_SESSIONS.flatMap((lab, i) => {
+  if (!isReady(i)) return [];
+  const number = i + 1;
+  const group = `Занятие ${number}`;
+  return [
+    ...REFERENCE.filter((item) => item.session === number)
+      .map((item) => ({ ...item, group, kind: 'reference' })),
+    { ...lab, group, kind: 'lab' },
+    { ...HOMEWORK[i], group, kind: 'homework' },
+  ];
+});
 
 /** Раздел «Notebooks» содержит только материалы практикума. */
 export const notebooks = materials;

@@ -312,6 +312,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <li><label><input type="checkbox"></input><strong>Дубликаты и типы.</strong>
 <code>.duplicated().sum()</code>,
 <code>.select_dtypes(include=&quot;number&quot;)</code>.</label></li>
+<li><label><input type="checkbox"></input><strong>Чтение файла.</strong>
+<code>pd.read_csv(&quot;table.csv&quot;)</code>, а если файл выгружен из Excel
+по-русски — <code>pd.read_csv(..., sep=&quot;;&quot;, decimal=&quot;,&quot;)</code>. На
+занятиях таблицу выдаёт модуль курса, но свои данные вы будете читать
+сами.</label></li>
 </ul>
 </div>
 <div id="cell002" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
@@ -358,7 +363,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 
 </details>
 </div>
-<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T12:53:10.990953Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T12:53:10.990670Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T12:53:11.630613Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T12:53:11.630324Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div id="cell003" class="cell code" data-execution_count="1" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-09-04T12:55:47.660995Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-04T12:55:47.660705Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-04T12:55:48.300559Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-04T12:55:48.300307Z&quot;}" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверяйте здесь.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div>
@@ -406,12 +411,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <code>MultiIndex</code>, <code>stack</code>, <code>pivot</code>;
 временные ряды; <code>apply</code> со своей функцией по строкам (почти
 всегда признак того, что задача решается векторно); <code>numba</code> и
-ускорение кода; SQL. Чтение файлов тоже не понадобится: данные выдаёт
-модуль курса — <code>load_titanic()</code> на занятии и
-<code>load_personal(variant)</code> дома, — а не <code>read_csv</code>.
-Курс обходится базовым стеком: <code>numpy</code>, <code>pandas</code>,
-<code>matplotlib</code>, <code>seaborn</code>, <code>scipy</code>,
-<code>scikit-learn</code>.</p>
+ускорение кода; SQL. Курс обходится базовым стеком: <code>numpy</code>,
+<code>pandas</code>, <code>matplotlib</code>, <code>seaborn</code>,
+<code>scipy</code>, <code>scikit-learn</code>.</p>
 <h2 id="где-восполнить-пробелы">Где восполнить пробелы</h2>
 <ul>
 <li><strong>NumPy</strong> — <a href="https://numpy.org/doc/stable/user/absolute_beginners.html">the
