@@ -333,7 +333,7 @@ const HOMEWORK = [
  * Чтобы опубликовать занятие, достаточно добавить сюда его номер: описания,
  * даты и адреса файлов для всех девяти уже перечислены выше.
  */
-const READY_SESSIONS = new Set([1]);
+const READY_SESSIONS = new Set([1, 2]);
 
 /** Номер занятия по позиции в списке: LAB_SESSIONS[0] — занятие 1. */
 const isReady = (index) => READY_SESSIONS.has(index + 1);
