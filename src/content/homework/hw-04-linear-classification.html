@@ -231,446 +231,294 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </style>
 </head>
 <body>
-<div id="cell000" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div style="border: 3px solid #b42318; background: #fef3f2; color: #7a271a; border-radius: 12px; padding: 16px 20px; line-height: 1.5">
-<div style="font-size: 20px; font-weight: 800; color: #b42318; margin-bottom: 10px">
-⚠️ ЧЕРНОВИК — НЕ АКТУАЛЬНАЯ ВЕРСИЯ
+<div id="1183294b" class="cell markdown">
+<h1 id="домашняя-работа-4-логистическая-регрессия-и-порог">Домашняя
+работа 4. Логистическая регрессия и порог</h1>
+<p>Логистическая регрессия своим градиентным спуском на данных об
+опухоли молочной железы (<code>breast_cancer</code> из scikit-learn).
+Положительный класс — <strong>злокачественная опухоль</strong>:
+пропустить её хуже, чем лишний раз отправить образец на проверку.</p>
+<p>Вариант зависит от фамилии: своё разбиение на обучение и тест. Чужие
+числа не подойдут.</p>
+<p>Срок — до следующего занятия. Работа засчитывается после короткой
+устной защиты: ноутбук открыт, преподаватель просит поменять порог или
+шаг и объяснить, что изменилось. Обсуждать идеи можно, передавать код и
+ответы нельзя.</p>
 </div>
-<p style="margin: 0 0 10px 0"><b>Это занятие ещё в работе и будет переписано.</b>
-Формулировки, данные и порядок заданий изменятся; часть материала может
-опираться на то, что к этому моменту курса ещё не прочитано.</p>
-<p style="margin: 0">Заниматься по нему пока не нужно — дождитесь
-окончательной версии. Актуально сейчас только <b>занятие 1</b>.</p>
-</div>
-</div>
-<div id="cell001" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
-<h1 id="домашняя-работа-4-классификация-изнутри">Домашняя работа 4.
-Классификация изнутри</h1>
-<p><strong>Курс «Машинное обучение», 4 курс</strong></p>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<tbody>
-<tr>
-<td>К лабораторной</td>
-<td>занятие 4 — Линейная классификация: логистическая регрессия, метрики
-и SVM</td>
-</tr>
-<tr>
-<td>Опора</td>
-<td>материал семинара 4 и лекций до него</td>
-</tr>
-<tr>
-<td>Ожидаемое время</td>
-<td>3–4 часа</td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><strong>ваша индивидуальная таблица</strong> (по ФИО)</td>
-</tr>
-</tbody>
-</table>
-<p>На занятии всё считал <code>sklearn</code>. Дома напишем сами:
-логистическую регрессию с градиентом и гессианом из лекции 3 (и сравним
-градиентный спуск с методом Ньютона), ROC-кривую с проверкой её
-вероятностной интерпретации и, наконец, двойственную задачу SVM — ту
-самую, из которой берутся опорные векторы.</p>
-<p>Первые две задачи выполняются на <strong>вашей</strong> выборке; для
-двойственной задачи нужна маленькая и наглядная выборка, поэтому там
-берётся синтетика — зато решение проверяется точно.</p>
-<blockquote>
-<p><strong>Чем это отличается от занятия.</strong> На семинаре данные
-были учебные и общие — так удобно разбирать. Дома данные ваши: таблица
-порождается по ФИО, и ни у кого в группе она не повторяется. Приёмы те
-же, числа другие — поэтому отвечать придётся за свои числа, а не за
-преподавательские.</p>
-</blockquote>
-<h2 id="как-устроена-работа">Как устроена работа</h2>
-<p>Работа делится на две части, и делятся они по назначению, а не по
-сложности.</p>
-<p><strong>Обязательная часть — допуск.</strong> Без неё работа не
-принимается: это тот минимум, без которого занятие считается
-неусвоенным. Здесь всегда есть хотя бы одна реализация «с нуля»,
-сверенная с <code>scikit-learn</code> численно.</p>
-<p><strong>Часть на оценку</strong> (помечена значком ★). Она не нужна
-для допуска — но балл за работу выставляется именно по ней, и каждый
-выполненный пункт идёт в зачёт отдельно. Браться стоит даже за один
-пункт: это лучше, чем не браться вовсе.</p>
-<h2 id="что-нужно-сдать">Что нужно сдать</h2>
-<p>Заполненный ноутбук, в котором:</p>
-<ol>
-<li>выполнены все ячейки с <code># TODO</code> в обязательной части, код
-исполняется сверху вниз без ошибок в свежем ядре (Kernel → Restart &amp;
-Run All);</li>
-<li>под каждым заданием заполнена ячейка <strong>Вывод</strong> — своими
-словами, со ссылкой на полученные числа;</li>
-<li>графики подписаны: заголовок, оси, легенда;</li>
-<li>в ячейке варианта вписано ваше ФИО.</li>
-</ol>
-<blockquote>
-<p>Списывание видно сразу: у каждого студента свой датасет и свой набор
-методов.</p>
-</blockquote>
-</div>
-<div id="cell002" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, воспроизводимость.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, warnings</span>
+<div id="1c99ac53" class="cell code">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, модуль курса.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pathlib, urllib.request</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">&quot;ignore&quot;</span>, category<span class="op">=</span><span class="pp">FutureWarning</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Модули практикума (variants.py, labdata.py) ищем рядом с ноутбуком.</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Если их нет -- значит, ноутбук открыт в Colab: скачиваем из репозитория курса.</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>COURSE_FILES_URL <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/sharipovaka/ml_labs/main/notebooks&quot;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    confusion_matrix, precision_score, recall_score, roc_auc_score,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _course_modules_dir():</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    here <span class="op">=</span> pathlib.Path.cwd()</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> parent <span class="kw">in</span> [here, <span class="op">*</span>here.parents][:<span class="dv">4</span>]:</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (parent <span class="op">/</span> <span class="st">&quot;variants.py&quot;</span>).exists():</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">str</span>(parent)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> urllib.request</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name <span class="kw">in</span> (<span class="st">&quot;variants.py&quot;</span>, <span class="st">&quot;labdata.py&quot;</span>):</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> pathlib.Path(name).exists():</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            urllib.request.urlretrieve(<span class="ss">f&quot;</span><span class="sc">{</span>COURSE_FILES_URL<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">&quot;</span>, name)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;загружен </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> из репозитория курса&quot;</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(here)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(precision<span class="op">=</span><span class="dv">4</span>, suppress<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">&quot;figure.figsize&quot;</span>] <span class="op">=</span> (<span class="dv">6</span>, <span class="dv">4</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">&quot;axes.grid&quot;</span>] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>COURSE_FILES_URL <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/sharipovaka/ml_labs/main/notebooks&quot;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> course_file(name):</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># файл курса: лежит рядом, иначе скачиваем из репозитория курса</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> pathlib.Path(name).exists():</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        urllib.request.urlretrieve(<span class="ss">f&quot;</span><span class="sc">{</span>COURSE_FILES_URL<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">&quot;</span>, name)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pathlib.Path(name)</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, _course_modules_dir())</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> get_variant, describe_variant, submission_name  <span class="co"># noqa: E402</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>RANDOM_STATE <span class="op">=</span> <span class="dv">42</span>          <span class="co"># единый seed на всю работу: результаты воспроизводимы</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(RANDOM_STATE)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.figsize&quot;</span>: (<span class="fl">7.5</span>, <span class="fl">4.5</span>),</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;figure.dpi&quot;</span>: <span class="dv">110</span>,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.grid&quot;</span>: <span class="va">True</span>,</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;grid.alpha&quot;</span>: <span class="fl">0.25</span>,</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.top&quot;</span>: <span class="va">False</span>,</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;axes.spines.right&quot;</span>: <span class="va">False</span>,</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;font.size&quot;</span>: <span class="dv">11</span>,</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;numpy&quot;</span>, np.__version__, <span class="st">&quot;| pandas&quot;</span>, pd.__version__)</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> labdata <span class="im">import</span> load_personal</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> optimize</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre></div>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, <span class="bu">str</span>(course_file(<span class="st">&quot;variants.py&quot;</span>).parent))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> variants <span class="im">import</span> get_variant, submission_name  <span class="co"># noqa: E402</span></span></code></pre></div>
 </div>
-<div id="cell003" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="100c70c1" class="cell markdown">
 <h2 id="индивидуальный-вариант">Индивидуальный вариант</h2>
-<p>Впишите своё ФИО (или почту) в переменную <code>STUDENT</code> —
-вариант вычисляется детерминированно, при повторном запуске он тот же
-самый.</p>
-<p>Регистр, лишние пробелы и написание «ё»/«е» роли не играют. Если ФИО
-вписано неверно, вариант будет чужим — проверьте вывод ячейки.</p>
+<p>Впишите фамилию так, как в списке группы. От строки зависят данные.
+Регистр, лишние пробелы и «ё»/«е» роли не играют. Однофамильцам нужно
+добавить инициал (<code>Петрова А.</code>).</p>
+<p>От фамилии зависит, как данные делятся на обучение и тест. Остальные
+поля варианта в этой работе не нужны.</p>
 </div>
-<div id="cell004" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия Имя Отчество&quot;</span>   <span class="co"># &lt;-- впишите себя</span></span>
+<div id="ca9ed812" class="cell code">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>STUDENT <span class="op">=</span> <span class="st">&quot;Фамилия&quot;</span>   <span class="co"># &lt;-- впишите свою фамилию</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>variant <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>describe_variant(variant)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Сдавать под именем:&quot;</span>, submission_name(STUDENT, lab<span class="op">=</span><span class="dv">4</span>))</span></code></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> STUDENT.strip() <span class="op">!=</span> <span class="st">&quot;Фамилия&quot;</span>, <span class="st">&quot;Впишите свою фамилию в переменную STUDENT&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>VARIANT <span class="op">=</span> get_variant(STUDENT, lab<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;seed разбиения:&quot;</span>, VARIANT[<span class="st">&quot;seed&quot;</span>])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Сдавать под именем:&quot;</span>, submission_name(STUDENT, lab<span class="op">=</span><span class="dv">4</span>))</span></code></pre></div>
 </div>
-<div id="cell005" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ваша выборка. Занятие про классификацию, поэтому регрессионный вариант</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># бинаризуем по медиане обучающей части («дороже медианы» / «дешевле»).</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_personal(variant)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Xd, yd <span class="op">=</span> np.vstack([data[<span class="st">&quot;X_train&quot;</span>], data[<span class="st">&quot;X_test&quot;</span>]]), <span class="op">\</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         np.r_[data[<span class="st">&quot;y_train&quot;</span>], data[<span class="st">&quot;y_test&quot;</span>]]</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> data[<span class="st">&quot;task&quot;</span>] <span class="op">==</span> <span class="st">&quot;regression&quot;</span>:</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    yd <span class="op">=</span> (yd <span class="op">&gt;</span> np.median(data[<span class="st">&quot;y_train&quot;</span>])).astype(<span class="bu">int</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;вариант регрессионный -&gt; бинаризован по медиане: &quot;</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&quot;«</span><span class="sc">{</span>data[<span class="st">&#39;target&#39;</span>]<span class="sc">}</span><span class="ss"> выше медианы» = класс 1&quot;</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>yd <span class="op">=</span> yd.astype(<span class="bu">int</span>)</span>
+<div id="1e08241b" class="cell markdown">
+<h3 id="данные">Данные</h3>
+<p>Берём пять признаков из тридцати, все из блока <em>worst</em>
+(наибольшее значение по ядрам на снимке): радиус, текстура, гладкость,
+число вогнутых участков, симметрия. Периметр и площадь почти повторяют
+радиус — та же ситуация, что с дублями в домашней работе 3, поэтому их
+нет.</p>
+<p>Признаки стандартизуются по <strong>обучающей</strong> части. Столбец
+единиц добавляется после стандартизации. Разбиение 75/25
+стратифицированное, seed берётся из фамилии, поэтому тест у каждого
+свой.</p>
+</div>
+<div id="452a0cde" class="cell code">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_breast_cancer()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># В sklearn класс 0 — злокачественная опухоль, класс 1 — доброкачественная.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># В этой работе наоборот: y = 1 означает «злокачественная».</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>feature_idx <span class="op">=</span> [<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">24</span>, <span class="dv">27</span>, <span class="dv">28</span>]  <span class="co"># worst: radius, texture, smoothness, concave points, symmetry</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> [<span class="st">&quot;свободный член&quot;</span>] <span class="op">+</span> [data.feature_names[i] <span class="cf">for</span> i <span class="kw">in</span> feature_idx]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>X_raw <span class="op">=</span> data.data[:, feature_idx]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>y_raw <span class="op">=</span> (data.target <span class="op">==</span> <span class="dv">0</span>).astype(<span class="bu">float</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    X_raw, y_raw, test_size<span class="op">=</span><span class="fl">0.25</span>, stratify<span class="op">=</span>y_raw, random_state<span class="op">=</span><span class="bu">int</span>(VARIANT[<span class="st">&quot;seed&quot;</span>]))</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>data[<span class="st">&#39;domain&#39;</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>Xd<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> объектов, </span><span class="sc">{</span>Xd<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> признаков, &quot;</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f&quot;доля класса 1 = </span><span class="sc">{</span>yd<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>mu, sd <span class="op">=</span> X_train.mean(axis<span class="op">=</span><span class="dv">0</span>), X_train.std(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>X_train_std <span class="op">=</span> (X_train <span class="op">-</span> mu) <span class="op">/</span> sd</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>X_test_std <span class="op">=</span> (X_test <span class="op">-</span> mu) <span class="op">/</span> sd</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>Xb_train <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(X_train_std)), X_train_std])</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>Xb_test <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(X_test_std)), X_test_std])</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;объектов: </span><span class="sc">{</span><span class="bu">len</span>(y_raw)<span class="sc">}</span><span class="ss">, из них класс 1: </span><span class="sc">{</span><span class="bu">int</span>(y_raw.<span class="bu">sum</span>())<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;в тесте класс 1: </span><span class="sc">{</span><span class="bu">int</span>(y_test.<span class="bu">sum</span>())<span class="sc">}</span><span class="ss"> из </span><span class="sc">{</span><span class="bu">len</span>(y_test)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;признаки:&quot;</span>, <span class="st">&quot;, &quot;</span>.join(feature_names[<span class="dv">1</span>:]))</span></code></pre></div>
 </div>
-<div id="cell006" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="31d14584" class="cell markdown">
 <hr />
-<h1 id="задача-1-логистическая-регрессия-своими-руками">Задача 1.
-Логистическая регрессия своими руками</h1>
-<p>Утверждение 3.4: для
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mo>∑</mo><mi>i</mi></msub><mi>ℒ</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mi>θ</mi></msub><mo>,</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Q(\theta) = \sum_i\mathcal L(a_\theta,x_i,y_i)</annotation></semantics></math></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>∇</mi><mi>θ</mi></msub><mi>Q</mi><mo>=</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>h</mi><mo>−</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>h</mi><mo>=</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">
-\nabla_\theta Q = X^{\mathsf T}(h - y), \qquad h = \sigma(X\theta),
+<h2 id="задание-1-логистическая-регрессия-своим-спуском">Задание 1.
+Логистическая регрессия своим спуском</h2>
+<p>Формула лекции, градиент — <strong>сумма</strong>, без множителя
+2:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>←</mo><mi>θ</mi><mo>−</mo><mi>η</mi><mspace width="0.167em"></mspace><msup><mi>X</mi><mi>𝖳</mi></msup><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>y</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\theta \leftarrow \theta - \eta\, X^{\mathsf T}\bigl(\sigma(X\theta) - y\bigr).
 </annotation></semantics></math></p>
-<p>а по утверждению 3.6 гессиан равен
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>∇</mi><mn>2</mn></msup><mi>Q</mi><mo>=</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mi>S</mi><mi>X</mi></mrow><annotation encoding="application/x-tex">\nabla^2 Q = X^{\mathsf T}SX</annotation></semantics></math>,
-где
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">g</mi></mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><msub><mi>h</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>h</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">S = \mathrm{diag}\bigl(h_i(1-h_i)\bigr)</annotation></semantics></math>.
-Наличие гессиана позволяет применить <strong>метод Ньютона</strong> (в
-статистике — IRLS):</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>θ</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow></msup><mo>=</mo><msup><mi>θ</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><mo>−</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mi>S</mi><mi>X</mi><msup><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mi>X</mi><mi>𝖳</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>h</mi><mo>−</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
-\theta^{(t+1)} = \theta^{(t)} - \bigl(X^{\mathsf T}SX\bigr)^{-1}X^{\mathsf T}(h-y).
-</annotation></semantics></math></p>
+<p>Шаг и число шагов уже заданы, их не меняйте:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mn>4</mn><mspace width="0.167em"></mspace><mi>/</mi><mspace width="0.167em"></mspace><msub><mi>λ</mi><mi>max</mi></msub><mo stretchy="false" form="prefix">(</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\eta = 4\,/\,\lambda_{\max}(X^{\mathsf T}X)</annotation></semantics></math>,
+<code>N_ITER = 5000</code>. Шаг вдвое больше, чем на занятии
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>/</mi><msub><mi>λ</mi><mi>max</mi></msub></mrow><annotation encoding="application/x-tex">2/\lambda_{\max}</annotation></semantics></math>):
+так 5000 шагов хватает, чтобы дойти до минимума, а спуск остаётся
+устойчивым. В <code>losses</code> пишите среднюю потерю. Длина списка —
+<code>N_ITER + 1</code>.</p>
+<p>Сравните вероятности на тесте с
+<code>LogisticRegression(penalty=None, fit_intercept=False)</code>.
+Смотрите на вероятности и на ROC-AUC. Веса могут разойтись в третьем
+знаке, поэтому сравнивают вероятности.</p>
 </div>
-<div id="cell007" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
+<div id="953cd617" class="cell code">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(z):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Численно устойчивая сигмоида (как на занятии).&quot;&quot;&quot;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: сигмоида, аргумент обрезать np.clip(z, -30, 30)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logloss(theta, X, y, l2<span class="op">=</span><span class="fl">0.0</span>):</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Q(theta) -- сумма логистических потерь + (l2/2)||theta_{1:}||^2.</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Устойчиво считается как np.logaddexp(0, z) - y * z, где z = X @ theta.</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logloss_grad(theta, X, y, l2<span class="op">=</span><span class="fl">0.0</span>):</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Градиент X^T (h - y) по утв. 3.4; свободный член не регуляризуем.&quot;&quot;&quot;</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logloss_hess(theta, X, y, l2<span class="op">=</span><span class="fl">0.0</span>):</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Гессиан X^T S X по утв. 3.6, S = diag(h_i (1 - h_i)).&quot;&quot;&quot;</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logreg_gd(X, y, eta, n_iter):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: градиент — сумма X.T @ (sigmoid(X @ theta) - y), без множителя 2.</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Верните theta и losses длины n_iter + 1 (потеря до шага и после каждого шага).</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Потеря — средняя логистическая, не сумма.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
 </div>
-<div id="cell008" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<h3 id="задание-11-обязательная-проверка-формул">Задание 1.1.
-Обязательная проверка формул</h3>
-<p>Приёмом из домашней работы 2 проверьте и градиент, и гессиан
-конечными разностями. Гессиан — это якобиан градиента, так что
-проверяется так же.</p>
+<div id="475e488b" class="cell code">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка формул (не меняйте эту ячейку): один шаг из лекции</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>_X <span class="op">=</span> np.array([[<span class="fl">1.0</span>, <span class="fl">1.0</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>               [<span class="fl">1.0</span>, <span class="fl">2.0</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>               [<span class="fl">1.0</span>, <span class="fl">3.0</span>]])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>_y <span class="op">=</span> np.array([<span class="fl">0.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>_theta, _losses <span class="op">=</span> logreg_gd(_X, _y, eta<span class="op">=</span><span class="fl">0.5</span>, n_iter<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(_theta, [<span class="fl">0.25</span>, <span class="fl">1.0</span>], atol<span class="op">=</span><span class="fl">1e-8</span>), (</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f&quot;один шаг лекции дал </span><span class="sc">{</span>_theta<span class="sc">}</span><span class="ss">, ожидается (0.25, 1). &quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Градиент — сумма X.T @ (h - y), без множителя 2 и без деления на n.&quot;</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(_losses) <span class="op">==</span> <span class="dv">2</span>, <span class="st">&quot;losses должен содержать стартовое значение и значение после шага&quot;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> _losses[<span class="op">-</span><span class="dv">1</span>] <span class="op">&lt;</span> _losses[<span class="dv">0</span>], <span class="st">&quot;после шага из лекции потеря должна уменьшиться&quot;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Шаг из лекции совпал&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell009" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> np.column_stack([np.ones(<span class="dv">80</span>), rng.normal(size<span class="op">=</span>(<span class="dv">80</span>, <span class="dv">4</span>))])</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>yc <span class="op">=</span> (rng.random(<span class="dv">80</span>) <span class="op">&lt;</span> sigmoid(Xc <span class="op">@</span> np.array([<span class="fl">0.3</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">1.0</span>, <span class="fl">0.5</span>, <span class="fl">0.0</span>]))).astype(<span class="bu">float</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>th0 <span class="op">=</span> rng.normal(size<span class="op">=</span><span class="dv">5</span>) <span class="op">*</span> <span class="fl">0.3</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: проверьте градиент и гессиан центральными разностями (h = 1e-6).</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       Гессиан -- якобиан градиента, считается так же, только от logloss_grad.</span></span></code></pre></div>
+<div id="89c8180a" class="cell code">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: N_ITER = 5000; eta = 4 / λmax(Xb_train.T @ Xb_train);</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># theta, losses = logreg_gd(...); prob_test = sigmoid(Xb_test @ theta)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Сравните prob_test с LogisticRegression(penalty=None, fit_intercept=False)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># и постройте график losses (логарифмическая шкала по вертикали).</span></span></code></pre></div>
 </div>
-<div id="cell010" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<h3 id="задание-12-градиентный-спуск-против-метода-ньютона">Задание 1.2.
-Градиентный спуск против метода Ньютона</h3>
+<div id="40afe960" class="cell code">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка задания 1 на ваших данных (не меняйте эту ячейку)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> theta.shape <span class="op">==</span> (Xb_train.shape[<span class="dv">1</span>],), <span class="st">&quot;theta — вектор длины (число признаков + 1)&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(losses) <span class="op">==</span> N_ITER <span class="op">+</span> <span class="dv">1</span>, <span class="st">&quot;losses: старт и ещё N_ITER шагов&quot;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> losses[<span class="op">-</span><span class="dv">1</span>] <span class="op">&lt;</span> losses[<span class="dv">0</span>], <span class="st">&quot;на данных работы потеря должна убывать&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.<span class="bu">all</span>(np.isfinite(prob_test)), <span class="st">&quot;в вероятностях inf или nan: обрежьте аргумент сигмоиды&quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> prob_test.shape <span class="op">==</span> y_test.shape</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> N_ITER <span class="op">==</span> <span class="dv">5000</span>, <span class="st">&quot;N_ITER должен быть 5000: от него зависят эталонные числа&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.isclose(eta, <span class="fl">4.0</span> <span class="op">/</span> np.linalg.eigvalsh(Xb_train.T <span class="op">@</span> Xb_train).<span class="bu">max</span>()), <span class="st">&quot;шаг: eta = 4 / λmax(Xb_train.T @ Xb_train)&quot;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>_p_sk <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="va">None</span>, fit_intercept<span class="op">=</span><span class="va">False</span>, max_iter<span class="op">=</span><span class="dv">5000</span>).fit(Xb_train, y_train).predict_proba(Xb_test)[:, <span class="dv">1</span>]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(prob_test <span class="op">-</span> _p_sk)) <span class="op">&lt;</span> <span class="fl">0.1</span>, <span class="st">&quot;вероятности далеко от LogisticRegression: проверьте градиент и сигмоиду&quot;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Проверка задания 1 пройдена&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell011" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_gd(X, y, n_iter<span class="op">=</span><span class="dv">3000</span>, l2<span class="op">=</span><span class="fl">1.0</span>):</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Градиентный спуск с шагом eta = 4/||X||_2^2 (константа Липшица).&quot;&quot;&quot;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_newton(X, y, n_iter<span class="op">=</span><span class="dv">12</span>, l2<span class="op">=</span><span class="fl">1.0</span>):</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Метод Ньютона: theta -= H^{-1} g (используйте np.linalg.solve, не inv).&quot;&quot;&quot;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: разбейте со стратификацией, отмасштабируйте, добавьте столбец единиц,</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       обучите обоими методами (l2=1.0) и сравните с</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       LogisticRegression(C=1.0): значение Q, коэффициенты, число итераций.</span></span></code></pre></div>
+<div id="332b2d64" class="cell markdown">
+<p><strong>Вывод.</strong> <em>(1–2 предложения: сошёлся ли спуск и
+близки ли вероятности к <code>LogisticRegression</code>)</em></p>
 </div>
-<div id="cell012" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте график сходимости обоих методов (Q - Q* в лог. масштабе,</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       по оси итераций достаточно первых 60).</span></span></code></pre></div>
-</div>
-<div id="cell013" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<blockquote>
-<p><strong>Вывод.</strong> Сколько итераций потребовалось каждому
-методу? Почему разница такая большая и почему тогда метод Ньютона не
-используют всегда?</p>
-<p><em>(ваш ответ здесь)</em></p>
-</blockquote>
-</div>
-<div id="cell014" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div id="4c108e12" class="cell markdown">
 <hr />
-<h1 id="задача-2-roc-кривая-своими-руками">Задача 2. ROC-кривая своими
-руками</h1>
-<p>ROC строится по всем порогам сразу, и считать её перебором порогов не
-нужно: достаточно отсортировать объекты по убыванию балла. Тогда
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">TP(t)</annotation></semantics></math>
-и
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">FP(t)</annotation></semantics></math>
-— это кумулятивные суммы меток.</p>
-<p>Полезная интерпретация, которую мы проверим: <strong>AUC равна
-вероятности того, что случайный объект класса 1 получит больший балл,
-чем случайный объект класса 0.</strong></p>
-</div>
-<div id="cell015" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> roc_curve_manual(y_true, score):</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Точки ROC-кривой без перебора порогов.</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Подсказка: отсортируйте объекты по УБЫВАНИЮ балла; тогда np.cumsum(y)</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">    даёт TP, а np.cumsum(1 - y) -- FP. Нормируйте на общее число</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">    положительных и отрицательных, добавьте начальную точку (0, 0).</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> auc_manual(fpr, tpr):</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Площадь под кривой методом трапеций.&quot;&quot;&quot;</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: посчитайте баллы на контрольной выборке своей моделью из задачи 1</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#       и сверьте свой AUC со sklearn.metrics.roc_auc_score.</span></span></code></pre></div>
-</div>
-<div id="cell016" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: проверьте интерпретацию AUC методом Монте-Карло: возьмите 200000 пар</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       (случайный объект класса 1, случайный объект класса 0) и посчитайте</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       долю пар, где балл положительного больше. Сравните с AUC.</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: постройте свою ROC-кривую.</span></span></code></pre></div>
-</div>
-<div id="cell017" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<blockquote>
-<p><strong>Вывод.</strong> Совпала ли доля пар с AUC? Почему ROC не
-зависит от доли классов, а PR-кривая — зависит?</p>
-<p><em>(ваш ответ здесь)</em></p>
-</blockquote>
-</div>
-<div id="cell018" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<hr />
-<blockquote>
-<h3 id="-дальше--часть-на-оценку">★ Дальше — часть на оценку</h3>
-<p>Обязательная часть закончилась: если вы дошли досюда и всё работает,
-работа будет принята. Дальше идут задания, по которым выставляется балл.
-Каждый пункт засчитывается отдельно, поэтому имеет смысл сделать хотя бы
-один.</p>
-</blockquote>
-<h1 id="задача-3-двойственная-задача-svm">Задача 3★. Двойственная задача
-SVM</h1>
-<p>Теорема 3.11: двойственная задача —</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi>max</mi><mi>α</mi></munder><mspace width="0.222em"></mspace><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>α</mi><mi>i</mi></msub><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><munder><mo>∑</mo><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></munder><msub><mi>α</mi><mi>i</mi></msub><msub><mi>α</mi><mi>j</mi></msub><msub><mi>y</mi><mi>i</mi></msub><msub><mi>y</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">(</mo><msubsup><mi>x</mi><mi>i</mi><mi>𝖳</mi></msubsup><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">при</mtext><mspace width="1.0em"></mspace><msub><mi>α</mi><mi>i</mi></msub><mo>≥</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>α</mi><mi>i</mi></msub><msub><mi>y</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">
-\max_{\alpha}\ \sum_i\alpha_i - \frac12\sum_{i,j}\alpha_i\alpha_j y_i y_j (x_i^{\mathsf T}x_j)
-\quad\text{при}\quad \alpha_i\ge0,\ \ \sum_i\alpha_i y_i = 0,
+<h2 id="задание-2-матрица-ошибок-полнота-точность-precision-roc-auc">Задание
+2. Матрица ошибок, полнота, точность (precision), ROC-AUC</h2>
+<p>Порог 0.5, только <strong>тестовая</strong> выборка. Положительный
+класс — 1 (злокачественная опухоль).</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi></mrow><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>P</mi></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">l</mi></mrow><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>N</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\mathrm{precision}=\frac{TP}{TP+FP},\qquad
+\mathrm{recall}=\frac{TP}{TP+FN}.
 </annotation></semantics></math></p>
-<p>а затем
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>w</mi><mo>*</mo></msup><mo>=</mo><msub><mo>∑</mo><mi>i</mi></msub><msubsup><mi>α</mi><mi>i</mi><mo>*</mo></msubsup><msub><mi>y</mi><mi>i</mi></msub><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">w^*=\sum_i\alpha_i^*y_ix_i</annotation></semantics></math>,
-и
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>b</mi><mo>*</mo></msup><annotation encoding="application/x-tex">b^*</annotation></semantics></math>
-восстанавливается по любому объекту с
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>α</mi><mi>i</mi><mo>*</mo></msubsup><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha_i^*&gt;0</annotation></semantics></math>:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo>=</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><msup><mi>w</mi><mrow><mi>*</mi><mi>𝖳</mi></mrow></msup><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">b^* = y_i - w^{*\mathsf T}x_i</annotation></semantics></math>.</p>
-<p>Решать будем как задачу минимизации
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>α</mi><mi>𝖳</mi></msup><mi>P</mi><mi>α</mi><mo>−</mo><msup><mn>𝟏</mn><mi>𝖳</mi></msup><mi>α</mi></mrow><annotation encoding="application/x-tex">\frac12\alpha^{\mathsf T}P\alpha - \mathbf 1^{\mathsf T}\alpha</annotation></semantics></math>,
-где
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><msup><mi>y</mi><mi>𝖳</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>⊙</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">P = (yy^{\mathsf T})\odot K</annotation></semantics></math>,
-с ограничениями
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><msub><mi>α</mi><mi>i</mi></msub><mo>≤</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">0\le\alpha_i\le C</annotation></semantics></math>
-и
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>α</mi><mi>𝖳</mi></msup><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha^{\mathsf T}y=0</annotation></semantics></math>.</p>
+<p>ROC-AUC считается по вероятностям <code>prob_test</code>, без выбора
+порога.</p>
 </div>
-<div id="cell019" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_dual(K, y, C<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Двойственная задача через scipy.optimize.minimize (SLSQP).</span></span>
+<div id="cc382488" class="cell code">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: при пороге 0.5 посчитайте на тесте</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># cm_half, recall_at_half, precision_at_half, auc = roc_auc_score(y_test, prob_test)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Напечатайте матрицу ошибок.</span></span></code></pre></div>
+</div>
+<div id="ccb12c87" class="cell code">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка задания 2 (не меняйте эту ячейку)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>_pred <span class="op">=</span> (prob_test <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>_rec <span class="op">=</span> <span class="bu">float</span>(recall_score(y_test, _pred, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>_prec <span class="op">=</span> <span class="bu">float</span>(precision_score(y_test, _pred, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>_auc <span class="op">=</span> <span class="bu">float</span>(roc_auc_score(y_test, prob_test))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(recall_at_half, _rec), <span class="st">&quot;recall_at_half не совпадает с порогом 0.5&quot;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(precision_at_half, _prec), <span class="st">&quot;precision_at_half не совпадает с порогом 0.5&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(auc, _auc), <span class="st">&quot;auc не совпадает с roc_auc_score&quot;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.array_equal(cm_half, confusion_matrix(y_test, _pred)), <span class="st">&quot;матрица ошибок другая&quot;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Проверка задания 2 пройдена&quot;</span>)</span></code></pre></div>
+</div>
+<div id="1503c47d" class="cell markdown">
+<p><strong>Вывод.</strong> <em>(1–2 предложения: что показывает матрица
+ошибок при пороге 0.5 и зачем отдельно смотреть полноту)</em></p>
+</div>
+<div id="892b5e10" class="cell markdown">
+<hr />
+<h2 id="задание-3-порог-под-полноту-095">Задание 3. Порог под полноту
+0.95</h2>
+<p>Нужен самый высокий порог, при котором полнота на тесте не ниже 0.95.
+Более низкий порог тоже наберёт такую полноту, но добавит ложных тревог,
+поэтому берётся верхний. Относительно 0.5 он может и подняться, и
+опуститься: это зависит от разбиения. Функция ниже задаёт правило, её не
+меняйте.</p>
+<p><strong>Важно: порог подбирается по тесту.</strong> По этим же
+объектам дальше считаются precision и число ложных тревог, поэтому они
+получаются оптимистичными: порог подогнан под этот тест. В настоящей
+работе порог выбирают на отдельной валидационной части или
+кросс-валидацией, а тест трогают один раз в конце (это тема лабораторной
+5). Здесь тест играет роль валидационной части, чтобы ваши числа можно
+было сверить с эталоном.</p>
+</div>
+<div id="1cab8434" class="cell code">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> choose_threshold(y_true, prob, min_recall<span class="op">=</span><span class="fl">0.95</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Самый высокий порог, при котором полнота не ниже min_recall.</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Минимизируется 0.5 a^T P a - sum(a), где P = (y y^T) * K,</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">    при 0 &lt;= a_i &lt;= C (bounds) и a^T y = 0 (constraints, type=&#39;eq&#39;).</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Передайте jac -- сходимость будет заметно быстрее.</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recover_wb(alpha, X, y, tol<span class="op">=</span><span class="fl">1e-6</span>):</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;w = sum a_i y_i x_i; b -- среднее (y_i - w^T x_i) по опорным векторам.&quot;&quot;&quot;</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Кандидаты перебираются от 1 к 0, поэтому первый подходящий — максимальный.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    candidates <span class="op">=</span> np.concatenate([[<span class="fl">1.0</span>], np.sort(np.unique(prob))[::<span class="op">-</span><span class="dv">1</span>], [<span class="fl">0.0</span>]])</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> candidates:</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        pred <span class="op">=</span> (prob <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> recall_score(y_true, pred, zero_division<span class="op">=</span><span class="dv">0</span>) <span class="op">&gt;=</span> min_recall:</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">float</span>(t)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.0</span></span></code></pre></div>
 </div>
-<div id="cell020" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Xb, yb <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">60</span>, centers<span class="op">=</span><span class="dv">2</span>, cluster_std<span class="op">=</span><span class="fl">1.0</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>yb <span class="op">=</span> np.where(yb <span class="op">==</span> <span class="dv">0</span>, <span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1.0</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Xb <span class="op">=</span> StandardScaler().fit_transform(Xb) <span class="op">*</span> <span class="fl">1.2</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: решите двойственную задачу с линейным ядром K = Xb @ Xb.T,</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       восстановите (w, b), сравните с SVC(kernel=&quot;linear&quot;, C=1e6),</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#       посчитайте число опорных векторов и выведите наибольшие alpha.</span></span></code></pre></div>
+<div id="6aace814" class="cell code">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: threshold = choose_threshold(y_test, prob_test, 0.95)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pred_thr, recall_at_threshold, precision_at_threshold, fp_at_threshold</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># График recall и precision от порога, вертикальная линия на выбранном пороге.</span></span></code></pre></div>
 </div>
-<div id="cell021" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<h3 id="задание-31-ядровой-трюк">Задание 3.1. Ядровой трюк</h3>
-<p>И двойственная задача, и итоговый классификатор зависят от объектов
-<strong>только через скалярные произведения</strong>. Значит, заменив
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>x</mi><mi>i</mi><mi>𝖳</mi></msubsup><msub><mi>x</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">x_i^{\mathsf T}x_j</annotation></semantics></math>
-на
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(x_i,x_j)</annotation></semantics></math>,
-мы получаем нелинейную границу, не меняя алгоритм:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">g</mi><mi mathvariant="normal">n</mi></mrow><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">(</mo><munder><mo>∑</mo><mi>i</mi></munder><msubsup><mi>α</mi><mi>i</mi><mo>*</mo></msubsup><msub><mi>y</mi><mi>i</mi></msub><mi>K</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msup><mi>b</mi><mo>*</mo></msup><mo minsize="180%" maxsize="180%" stretchy="true" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
-a(x) = \mathrm{sign}\Bigl(\sum_i\alpha_i^*y_i K(x_i,x) + b^*\Bigr).
-</annotation></semantics></math></p>
-<p>Соберите такой классификатор с RBF-ядром и проверьте его на
-<code>make_circles</code>.</p>
+<div id="7eda3d11" class="cell code">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка задания 3 (не меняйте эту ячейку)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>_t <span class="op">=</span> choose_threshold(y_test, prob_test, <span class="fl">0.95</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(threshold, _t), <span class="st">&quot;порог должен быть самым высоким с полнотой не ниже 0.95&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>_pred <span class="op">=</span> (prob_test <span class="op">&gt;=</span> threshold).astype(<span class="bu">int</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> recall_at_threshold <span class="op">+</span> <span class="fl">1e-12</span> <span class="op">&gt;=</span> <span class="fl">0.95</span>, <span class="st">&quot;полнота ниже 0.95&quot;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(recall_at_threshold, recall_score(y_test, _pred, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(precision_at_threshold, precision_score(y_test, _pred, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> fp_at_threshold <span class="op">==</span> <span class="bu">int</span>(((_pred <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (y_test <span class="op">==</span> <span class="dv">0</span>)).<span class="bu">sum</span>())</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Проверка задания 3 пройдена&quot;</span>)</span></code></pre></div>
 </div>
-<div id="cell022" class="cell code" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}" data-tags="[&quot;task&quot;]">
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rbf(A, B, gamma<span class="op">=</span><span class="fl">1.0</span>):</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;K(x, x&#39;) = exp(-gamma ||x - x&#39;||^2); расстояния -- как в занятии 1.&quot;&quot;&quot;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_circles</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>Xc, yc <span class="op">=</span> make_circles(n_samples<span class="op">=</span><span class="dv">150</span>, noise<span class="op">=</span><span class="fl">0.12</span>, factor<span class="op">=</span><span class="fl">0.45</span>, random_state<span class="op">=</span>RANDOM_STATE)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>yc <span class="op">=</span> np.where(yc <span class="op">==</span> <span class="dv">0</span>, <span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1.0</span>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> StandardScaler().fit_transform(Xc)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: решите двойственную задачу с матрицей K = rbf(Xc, Xc), C = 1;</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       восстановите b по опорным векторам, соберите decision(Z) по формуле выше,</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       посчитайте точность и нарисуйте границу решения с отмеченными</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       опорными векторами.</span></span></code></pre></div>
+<div id="8f372054" class="cell markdown">
+<p><strong>Вывод.</strong> <em>(2–3 предложения: куда ушёл порог
+относительно 0.5, что стало с precision и числом ложных тревог; если
+ничего не ухудшилось — почему. Ещё одно предложение: почему precision
+при выбранном пороге — оптимистичная оценка)</em></p>
 </div>
-<div id="cell023" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
-<blockquote>
-<p><strong>Вывод.</strong> Сколько объектов оказалось опорными и почему
-у RBF-ядра их больше, чем у линейного? Почему в формуле классификатора
-нигде не появляется
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\varphi(x)</annotation></semantics></math>?</p>
-<p><em>(ваш ответ здесь)</em></p>
-</blockquote>
-</div>
-<div id="cell024" class="cell markdown" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
-<h2 id="итоги-домашней-работы">Итоги домашней работы</h2>
-<p>Кратко ответьте на вопросы:</p>
-<ol>
-<li>Ядро
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msup><mi>x</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo>−</mo><msup><mi>x</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">K(x,x&#39;)=\|x-x&#39;\|</annotation></semantics></math>
-не удовлетворяет критерию Мерсера. Что конкретно сломается, если
-подставить его в двойственную задачу?</li>
-<li>Вы обучили SVM, и опорными оказались 95 % объектов. О чём это
-говорит и какой гиперпараметр вы будете менять в первую очередь?</li>
-</ol>
-<h2 id="обратная-связь">Обратная связь</h2>
-<p>Это не оценивается и на балл не влияет — нужно, чтобы поправить
-работу к следующему году. Отвечайте одной строкой, честно.</p>
-<table>
-<tbody>
-<tr>
-<td>Сколько часов заняло</td>
-<td></td>
-</tr>
-<tr>
-<td>Сложность от 1 до 5</td>
-<td></td>
-</tr>
-<tr>
-<td>Что осталось непонятным</td>
-<td></td>
-</tr>
-<tr>
-<td>Какое задание показалось лишним</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<div id="94a03b90" class="cell markdown">
 <hr />
-<p>Проверьте перед сдачей: Kernel → Restart &amp; Run All проходит без
-ошибок, все ячейки <strong>Вывод</strong> заполнены, графики
-подписаны.</p>
-<p>Имя файла — то, что напечатала ячейка с вариантом:
-<code>hw01_Ivanov_I_I.ipynb</code>. Номер работы впереди, фамилия и
-инициалы латиницей. Если сдаёте исправленную версию, допишите
-<code>_v2</code>.</p>
+<h2 id="задание-4-бонус-svm-с-rbf-ядром">Задание 4 (бонус). SVM с
+RBF-ядром</h2>
+<p>Сетка
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mspace width="0.167em"></mspace><mn>1</mn><mo>,</mo><mspace width="0.167em"></mspace><mn>10</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">C\in\{0{,}1,\,1,\,10\}</annotation></semantics></math>
+и
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>01</mn><mo>,</mo><mspace width="0.167em"></mspace><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mspace width="0.167em"></mspace><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\gamma\in\{0{,}01,\,0{,}1,\,1\}</annotation></semantics></math>.
+Обучайте на <code>X_train_std</code> (без столбца единиц: свободный член
+SVM добавляет сам), качество — ROC-AUC по <code>decision_function</code>
+на тесте. В таблице укажите и число опорных векторов.</p>
+<p>В сводку бонус не входит.</p>
+</div>
+<div id="9ab8f6f4" class="cell code">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (бонус): SVC(kernel=&quot;rbf&quot;) на X_train_std / X_test_std (без столбца единиц).</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Сетка C_GRID = [0.1, 1, 10], GAMMA_GRID = [0.01, 0.1, 1].</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Для каждой пары — ROC-AUC по decision_function на тесте и число опорных векторов.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Напечатайте таблицу и пару (C, gamma) с наибольшим ROC-AUC.</span></span></code></pre></div>
+</div>
+<div id="ed07ba22" class="cell markdown">
+<p><strong>Вывод.</strong> <em>(1–2 предложения: какая пара
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>C</mi><mo>,</mo><mi>γ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(C,\gamma)</annotation></semantics></math>
+лучше и что происходит с числом опорных векторов)</em></p>
+</div>
+<div id="f39841b8" class="cell code">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Сводка для проверки (не меняйте эту ячейку)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>n_pos_test <span class="op">=</span> <span class="bu">int</span>(y_test.<span class="bu">sum</span>())</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>_summary <span class="op">=</span> {<span class="st">&quot;STUDENT&quot;</span>: STUDENT}</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _k <span class="kw">in</span> [<span class="st">&quot;n_pos_test&quot;</span>, <span class="st">&quot;auc&quot;</span>, <span class="st">&quot;recall_at_half&quot;</span>, <span class="st">&quot;precision_at_half&quot;</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>           <span class="st">&quot;threshold&quot;</span>, <span class="st">&quot;recall_at_threshold&quot;</span>, <span class="st">&quot;precision_at_threshold&quot;</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>           <span class="st">&quot;fp_at_threshold&quot;</span>]:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    _v <span class="op">=</span> <span class="bu">globals</span>().get(_k)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    _summary[_k] <span class="op">=</span> <span class="va">None</span> <span class="cf">if</span> _v <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> <span class="bu">float</span>(_v)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;СВОДКА&quot;</span>, json.dumps(_summary, ensure_ascii<span class="op">=</span><span class="va">False</span>))</span></code></pre></div>
 </div>
 </body>
 </html>
