@@ -244,6 +244,23 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 устной защиты: ноутбук открыт, преподаватель просит поменять порог или
 шаг и объяснить, что изменилось. Обсуждать идеи можно, передавать код и
 ответы нельзя.</p>
+<h2 id="что-сдать">Что сдать</h2>
+<ol>
+<li>Все <code># TODO</code> выполнены, ноутбук проходит сверху вниз
+(<em>Restart &amp; Run All</em>), все ячейки «Проверка» печатают
+«пройдена». Файл назван так, как печатает ячейка варианта (например,
+<code>hw04_Ivanov_I_I.ipynb</code>).</li>
+<li>Под каждым заданием — <strong>Вывод</strong> в 1–3 предложения
+<strong>с числами</strong> из вашего варианта; у графиков подписаны
+оси.</li>
+<li>Последняя ячейка печатает строку <code>СВОДКА …</code> — по ней
+сверяются ваши числа с эталоном. Её не меняйте.</li>
+</ol>
+<p>Код спуска — своими функциями (<code>numpy</code>);
+<code>scikit-learn</code> — только для сравнения, метрик и бонуса.
+Функции <code>sigmoid</code>, <code>log_loss</code> и
+<code>logreg_gd</code> можно взять из ноутбука лабораторной 4: там они
+уже написаны на семинаре.</p>
 </div>
 <div id="1c99ac53" class="cell code">
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Служебная ячейка: импорты, стиль графиков, модуль курса.</span></span>
@@ -332,34 +349,66 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <hr />
 <h2 id="задание-1-логистическая-регрессия-своим-спуском">Задание 1.
 Логистическая регрессия своим спуском</h2>
-<p>Формула лекции, градиент — <strong>сумма</strong>, без множителя
-2:</p>
+<p>Это тот же спуск, что на семинаре (часть 4 лабораторной), только на
+настоящих данных. Обозначения:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+— матрица признаков со столбцом единиц,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h=\sigma(X\theta)</annotation></semantics></math>
+— вероятности класса 1,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>z</mi></mrow></msup></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\sigma(z)=\dfrac{1}{1+e^{-z}}</annotation></semantics></math>.</p>
+<p><strong>Потеря</strong> — средняя логистическая (её пишем в
+<code>losses</code>):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">[</mo><msub><mi>y</mi><mi>i</mi></msub><mrow><mi>ln</mi><mo>⁡</mo></mrow><msub><mi>h</mi><mi>i</mi></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>ln</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>h</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo minsize="180%" maxsize="180%" stretchy="true" form="postfix">]</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+Q(\theta) = -\frac1n\sum_{i=1}^{n}\Bigl[y_i\ln h_i + (1-y_i)\ln(1-h_i)\Bigr].
+</annotation></semantics></math></p>
+<p>Под логарифм добавьте <code>1e-12</code>, чтобы не получить
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>ln</mi><mo>⁡</mo></mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">\ln 0</annotation></semantics></math>.</p>
+<p><strong>Шаг спуска</strong> — формула лекции. Градиент —
+<strong>сумма</strong> по объектам, без деления на
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+и без множителя 2 (двойка была в MSE линейной регрессии из ДЗ 3, здесь
+её нет):</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>←</mo><mi>θ</mi><mo>−</mo><mi>η</mi><mspace width="0.167em"></mspace><msup><mi>X</mi><mi>𝖳</mi></msup><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>y</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \theta \leftarrow \theta - \eta\, X^{\mathsf T}\bigl(\sigma(X\theta) - y\bigr).
 </annotation></semantics></math></p>
-<p>Шаг и число шагов уже заданы, их не меняйте:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mn>4</mn><mspace width="0.167em"></mspace><mi>/</mi><mspace width="0.167em"></mspace><msub><mi>λ</mi><mi>max</mi></msub><mo stretchy="false" form="prefix">(</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\eta = 4\,/\,\lambda_{\max}(X^{\mathsf T}X)</annotation></semantics></math>,
-<code>N_ITER = 5000</code>. Шаг вдвое больше, чем на занятии
+<p><strong>Старт</strong> —
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\theta = 0</annotation></semantics></math>
+(вектор нулей). <code>losses</code> — потеря на старте и после каждого
+шага, всего <code>N_ITER + 1</code> чисел.</p>
+<p><strong>Шаг и число шагов</strong> заданы, их не меняйте:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mn>4</mn><mspace width="0.167em"></mspace><mi>/</mi><mspace width="0.167em"></mspace><msub><mi>λ</mi><mi>max</mi></msub><mo stretchy="false" form="prefix">(</mo><msup><mi>X</mi><mi>𝖳</mi></msup><mi>X</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\eta = 4\,/\,\lambda_{\max}(X^{\mathsf T}X)</annotation></semantics></math>
+(наибольшее собственное число,
+<code>np.linalg.eigvalsh(...).max()</code>), <code>N_ITER = 5000</code>.
+Шаг вдвое больше, чем на занятии
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>/</mi><msub><mi>λ</mi><mi>max</mi></msub></mrow><annotation encoding="application/x-tex">2/\lambda_{\max}</annotation></semantics></math>):
 так 5000 шагов хватает, чтобы дойти до минимума, а спуск остаётся
-устойчивым. В <code>losses</code> пишите среднюю потерю. Длина списка —
-<code>N_ITER + 1</code>.</p>
-<p>Сравните вероятности на тесте с
-<code>LogisticRegression(penalty=None, fit_intercept=False)</code>.
-Смотрите на вероятности и на ROC-AUC. Веса могут разойтись в третьем
-знаке, поэтому сравнивают вероятности.</p>
+устойчивым.</p>
+<p><strong>Сравнение со scikit-learn.</strong> Обучите
+<code>LogisticRegression(penalty=None, fit_intercept=False, max_iter=5000)</code>
+на тех же <code>Xb_train</code> (столбец единиц уже есть, поэтому
+<code>fit_intercept=False</code>). Напечатайте наибольшую разницу
+вероятностей на тесте
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>i</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>p</mi><mi>i</mi></msub><mo>−</mo><msubsup><mi>p</mi><mi>i</mi><mtext mathvariant="normal">sklearn</mtext></msubsup><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">\max_i |p_i - p_i^{\text{sklearn}}|</annotation></semantics></math>
+и ROC-AUC обеих моделей. Веса могут разойтись в третьем знаке, поэтому
+сравнивают вероятности.</p>
 </div>
 <div id="953cd617" class="cell code">
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(z):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: сигмоида, аргумент обрезать np.clip(z, -30, 30)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: 1 / (1 + exp(-z)); аргумент сначала обрезать: z = np.clip(z, -30, 30)</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logreg_gd(X, y, eta, n_iter):</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: градиент — сумма X.T @ (sigmoid(X @ theta) - y), без множителя 2.</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Верните theta и losses длины n_iter + 1 (потеря до шага и после каждого шага).</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Потеря — средняя логистическая, не сумма.</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_loss(X, y, theta):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: средняя логистическая потеря (формула выше), под логарифм + 1e-12</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logreg_gd(X, y, eta, n_iter):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: theta = np.zeros(X.shape[1]); losses = [log_loss(X, y, theta)]</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># в цикле n_iter раз: h = sigmoid(X @ theta); grad = X.T @ (h - y); theta = theta - eta * grad;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># после шага losses.append(log_loss(X, y, theta)).</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Вернуть theta, np.array(losses)</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
 </div>
 <div id="475e488b" class="cell code">
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка формул (не меняйте эту ячейку): один шаг из лекции</span></span>
@@ -376,10 +425,15 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Шаг из лекции совпал&quot;</span>)</span></code></pre></div>
 </div>
 <div id="89c8180a" class="cell code">
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: N_ITER = 5000; eta = 4 / λmax(Xb_train.T @ Xb_train);</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># theta, losses = logreg_gd(...); prob_test = sigmoid(Xb_test @ theta)</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Сравните prob_test с LogisticRegression(penalty=None, fit_intercept=False)</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># и постройте график losses (логарифмическая шкала по вертикали).</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># N_ITER = 5000</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># eta = 4 / np.linalg.eigvalsh(Xb_train.T @ Xb_train).max()</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># theta, losses = logreg_gd(Xb_train, y_train, eta, N_ITER)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># prob_test = sigmoid(Xb_test @ theta)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Обучите LogisticRegression(penalty=None, fit_intercept=False, max_iter=5000) на Xb_train,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># её вероятности на тесте: .predict_proba(Xb_test)[:, 1].</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Напечатайте max |prob_test - prob_sklearn| и ROC-AUC обеих моделей.</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># График losses: plt.semilogy (логарифмическая шкала по вертикали), подписи осей.</span></span></code></pre></div>
 </div>
 <div id="40afe960" class="cell code">
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка задания 1 на ваших данных (не меняйте эту ячейку)</span></span>
@@ -412,9 +466,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 порога.</p>
 </div>
 <div id="cc382488" class="cell code">
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: при пороге 0.5 посчитайте на тесте</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># cm_half, recall_at_half, precision_at_half, auc = roc_auc_score(y_test, prob_test)</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Напечатайте матрицу ошибок.</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: при пороге 0.5 на тесте:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pred_half = (prob_test &gt;= 0.5).astype(int)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># cm_half = confusion_matrix(y_test, pred_half)   # [[TN, FP], [FN, TP]]: строки — истина, столбцы — ответ</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># recall_at_half, precision_at_half — recall_score / precision_score (zero_division=0)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># auc = roc_auc_score(y_test, prob_test)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Напечатайте матрицу ошибок и три числа.</span></span></code></pre></div>
 </div>
 <div id="ccb12c87" class="cell code">
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка задания 2 (не меняйте эту ячейку)</span></span>
@@ -463,9 +520,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.0</span></span></code></pre></div>
 </div>
 <div id="6aace814" class="cell code">
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: threshold = choose_threshold(y_test, prob_test, 0.95)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pred_thr, recall_at_threshold, precision_at_threshold, fp_at_threshold</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># График recall и precision от порога, вертикальная линия на выбранном пороге.</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># threshold = choose_threshold(y_test, prob_test, 0.95)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pred_thr = (prob_test &gt;= threshold).astype(int)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># recall_at_threshold, precision_at_threshold — как в задании 2, но для pred_thr</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># fp_at_threshold — число ложных тревог (FP): ответ 1 при истинном 0</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Напечатайте, как изменились recall, precision и число ложных тревог по сравнению с порогом 0.5.</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># График: для порогов t = np.linspace(0.01, 0.99, 99) посчитайте recall и precision в цикле,</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># нарисуйте обе кривые, вертикальную линию plt.axvline(threshold) и горизонтальную на 0.95.</span></span></code></pre></div>
 </div>
 <div id="7eda3d11" class="cell code">
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Проверка задания 3 (не меняйте эту ячейку)</span></span>
@@ -494,14 +556,16 @@ RBF-ядром</h2>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>01</mn><mo>,</mo><mspace width="0.167em"></mspace><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mspace width="0.167em"></mspace><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\gamma\in\{0{,}01,\,0{,}1,\,1\}</annotation></semantics></math>.
 Обучайте на <code>X_train_std</code> (без столбца единиц: свободный член
 SVM добавляет сам), качество — ROC-AUC по <code>decision_function</code>
-на тесте. В таблице укажите и число опорных векторов.</p>
+на тесте. В таблице укажите и число опорных векторов
+(<code>n_support_.sum()</code>).</p>
 <p>В сводку бонус не входит.</p>
 </div>
 <div id="9ab8f6f4" class="cell code">
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (бонус): SVC(kernel=&quot;rbf&quot;) на X_train_std / X_test_std (без столбца единиц).</span></span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> (бонус): SVC(kernel=&quot;rbf&quot;, C=C, gamma=gamma) на X_train_std / X_test_std (без столбца единиц).</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Сетка C_GRID = [0.1, 1, 10], GAMMA_GRID = [0.01, 0.1, 1].</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Для каждой пары — ROC-AUC по decision_function на тесте и число опорных векторов.</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Напечатайте таблицу и пару (C, gamma) с наибольшим ROC-AUC.</span></span></code></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Для каждой пары: ROC-AUC = roc_auc_score(y_test, svm.decision_function(X_test_std)),</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># число опорных векторов = svm.n_support_.sum().</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Напечатайте таблицу (pd.DataFrame) и пару (C, gamma) с наибольшим ROC-AUC.</span></span></code></pre></div>
 </div>
 <div id="ed07ba22" class="cell markdown">
 <p><strong>Вывод.</strong> <em>(1–2 предложения: какая пара
