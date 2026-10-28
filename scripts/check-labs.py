@@ -36,7 +36,7 @@ LABS = pathlib.Path(os.environ.get("LABS_ROOT", SITE.parent / "лабы")).resol
 
 # Как называются те же материалы на сайте.
 SLUGS = {1: "01-tools-data", 2: "02-erm-least-squares", 3: "03-gradient-regularization",
-         4: "04-linear-classification", 5: "05-overfitting-cv", 6: "06-trees-ensembles",
+         4: "04-linear-classification", 5: "05-trees-forest", 6: "06-trees-ensembles",
          7: "07-metric-bayes", 8: "08-clustering-em", 9: "09-pca-svd-mds"}
 
 # Вспомогательные модули, которые лежат на сайте рядом с ноутбуками.
