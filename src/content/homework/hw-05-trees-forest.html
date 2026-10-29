@@ -532,7 +532,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.Series(cv_scores).<span class="bu">round</span>(<span class="dv">3</span>).to_string())</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>best_model <span class="op">=</span> ...   <span class="co"># </span><span class="al">TODO</span><span class="co">: &quot;дерево&quot; или &quot;лес&quot; — по таблице выше</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>test_best <span class="op">=</span> ...    <span class="co"># </span><span class="al">TODO</span><span class="co">: models[best_model] обучить на всём обучении (fit) и посчитать долю верных на тесте (score)</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>test_best <span class="op">=</span> ...    <span class="co"># </span><span class="al">TODO</span><span class="co">: обучите выбранную модель на всём обучении и посчитайте долю верных на тесте</span></span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;выбрана:&quot;</span>, best_model, <span class="st">&quot; тест:&quot;</span>, <span class="bu">round</span>(test_best, <span class="dv">3</span>))</span></code></pre></div>
 </div>
 <div id="817ac3b3" class="cell code">
@@ -566,7 +566,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; }
 </div>
 <div id="25d7bbda" class="cell code">
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ALL <span class="op">=</span> [<span class="st">&quot;app_id&quot;</span>] <span class="op">+</span> FEATURES <span class="op">+</span> [<span class="st">&quot;delays_now&quot;</span>]   <span class="co"># как у стажёра: все столбцы, кроме ответа</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cv_leak <span class="op">=</span> ...   <span class="co"># </span><span class="al">TODO</span><span class="co">: cross_val_score леса (200 деревьев, random_state=0) на train[ALL], y_train, cv=cv5, среднее</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cv_leak <span class="op">=</span> ...   <span class="co"># </span><span class="al">TODO</span><span class="co">: средняя доля верных по кросс-валидации cv5 у леса (200 деревьев, random_state=0) на всех столбцах ALL</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;кросс-валидация на всех столбцах:&quot;</span>, <span class="bu">round</span>(cv_leak, <span class="dv">3</span>))</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>rf_all <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit(train[ALL], y_train)</span>
