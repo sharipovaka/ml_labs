@@ -54,7 +54,7 @@ convert_dir() {
     echo "→ $label: $name"
 
     pandoc "$notebook" \
-      --from ipynb \
+      --from ipynb+markdown_in_html_blocks \
       --to html5 \
       --standalone \
       --embed-resources \
